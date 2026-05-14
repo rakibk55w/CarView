@@ -1,0 +1,21 @@
+{
+  "name": "carview",
+  "version": "1.0.0",
+  "description": "A marketplace for buying/selling car.",
+  "license": "ISC",
+  "author": "rakibk55w",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
