@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const homeRouter = require("./routes/home_route");
+const notFound = require("./middlewares/not_found")
+const errorHandler = require("./middlewares/error_handler");
 
 const app = express();
 
@@ -12,15 +14,8 @@ app.use(express.json());
 
 app.use("/api", homeRouter)
 
-app.use((req, res) => {
-    res.status(404).json({
-        "message": "Page not found"
-    });
-})
-
-app.use((err, req, res, next) => {
-    res.status(500).json({"message": "Server error!"})
-})
+app.use(notFound);
+app.use(errorHandler);
 
 
 module.exports = app;
