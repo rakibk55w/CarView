@@ -1,6 +1,6 @@
 const homeController = (req, res) => {
     res.json({
-        "message": "Get successful"
+        message: "Get successful"
     });
 }
 

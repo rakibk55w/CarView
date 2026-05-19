@@ -6,7 +6,7 @@ const registerController = async (req, res, next) => {
         const existingUser = await findUserByEmail(req.body.email);
         if (existingUser) {
             return res.status(409).json({
-                "message": "User already exists"
+                message: "User already exists"
             });
         }
 
@@ -19,7 +19,7 @@ const registerController = async (req, res, next) => {
         });
 
         res.status(201).json({
-            "message": "User registered successfully"
+            message: "User registered successfully"
         });
 
     } catch (error) {
