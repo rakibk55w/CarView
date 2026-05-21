@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const authRepository = require("../repository/auth_repository");
-const jwt = require("../utils/jwt");
+const jwtHelper = require("../utils/jwt");
+const jwtRepository = require("../repository/jwt_repository");
 
 const loginController = async (req, res, next) => {
   try {
@@ -22,19 +23,22 @@ const loginController = async (req, res, next) => {
       });
     }
 
-    const accessToken = jwt.generateAccessToken(existingUser);
-    const refreshToken = jwt.generateRefreshToken(existingUser);
+    const accessToken = jwtHelper.generateAccessToken(existingUser);
+    const refreshToken = jwtHelper.generateRefreshToken(existingUser);
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    res.cookie(
-      "refresh_token",
+    await jwtRepository.saveRefreshToken(
+      existingUser.id,
       refreshToken,
-      {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      }
+      expiresAt,
     );
+
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     return res.status(200).json({
       message: "Login successful",
