@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const globalLimiter = require("./middlewares/limiters/global_limiter");
 const homeRouter = require("./routes/home_route");
 const notFound = require("./middlewares/not_found")
 const errorHandler = require("./middlewares/error_handler");
@@ -16,7 +17,7 @@ app.use(cors());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(globalLimiter);
 
 app.use("/api", homeRouter)
 app.use("/api", registerRouter);
