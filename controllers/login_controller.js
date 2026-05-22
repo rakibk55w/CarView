@@ -39,10 +39,8 @@ const loginController = async (req, res, next) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/api/auth"
     });
-
-    //console.log(res.headers.cookies);
-    //console.log(res.cookies);
 
     return res.status(200).json({
       message: "Login successful",
