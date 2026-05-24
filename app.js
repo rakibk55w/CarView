@@ -10,6 +10,7 @@ const logoutRouter = require("./routes/logout_route");
 const jwtRouter = require("./routes/jwt_route");
 const cookieParser = require("cookie-parser");
 const profileRouter = require("./routes/profile_route");
+const updateProfileRouter = require("./routes/update_profile_route");
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.use("/api", loginRouter);
 app.use("/api", logoutRouter);
 
 app.use("/api", profileRouter);
-
+app.use("/api", updateProfileRouter);
 
 app.use("/api", jwtRouter);
 
