@@ -18,7 +18,7 @@ const registerController = async (req, res, next) => {
             password: hashedPassword
         });
 
-        res.status(201).json({
+        return res.status(201).json({
             message: "User registered successfully"
         });
 

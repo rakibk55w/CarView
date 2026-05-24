@@ -32,4 +32,28 @@ const updateProfile = async (userId, {name, email, contact_number, date_of_birth
     return result.rows[0];
 }
 
-module.exports = { getProfile, updateProfile };
+const updatePassword = async (userId, newPassword) => {
+    await pool.query(
+        `
+        UPDATE users
+        SET password = $1
+        WHERE id = $2
+        `,
+        [newPassword, userId]
+    );
+}
+
+const getPassword = async (userId) => {
+    const result = await pool.query(
+        `
+        SELECT password
+        FROM users
+        WHERE id = $1
+        `,
+        [userId]
+    );
+
+    return result.rows[0]?.password;
+};
+
+module.exports = { getProfile, updateProfile, updatePassword, getPassword };

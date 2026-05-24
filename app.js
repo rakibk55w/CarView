@@ -1,16 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 const globalLimiter = require("./middlewares/limiters/global_limiter");
+const cookieParser = require("cookie-parser");
+
 const homeRouter = require("./routes/home_route");
-const notFound = require("./middlewares/not_found")
-const errorHandler = require("./middlewares/error_handler");
 const registerRouter = require("./routes/register_route");
 const loginRouter = require("./routes/login_route");
 const logoutRouter = require("./routes/logout_route");
 const jwtRouter = require("./routes/jwt_route");
-const cookieParser = require("cookie-parser");
 const profileRouter = require("./routes/profile_route");
 const updateProfileRouter = require("./routes/update_profile_route");
+const updatePasswordRouter = require("./routes/update_password_route");
+
+const notFound = require("./middlewares/not_found")
+const errorHandler = require("./middlewares/error_handler");
 
 const app = express();
 
@@ -27,6 +30,7 @@ app.use("/api", logoutRouter);
 
 app.use("/api", profileRouter);
 app.use("/api", updateProfileRouter);
+app.use("/api", updatePasswordRouter);
 
 app.use("/api", jwtRouter);
 
