@@ -2,7 +2,7 @@ const pool = require("../config/db");
 
 const createUser = async (userData) => {
     await pool.query(
-        `INSERT INTO users(name, email, password) VALUES ($1, $2, $3)`,
+        `INSERT INTO users(name, email, password, updated_at) VALUES ($1, $2, $3, NOW())`,
         [userData.name, userData.email, userData.password]
     );
 };
