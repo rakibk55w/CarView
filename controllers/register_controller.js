@@ -1,20 +1,22 @@
 const { createUser, findUserByEmail } = require("../repository/auth_repository");
 const bcrypt = require("bcrypt");
+const RegisterRequestDto = require("../dtos/register_request_dto");
 
 const registerController = async (req, res, next) => {
     try {
-        const existingUser = await findUserByEmail(req.body.email);
+        const registerDto = RegisterRequestDto.fromRequest(req.body);
+        const existingUser = await findUserByEmail(registerDto.email);
         if (existingUser) {
             return res.status(409).json({
                 message: "User already exists"
             });
         }
 
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
         await createUser({
-            name: req.body.name,
-            email: req.body.email,
+            name: registerDto.name,
+            email: registerDto.email,
             password: hashedPassword
         });
 

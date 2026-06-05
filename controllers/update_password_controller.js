@@ -1,14 +1,16 @@
 const profileRepository = require("../repository/profile_repository");
+const UpdatePasswordRequestDto = require("../dtos/update_password_request_dto");
 const bcrypt = require("bcrypt");
 
 const updatePasswordController = async (req, res, next) => {
     try {
+        const updatePasswordDto = UpdatePasswordRequestDto.fromRequest(req.body);
         const currentPassword = await profileRepository.getPassword(
             req.user.id
         );
 
         const isMatch = await bcrypt.compare(
-            req.body.current_password,
+            updatePasswordDto.currentPassword,
             currentPassword
         );
 
@@ -17,7 +19,7 @@ const updatePasswordController = async (req, res, next) => {
                 message: "Current password is incorrect",
             });
         }
-        const hashedPassword = await bcrypt.hash(req.body.new_password, 10);
+        const hashedPassword = await bcrypt.hash(updatePasswordDto.newPassword, 10);
 
         await profileRepository.updatePassword(
             req.user.id,

@@ -3,10 +3,13 @@ const bcrypt = require("bcrypt");
 const authRepository = require("../repository/auth_repository");
 const jwtHelper = require("../utils/jwt");
 const jwtRepository = require("../repository/jwt_repository");
+const LoginRequestDto = require("../dtos/login_request_dto");
+const LoginResponseDto = require("../dtos/login_response_dto");
 
 const loginController = async (req, res, next) => {
   try {
-    const existingUser = await authRepository.findUserByEmail(req.body.email);
+    const loginDto = LoginRequestDto.fromRequest(req.body);
+    const existingUser = await authRepository.findUserByEmail(loginDto.email);
     if (!existingUser) {
       return res.status(401).json({
         message: "Invalid email",
@@ -14,7 +17,7 @@ const loginController = async (req, res, next) => {
     }
 
     const isPasswordCorrect = await bcrypt.compare(
-      req.body.password,
+      loginDto.password,
       existingUser.password,
     );
 
@@ -36,16 +39,15 @@ const loginController = async (req, res, next) => {
 
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: "/api/auth"
+      path: "/api/auth",
     });
 
-    return res.status(200).json({
-      message: "Login successful",
-      access_token: accessToken,
-    });
+    return res.status(200).json(
+      new LoginResponseDto(accessToken)
+    );
   } catch (error) {
     next(error);
   }

@@ -1,23 +1,15 @@
 const profileRepository = require("../repository/profile_repository");
+const UpdateProfileRequestDto = require("../dtos/update_profile_request_dto");
+const UpdateProfileResponseDto = require("../dtos/update_profile_response_dto");
 
 const normalize = (value) => value === "" ? null : value;
 
 const updateProfileController = async (req, res, next) => {
   try {
-    const updateData = {
-        name: normalize(req.body.name),
-        email: normalize(req.body.email),
-        contact_number: normalize(req.body.contact_number),
-        date_of_birth: normalize(req.body.date_of_birth),
-        street_address: normalize(req.body.street_address),
-        city: normalize(req.body.city)
-    };
-    const newProfile = await profileRepository.updateProfile(req.user.id, updateData);
+    const updateProfileRequestDto = UpdateProfileRequestDto.fromRequest(req.body);
+    const newProfile = await profileRepository.updateProfile(req.user.id, updateProfileRequestDto);
 
-    return res.status(200).json({
-      message: "Profile updated successfully",
-      data: newProfile,
-    });
+    return res.status(200).json(new UpdateProfileResponseDto(newProfile));
   } catch (error) {
     next(error);
   }
