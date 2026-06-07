@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(globalLimiter);
 
-app.use("/api", homeRouter)
+app.use("/api", homeRouter);
 app.use("/api", registerRouter);
 app.use("/api", loginRouter);
 app.use("/api", logoutRouter);

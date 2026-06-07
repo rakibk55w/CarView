@@ -1,4 +1,4 @@
-const normalize = (value) => value === "" ? null : value;
+const normalizer = require("../utils/empty_string_normalizer");
 
 class UpdateProfileRequestDto {
     constructor(profile) {

@@ -17,12 +17,12 @@ const updateProfile = async (userId, {name, email, contact_number, date_of_birth
         `
         UPDATE users
         SET
-            name = COALESCE($1, name),
-            email = COALESCE($2, email),
-            contact_number = COALESCE($3, contact_number),
-            date_of_birth = COALESCE($4, date_of_birth),
-            street_address = COALESCE($5, street_address),
-            city = COALESCE($6, city),
+            name = $1,
+            email = $2,
+            contact_number = $3,
+            date_of_birth = $4,
+            street_address = $5,
+            city = $6,
             updated_at = NOW()
         WHERE id = $7
         RETURNING name, email, contact_number, date_of_birth, street_address, city

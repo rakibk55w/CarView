@@ -21,7 +21,7 @@ const jwtController = async (req, res, next) => {
         const storedToken = await jwtRepository.findRefreshToken(refreshToken);
 
         if (!storedToken) {
-            res.status(403).json({
+            return res.status(403).json({
                 message: "Invalid refresh token"
             });
         }
