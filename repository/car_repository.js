@@ -58,7 +58,7 @@ const getCarDetailsByCarID = async (carId) => {
     return queryResult.rows[0];
 };
 
-const updateCarById = async (carId, updatedCar) => {
+const updateCarById = async (carId, userId, updatedCar) => {
     const queryResult = await pool.query(
         `
         UPDATE cars
@@ -87,7 +87,7 @@ const updateCarById = async (carId, updatedCar) => {
             ownership_count = $22,
             city = $23,
             updated_at = NOW()
-        WHERE id = $24
+        WHERE id = $24 AND owner_id = $25
         RETURNING *
         `,
         [
@@ -114,17 +114,18 @@ const updateCarById = async (carId, updatedCar) => {
             updatedCar.service_warranty,
             updatedCar.ownership_count,
             updatedCar.city,
-            carId
+            carId,
+            userId
         ]
     );
 
     return queryResult.rows[0];
 };
 
-const deleteCarByCarId = async (carId) => {
+const deleteCarByCarId = async (carId, userId) => {
     const queryResult = await pool.query(
-        `DELETE FROM cars WHERE id = $1 RETURNING *`,
-        [carId]
+        `DELETE FROM cars WHERE id = $1 AND owner_id = $2 RETURNING *`,
+        [carId, userId]
     );
 
     return queryResult.rows[0];

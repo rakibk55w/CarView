@@ -1,0 +1,19 @@
+const { getCarDetailsByCarID } = require("../repository/car_repository");
+
+const getCarDetailsController = async (req, res, next) => {
+    try {
+        const car = await getCarDetailsByCarID(req.params.carId);
+
+        if (!car) {
+            return res.status(404).json({
+                message: "Car not found"
+            });
+        }
+
+        return res.status(200).json(car);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = getCarDetailsController;
