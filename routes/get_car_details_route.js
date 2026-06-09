@@ -5,7 +5,7 @@ const getCarDetailsController = require("../controllers/get_car_details_controll
 const getCarDetailsRouter = express.Router();
 
 getCarDetailsRouter.get(
-    "/:carId",
+    "/cars/:carId",
     authChecker,
     getCarDetailsController
 );

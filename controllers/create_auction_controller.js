@@ -1,6 +1,7 @@
 const CreateAuctionRequestDto = require("../dtos/create_auction_request_dto");
 const { createAuction, findActiveAuctionByCarId } = require("../repository/auction_repository");
 const { getCarDetailsByCarID } = require("../repository/car_repository");
+const { carHasImage } = require("../repository/car_image_repository");
 
 const createAuctionController = async (req, res, next) => {
     try {
@@ -19,6 +20,16 @@ const createAuctionController = async (req, res, next) => {
         if (car.owner_id !== req.user.id) {
             return res.status(403).json({
                 message: "Car ownership conflict"
+            });
+        }
+
+        const hasImagesForCar  = await carHasImage(
+            createAuctionDto.car_id
+        );
+
+        if (!hasImagesForCar) {
+            return res.status(400).json({
+                message: "Car must have at least one image before creating an auction"
             });
         }
 
