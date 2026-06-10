@@ -11,25 +11,31 @@ const uploadCarImageController = async (req, res, next) => {
             });
         }
 
-        if (req.files.length > 5) {
+        const existingImageCount = await carImageRepository.getImageCountByCarId(
+            carId
+        );
+
+        const totalImages = existingImageCount + req.files.length;
+
+        if (totalImages > 5) {
             return res.status(400).json({
-                message: "Maximum 5 images allowed"
+                message: "Maximum 5 images allowed for a car"
             });
         }
 
-        const imageUrls = await cloudinaryService.uploadImages(
+        const imagesFiles = await cloudinaryService.uploadImages(
             req.files, carId
         );
 
-        if (!imageUrls.length) {
+        if (!imagesFiles.length) {
             throw new Error(
                 "Could not resolve image url generation"
             );
         }
 
-        const images = await carImageRepository.createImages(
+        const image = await carImageRepository.createImages(
             carId,
-            imageUrls
+            imagesFiles
         );
 
         return res.status(201).json(images);

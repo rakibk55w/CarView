@@ -23,7 +23,10 @@ const uploadImages = async (files, carId) => {
 
     const results = await Promise.all(uploadPromises);
 
-    return results.map((result) => result.secure_url);
+    return results.map((result) => ({
+    imageUrl: result.secure_url,
+    publicId: result.public_id
+}));
 };
 
 module.exports = {

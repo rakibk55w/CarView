@@ -1,17 +1,17 @@
 const pool = require("../config/db");
 
-const createImages = async (carId, imageUrls) => {
+const createImages = async (carId, images) => {
     const values = [];
     const placeholders = [];
 
-    imageUrls.forEach((url, index) => {
+    images.forEach((image, index) => {
         const offset = index * 2;
 
         placeholders.push(
-            `($${offset + 1}, $${offset + 2}, NOW())`
+            `($${offset + 1}, $${offset + 2}, $${offset + 3}, NOW())`
         );
 
-        values.push(carId, url);
+        values.push(carId, image.imageUrl, image.publicId);
     });
 
     const result = await pool.query(
@@ -19,6 +19,7 @@ const createImages = async (carId, imageUrls) => {
         INSERT INTO car_images (
             car_id,
             image_url,
+            cloudinary_public_id,
             updated_at
         )
         VALUES
