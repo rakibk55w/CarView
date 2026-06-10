@@ -131,6 +131,7 @@ const deleteCarByCarId = async (carId, userId) => {
     return queryResult.rows[0];
 };
 
+
 module.exports = {
     createCar,
     findCarsByUserID,

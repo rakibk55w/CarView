@@ -33,7 +33,7 @@ const uploadCarImageController = async (req, res, next) => {
             );
         }
 
-        const image = await carImageRepository.createImages(
+        const images = await carImageRepository.createImages(
             carId,
             imagesFiles
         );

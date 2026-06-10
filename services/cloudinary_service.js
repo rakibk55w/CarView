@@ -24,11 +24,24 @@ const uploadImages = async (files, carId) => {
     const results = await Promise.all(uploadPromises);
 
     return results.map((result) => ({
-    imageUrl: result.secure_url,
-    publicId: result.public_id
-}));
+        imageUrl: result.secure_url,
+        publicId: result.public_id
+    }));
+};
+
+const deleteImage = async (publicId) => {
+    const result = await cloudinary.uploader.destroy(
+        publicId
+    );
+
+    if (result.result !== "ok") {
+        throw new Error(
+            "Failed to delete image from Cloudinary"
+        );
+    }
 };
 
 module.exports = {
-    uploadImages
+    uploadImages,
+    deleteImage
 };
