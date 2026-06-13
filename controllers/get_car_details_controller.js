@@ -1,8 +1,8 @@
-const { getCarDetailsByCarID } = require("../repository/car_repository");
+const carRepository = require("../repository/car_repository");
 
 const getCarDetailsController = async (req, res, next) => {
     try {
-        const car = await getCarDetailsByCarID(req.params.carId);
+        const car = await carRepository.getCarDetailsByCarID(req.params.carId);
 
         if (!car) {
             return res.status(404).json({

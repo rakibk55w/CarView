@@ -1,5 +1,5 @@
 const CreateBidRequestDto = require("../dtos/create_bid_request_dto");
-const { createBid } = require("../repository/bid_repository");
+const bidRepository = require("../repository/bid_repository");
 
 const createBidController = async (req, res, next) => {
     try {
@@ -7,7 +7,7 @@ const createBidController = async (req, res, next) => {
             req.body
         );
 
-        await createBid(
+        await bidRepository.createBid(
             bidDto.auction_id,
             req.user.id,
             bidDto.bid_amount

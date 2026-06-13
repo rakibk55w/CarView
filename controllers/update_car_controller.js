@@ -1,14 +1,12 @@
 const CreateCarRequestDto = require("../dtos/create_car_request_dto");
-const {
-    updateCarById
-} = require("../repository/car_repository");
+const carRepository = require("../repository/car_repository");
 
 const updateCarController = async (req, res, next) => {
     try {
         const updateCarDto =
             CreateCarRequestDto.fromRequest(req.body);
 
-        const updatedCar = await updateCarById(
+        const updatedCar = await carRepository.updateCarById(
             req.params.carId,
             req.user.id,
             updateCarDto

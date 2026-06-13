@@ -1,9 +1,9 @@
-const { getImageForDeletion, deleteImageByImageId } = require("../repository/car_image_repository");
+const carImageRepository = require("../repository/car_image_repository");
 const cloudinaryService = require("../services/cloudinary_service");
 
 const deleteCarImageController = async (req, res, next) => {
     try {
-        const image = await getImageForDeletion(req.params.imageId);
+        const image = await carImageRepository.getImageForDeletion(req.params.imageId);
 
         if (!image) {
             return res.status(404).json({
@@ -21,7 +21,7 @@ const deleteCarImageController = async (req, res, next) => {
             image.cloudinary_public_id
         );
 
-        const deletedImage = await deleteImageByImageId(
+        const deletedImage = await carImageRepository.deleteImageByImageId(
             req.params.imageId
         );
 

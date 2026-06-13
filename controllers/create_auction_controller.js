@@ -1,13 +1,13 @@
 const CreateAuctionRequestDto = require("../dtos/create_auction_request_dto");
-const { createAuction, findActiveAuctionByCarId } = require("../repository/auction_repository");
-const { getCarDetailsByCarID } = require("../repository/car_repository");
-const { carHasImage } = require("../repository/car_image_repository");
+const auctionRepository = require("../repository/auction_repository");
+const carRepository = require("../repository/car_repository");
+const carImageRepository = require("../repository/car_image_repository");
 
 const createAuctionController = async (req, res, next) => {
     try {
         const createAuctionDto = CreateAuctionRequestDto.fromRequest(req.body);
 
-        const car = await getCarDetailsByCarID(
+        const car = await carRepository.getCarDetailsByCarID(
             createAuctionDto.car_id
         );
 
@@ -23,7 +23,7 @@ const createAuctionController = async (req, res, next) => {
             });
         }
 
-        const hasImagesForCar  = await carHasImage(
+        const hasImagesForCar  = await carImageRepository.carHasImage(
             createAuctionDto.car_id
         );
 
@@ -33,7 +33,7 @@ const createAuctionController = async (req, res, next) => {
             });
         }
 
-        const activeAuction = await findActiveAuctionByCarId(
+        const activeAuction = await auctionRepository.findActiveAuctionByCarId(
             createAuctionDto.car_id
         );
 
@@ -43,7 +43,7 @@ const createAuctionController = async (req, res, next) => {
             });
         }
 
-        const auction = await createAuction(createAuctionDto);
+        const auction = await auctionRepository.createAuction(createAuctionDto);
 
         return res.status(201).json({
             message: "Auction created successfully",

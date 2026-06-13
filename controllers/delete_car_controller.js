@@ -1,10 +1,8 @@
-const {
-    deleteCarByCarId
-} = require("../repository/car_repository");
+const carRepository = require("../repository/car_repository");
 
 const deleteCarController = async (req, res, next) => {
     try {
-        const deletedCar = await deleteCarByCarId(
+        const deletedCar = await carRepository.deleteCarByCarId(
             req.params.carId, req.user.id
         );
 
