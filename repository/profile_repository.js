@@ -57,4 +57,9 @@ const getPassword = async (userId) => {
     return result.rows[0]?.password;
 };
 
-module.exports = { getProfile, updateProfile, updatePassword, getPassword };
+module.exports = { 
+    getProfile, 
+    updateProfile, 
+    updatePassword, 
+    getPassword 
+};
