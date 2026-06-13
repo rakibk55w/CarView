@@ -43,7 +43,7 @@ const userHasImage = async (userId) => {
 const getImageByUserId = async (userId) => {
     const result = await pool.query(
         `
-        SELECT image_url
+        SELECT image_url, cloudinary_public_id
         FROM profile_images
         WHERE user_id = $1
         `,

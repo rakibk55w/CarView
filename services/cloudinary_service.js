@@ -1,11 +1,11 @@
 const cloudinary = require("../config/cloudinary");
 const streamifier = require("streamifier");
 
-const uploadImages = async (files, carId) => {
+const uploadBatchImages = async (files, id, folderName) => {
     const uploadPromises = files.map((file) => {
         return new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream({
-                folder: `car-images/${carId}`
+                folder: `${folderName}/${id}`
             },
             (error, result) => {
                 if (error) {
@@ -29,6 +29,28 @@ const uploadImages = async (files, carId) => {
     }));
 };
 
+const uploadSingleImage = async (file, id, folderName) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream({
+            folder: `${folderName}/${id}`
+        },
+        (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve({
+                    imageUrl: result.secure_url,
+                    publicId: result.public_id
+                });
+            }
+        });
+
+        streamifier
+            .createReadStream(file.buffer)
+            .pipe(stream);
+    });
+};
+
 const deleteImage = async (publicId) => {
     const result = await cloudinary.uploader.destroy(
         publicId
@@ -42,6 +64,7 @@ const deleteImage = async (publicId) => {
 };
 
 module.exports = {
-    uploadImages,
+    uploadBatchImages,
+    uploadSingleImage,
     deleteImage
 };

@@ -23,8 +23,8 @@ const uploadCarImageController = async (req, res, next) => {
             });
         }
 
-        const imagesFiles = await cloudinaryService.uploadImages(
-            req.files, carId
+        const imagesFiles = await cloudinaryService.uploadBatchImages(
+            req.files, carId, 'car-images'
         );
 
         if (!imagesFiles.length) {
