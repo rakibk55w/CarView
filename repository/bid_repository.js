@@ -94,6 +94,21 @@ const createBid = async (auctionId, bidderId, bidAmount) => {
     }
 };
 
+const getBidHistoryByAuctionId = async (auctionId) => {
+    const queryResult = await pool.query(
+        `
+        SELECT bidder_id, bid_amount, created_at 
+        FROM bids 
+        WHERE auction_id = $1 
+        ORDER BY created_at ASC
+        `,
+        [auctionId]
+    );
+
+    return queryResult.rows;
+};
+
 module.exports = {
-    createBid
+    createBid,
+    getBidHistoryByAuctionId
 };
