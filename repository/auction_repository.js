@@ -45,7 +45,39 @@ const findActiveAuctionByCarId = async (carId) => {
     return queryResult.rows[0];
 };
 
+const getAuctionById = async (auctionId) => {
+    const queryResult = await pool.query(
+        `
+        SELECT 
+            a.car_id,
+            a.base_price,
+            a.current_highest_bid,
+            a.highest_bidder_id, 
+            hb.name AS highest_bidder_name,
+            a.bid_count,
+            a.start_time,
+            a.end_time,
+            a.extension_count,
+            a.status, 
+            a.winner_id,
+            w.name AS winner_name,
+            a.winning_bid,
+            a.created_at 
+        FROM auctions a
+        LEFT JOIN users hb
+            ON a.highest_bidder_id = hb.id
+        LEFT JOIN users w
+            ON a.winner_id = w.id
+        WHERE id = $1 
+        `,
+        [auctionId]
+    );
+
+    return queryResult.rows[0] ?? null;
+};
+
 module.exports = {
     createAuction,
-    findActiveAuctionByCarId
+    findActiveAuctionByCarId,
+    getAuctionById
 };

@@ -97,10 +97,20 @@ const createBid = async (auctionId, bidderId, bidAmount) => {
 const getBidHistoryByAuctionId = async (auctionId) => {
     const queryResult = await pool.query(
         `
-        SELECT bidder_id, bid_amount, created_at 
-        FROM bids 
-        WHERE auction_id = $1 
-        ORDER BY created_at ASC
+        SELECT
+            b.bidder_id,
+            u.name AS bidder_name,
+            b.bid_amount,
+            b.created_at
+            
+        FROM bids b
+
+        LEFT JOIN users u
+            ON b.bidder_id = u.id
+
+        WHERE b.auction_id = $1
+
+        ORDER BY b.created_at ASC
         `,
         [auctionId]
     );
