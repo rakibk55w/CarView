@@ -2,7 +2,7 @@ const profileRepository = require("../repository/profile_repository");
 
 const profileController = async (req, res, next) => {
   try {
-    const profile = await profileRepository.getProfile(req.user.id);
+    const profile = await profileRepository.getProfile(req.params.userId);
 
     if (!profile) {
       return res.status(404).json({
