@@ -79,6 +79,20 @@ const getImageForDeletion = async (imageId) => {
     return result.rows[0];
 };
 
+const getImagesByCarId = async (carId) => {
+    const queryResult = await pool.query(
+        `
+        SELECT image_url
+        FROM car_images
+        WHERE car_id = $1
+        ORDER BY created_at ASC
+        `,
+        [carId]
+    );
+
+    return queryResult.rows.map(row => row.image_url);
+};
+
 const deleteImageByImageId = async (imageId) => {
     const queryResult = await pool.query(
         `
@@ -97,5 +111,6 @@ module.exports = {
     getImageCountByCarId,
     carHasImage,
     getImageForDeletion,
+    getImagesByCarId,
     deleteImageByImageId
 };
