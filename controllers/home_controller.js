@@ -19,7 +19,12 @@ const homeController = async (req, res, next) => {
 
         let nextCursor = null;
 
-        if (auctions.length) {
+        const hasMore = auctions.length > limit;
+        if (hasMore) {
+            auctions.pop();
+        }
+
+        if (hasMore && auctions.length) {
             const last = auctions[auctions.length - 1];
 
             nextCursor = {
@@ -28,11 +33,13 @@ const homeController = async (req, res, next) => {
             };
         }
 
+        
+
         return res.status(200).json({
             message: "Auctions fetched successfully",
             pagination: {
                 limit,
-                hasMore: auctions.length === limit,
+                hasMore,
                 nextCursor
             },
             data: auctions

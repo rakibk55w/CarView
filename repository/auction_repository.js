@@ -88,7 +88,7 @@ const getAuctions = async ({
     let cursorCondition = "";
     let searchCondition = "";
 
-    values.push(limit);
+    values.push(limit + 1);
 
     if (cursorCreatedAt && cursorId) {
         cursorCondition = `
