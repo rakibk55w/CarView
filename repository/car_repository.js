@@ -58,6 +58,34 @@ const getCarDetailsByCarID = async (carId) => {
     return queryResult.rows[0];
 };
 
+const getCarDetailsWithProfileVerification = async (carId) => {
+    const queryResult = await pool.query(
+        `
+        SELECT
+            c.*,
+            (
+                u.name IS NOT NULL
+                AND u.email IS NOT NULL
+                AND u.last_name IS NOT NULL
+                AND u.contact_number IS NOT NULL
+                AND u.date_of_birth IS NOT NULL
+                AND u.street_address IS NOT NULL
+                AND u.city IS NOT NULL
+            ) AS owner_profile_complete
+
+        FROM cars c
+
+        JOIN users u
+            ON u.id = c.owner_id
+
+        WHERE c.id = $1
+        `,
+        [carId]
+    );
+
+    return queryResult.rows[0];
+};
+
 const updateCarById = async (carId, userId, updatedCar) => {
     const queryResult = await pool.query(
         `
@@ -146,6 +174,7 @@ module.exports = {
     createCar,
     findCarsByUserID,
     getCarDetailsByCarID,
+    getCarDetailsWithProfileVerification,
     updateCarById,
     deleteCarByCarId
 };

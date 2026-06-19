@@ -5,9 +5,9 @@ const carImageRepository = require("../repository/car_image_repository");
 
 const createAuctionController = async (req, res, next) => {
     try {
-        const createAuctionDto = CreateAuctionRequestDto.fromRequest(req.body);
+        const createAuctionDto = CreateAuctionRequestDto.fromRequest(req.body, req.user.id);
 
-        const car = await carRepository.getCarDetailsByCarID(
+        const car = await carRepository.getCarDetailsWithProfileVerification(
             createAuctionDto.car_id
         );
 
@@ -17,11 +17,17 @@ const createAuctionController = async (req, res, next) => {
             });
         }
 
-        if (car.owner_id !== req.user.id) {
+        if (car.owner_id !== createAuctionDto.owner_id) {
             return res.status(403).json({
                 message: "Car ownership conflict"
             });
         }
+
+        if (!car.owner_profile_complete) {
+            return res.status(403).json({
+                message: "Complete your profile before creating an auction"
+        });
+}
 
         const hasImagesForCar  = await carImageRepository.carHasImage(
             createAuctionDto.car_id
