@@ -124,7 +124,17 @@ const updateCarById = async (carId, userId, updatedCar) => {
 
 const deleteCarByCarId = async (carId, userId) => {
     const queryResult = await pool.query(
-        `DELETE FROM cars WHERE id = $1 AND owner_id = $2 RETURNING *`,
+        `
+        DELETE FROM cars 
+        WHERE id = $1 
+            AND owner_id = $2 
+            AND NOT EXISTS (
+              SELECT 1
+              FROM auctions
+              WHERE car_id = $1
+            )
+        RETURNING *
+        `,
         [carId, userId]
     );
 
