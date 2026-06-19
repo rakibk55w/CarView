@@ -8,18 +8,38 @@ const createBid = async (auctionId, bidderId, bidAmount) => {
 
         const auctionResult = await client.query(
             `
-            SELECT *
+            SELECT 
+                status,
+                end_time,
+                current_highest_bid,
+                highest_bidder_id,
+                owner_id, 
+                (
+                    SELECT
+                        name IS NOT NULL
+                        AND email IS NOT NULL
+                        AND contact_number IS NOT NULL
+                        AND date_of_birth IS NOT NULL
+                        AND street_address IS NOT NULL
+                        AND city IS NOT NULL
+                    FROM users
+                    WHERE id = $2
+                ) AS bidder_profile_complete
             FROM auctions
             WHERE id = $1
             FOR UPDATE
             `,
-            [auctionId]
+            [auctionId, bidderId]
         );
 
         const auction = auctionResult.rows[0];
 
         if (!auction) {
             throw new Error("AUCTION_NOT_FOUND");
+        }
+
+        if (auction.owner_id === bidderId) {
+            throw new Error("OWNER_CANNOT_BID");
         }
 
         if (auction.status !== "ACTIVE") {
@@ -34,6 +54,10 @@ const createBid = async (auctionId, bidderId, bidAmount) => {
 
         if (now >= auction.end_time) {
             throw new Error("AUCTION_ENDED");
+        }
+
+        if (auction.highest_bidder_id === bidderId) {
+            throw new Error("ALREADY_HIGHEST_BIDDER");
         }
 
         await client.query(

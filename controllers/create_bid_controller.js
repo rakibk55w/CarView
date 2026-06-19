@@ -38,6 +38,16 @@ const createBidController = async (req, res, next) => {
                     message: "Auction has already ended"
                 });
 
+            case "ALREADY_HIGHEST_BIDDER":
+                return res.status(400).json({
+                    message: "You are already the highest bidder"
+                });
+
+            case "OWNER_CANNOT_BID":
+                return res.status(400).json({
+                    message: "Owner cannot place bids"
+                });
+
             default:
                 next(error);
         }
