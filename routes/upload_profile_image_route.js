@@ -5,7 +5,7 @@ const uploadProfileImageController = require("../controllers/upload_profile_imag
 
 const uploadProfileImageRouter = express.Router();
 
-uploadCarImageRouter.post(
+uploadProfileImageRouter.post(
     "/profile/upload-image",
     authChecker,
     uploadImage.single("image"),

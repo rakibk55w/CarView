@@ -2,8 +2,7 @@ const jwtRepository = require("../repository/jwt_repository");
 
 const logoutController = async (req, res, next) => {
   try {
-    const refreshToken =
-      req.cookies.refresh_token;
+    const refreshToken = req.cookies.refresh_token;
 
     if (refreshToken) {
       await jwtRepository.deleteRefreshToken(
