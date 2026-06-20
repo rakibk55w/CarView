@@ -142,7 +142,49 @@ const getBidHistoryByAuctionId = async (auctionId) => {
     return queryResult.rows;
 };
 
+const getMyBids = async ({
+  bidderId,
+  limit,
+  offset,
+}) => {
+    const result = await pool.query(
+        `
+        SELECT
+            b.id,
+            b.bid_amount,
+            b.created_at AS bid_created_at,
+
+            a.id AS auction_id,
+            a.base_price,
+            a.current_highest_bid,
+            a.end_time,
+            a.status,
+
+            c.title AS car_title
+
+        FROM bids b
+
+        INNER JOIN auctions a
+            ON a.id = b.auction_id
+
+        INNER JOIN cars c
+            ON c.id = a.car_id
+
+        WHERE b.bidder_id = $1
+
+        ORDER BY b.created_at DESC
+
+        LIMIT $2
+        OFFSET $3
+        `,
+        [bidderId, limit, offset]
+    );
+
+    return result.rows;
+};
+
 module.exports = {
     createBid,
-    getBidHistoryByAuctionId
+    getBidHistoryByAuctionId,
+    getMyBids
 };

@@ -1,6 +1,6 @@
 const carRepository = require("../repository/car_repository");
 
-const getCarsController = async (req, res, next) => {
+const getMyCarsController = async (req, res, next) => {
     try {
         const cars = await carRepository.findCarsByUserID(req.user.id);
 
@@ -10,4 +10,4 @@ const getCarsController = async (req, res, next) => {
     }
 };
 
-module.exports = getCarsController;
+module.exports = getMyCarsController;

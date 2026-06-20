@@ -163,9 +163,40 @@ const getAuctions = async ({
     return result.rows;
 };
 
+const getMyAuctions = async ({
+  ownerId,
+  limit,
+  offset,
+}) => {
+    const result = await pool.query(
+        `
+        SELECT
+            a.id,
+            a.car_id,
+            a.base_price,
+            a.current_highest_bid,
+            a.end_time,
+            a.status,
+            a.created_at,
+            c.title AS car_title
+        FROM auctions a
+        INNER JOIN cars c
+        ON c.id = a.car_id
+        WHERE a.owner_id = $1
+        ORDER BY a.created_at DESC
+        LIMIT $2
+        OFFSET $3
+        `,
+        [ownerId, limit, offset]
+    );
+
+    return result.rows;
+};
+
 module.exports = {
     createAuction,
     findActiveAuctionByCarId,
     getAuctionById,
-    getAuctions
+    getAuctions,
+    getMyAuctions
 };
