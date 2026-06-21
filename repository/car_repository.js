@@ -40,10 +40,21 @@ const createCar = async (userId, carData) => {
     );
 };
 
-const findCarsByUserID = async (userId) => {
+const findCarsByUserID = async (userId, limit, offset) => {
     const queryResult = await pool.query(
-        `SELECT * FROM cars WHERE owner_id = $1 ORDER BY created_at DESC`,
-        [userId]
+        `
+        SELECT * 
+
+        FROM cars 
+
+        WHERE owner_id = $1 
+
+        ORDER BY created_at DESC
+        
+        LIMIT $2
+        OFFSET $3
+        `,
+        [userId, limit, offset]
     );
 
     return queryResult.rows;

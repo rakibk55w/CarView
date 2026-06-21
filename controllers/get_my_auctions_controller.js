@@ -17,8 +17,8 @@ const getMyAuctionsController = async (req, res, next) => {
         return res.status(200).json({
             message: "Auction list fetched successfully",
             items: auctionList,
-            page,
-            limit,
+            page: page,
+            limit: limit,
             totalItems: auctionList.length,
             totalPages: Math.ceil(
                 auctionList.length / limit

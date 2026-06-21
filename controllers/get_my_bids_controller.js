@@ -15,9 +15,10 @@ const getMyBidsController = async (req, res, next) => {
         });
 
         return res.status(200).json({
+            message: "Bid list fetched successfully",
             items: bidsList,
-            page,
-            limit,
+            page: page,
+            limit: limit,
             totalItems: bidsList.length,
             totalPages: Math.ceil(
                 bidsList.length / limit
