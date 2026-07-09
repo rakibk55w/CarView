@@ -16,18 +16,17 @@ export default function Header({
     const [menuOpen, setMenuOpen] = useState(false);
 
     const navLinkStyle = ({ isActive }) =>
-    `border-b-2 pb-1 transition-all duration-200
+    `border-b-2 pb-1 transition-colors duration-200
     ${
         isActive
             ? "border-black text-white"
-            : "border-transparent text-white hover:border-white hover:text-indigo-100"
+            : "border-transparent text-white hover:border-white hover:text-black"
     }`;
 
     const buttonStyle =
-    "rounded-lg bg-white px-4 py-2 text-indigo-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md";
-
+        "rounded-lg bg-white px-4 py-2 text-primary-700 shadow-sm transition-colors duration-200 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:scale-95";
     return (
-        <header className="bg-indigo-700 text-white shadow-md">
+        <header className="bg-primary-600 text-white shadow-md">
             <div className="mx-auto flex max-w-7xl items-center gap-8 px-6 py-4">
 
                 <Link
@@ -47,7 +46,7 @@ export default function Header({
                         <input
                             type="text"
                             placeholder="Search cars..."
-                            className="w-full rounded-full border border-gray-300 bg-white py-2 pl-11 pr-4 text-gray-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300"
+                            className="w-full rounded-full border border-gray-300 bg-white py-2 pl-11 pr-4 text-gray-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-300"
                         />
                     </div>
                 </div>
@@ -78,7 +77,7 @@ export default function Header({
 
                                 <Link
                                     to="/logout"
-                                    className="rounded-lg bg-red-600 px-4 py-2 text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-md"
+                                    className="rounded-lg bg-[#ff1d58] px-4 py-2 text-white shadow-sm transition-all duration-200 hover:bg-[#e1194f] active:scale-95 active:bg-[#c91545]"
                                 >
                                     Logout
                                 </Link>
@@ -103,7 +102,7 @@ export default function Header({
                     
                     <button
                         onClick={toggleTheme}
-                        className="relative flex h-7 w-16 items-center rounded-full bg-indigo-500 transition"
+                        className="relative flex h-7 w-16 items-center rounded-full bg-primary-700 transition"
                         >
                         <FiSun
                             size={13}
@@ -148,7 +147,7 @@ export default function Header({
             </div>
 
             {menuOpen && (
-                <div className="space-y-3 bg-indigo-600 px-6 py-4 md:hidden">
+                <div className="space-y-3 bg-primary-600 px-6 py-4 md:hidden">
 
                     <Link
                         className="block"
