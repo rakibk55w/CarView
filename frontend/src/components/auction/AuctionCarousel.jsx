@@ -70,25 +70,28 @@ export default function AuctionCarousel({
     return (
         <div className="
             relative
+            flex
             w-full
-            lg:w-95
-            xl:w-105">
+            lg:basis-[30%]
+            lg:shrink-0">
             <div className="
                 overflow-hidden
-                aspect-16/10"
+                aspect-4/3
+                bg-black"
                 ref={emblaRef}>
-                <div className="flex h-full">
+                <div className="
+                    flex 
+                    h-full">
                     {imageList.map((image, index) => (
                         <div className="
+                            flex
                             min-w-0
                             flex-[0_0_100%]"
                             key={index}>
                             <img className="
                                 h-full
                                 w-full
-                                object-contain
-                                bg-black/5
-                                dark:bg-black/20
+                                object-cover
                                 select-none"
                                 src={image}
                                 alt={`${title} ${index + 1}`}

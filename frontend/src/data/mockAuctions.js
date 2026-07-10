@@ -55,10 +55,12 @@ const mockAuctions = [
         id: 3,
 
         title:
-            "2018 BMW 530i M Sport",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            // "2018 BMW 530i M Sport",
 
         description:
-            "Imported M Sport package with panoramic sunroof, Harman Kardon sound system and adaptive suspension. Vehicle has been maintained exclusively by BMW authorized service center.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            // "Imported M Sport package with panoramic sunroof, Harman Kardon sound system and adaptive suspension. Vehicle has been maintained exclusively by BMW authorized service center.",
 
         brand: "BMW",
 

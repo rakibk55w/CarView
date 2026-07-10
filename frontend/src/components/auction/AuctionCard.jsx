@@ -41,7 +41,8 @@ export default function AuctionCard({
             <div className="
                 flex
                 flex-col
-                lg:flex-row">
+                lg:flex-row
+                items-stretch">
                 <AuctionCarousel
                     title={title}
                     images={images}
@@ -55,11 +56,13 @@ export default function AuctionCard({
                     p-5">
 
                     <div className="
-                        flex
+                        grid
+                        grid-cols-[1fr_auto]
                         items-start
                         justify-between
                         gap-4">
                         <h2 className="
+                            min-w-0
                             flex-1
                             truncate
                             text-xl
@@ -68,7 +71,6 @@ export default function AuctionCard({
                             dark:text-white">
                             {title}
                         </h2>
-
                         <AuctionStatusBadge
                             status={status}
                         />
@@ -78,6 +80,7 @@ export default function AuctionCard({
                         line-clamp-3
                         text-sm
                         leading-6
+                        min-h-18
                         text-gray-600
                         dark:text-gray-300">
                         {description}
@@ -118,22 +121,28 @@ export default function AuctionCard({
                             flex-1
                             grid-cols-1
                             gap-3
+                            items-stretch
                             sm:grid-cols-2">
                             <AuctionPriceCard
                                 title="Base Price"
                                 value={basePrice}
+                                color="base"
                             />
 
                             <AuctionPriceCard
                                 title="Highest Bid"
                                 value={currentHighestBid}
-                                color="success"
+                                color="bid"
                             />
                         </div>
 
-                        <CountdownTimer
-                            endTime={endTime}
-                        />
+                        <div className="
+                            lg:w-45
+                            lg:shrink-0">
+                            <CountdownTimer
+                                endTime={endTime}
+                            />
+                        </div>
                     </div>
                 </section>
             </div>

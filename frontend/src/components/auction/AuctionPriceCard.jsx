@@ -3,15 +3,15 @@ import { formatCurrency } from "../../utils/formatCurrency";
 export default function AuctionPriceCard({
     title,
     value,
-    color = "primary"
+    color
 }) {
     const styles = {
-        primary: {
+        base: {
             container: "bg-primary-600",
             text: "text-primary-100",
         },
 
-        success: {
+        bid: {
             container: "bg-green-600",
             text: "text-green-100",
         },
@@ -21,6 +21,7 @@ export default function AuctionPriceCard({
 
     return (
         <div className={`
+            h-full
             rounded-xl
             px-4
             py-3

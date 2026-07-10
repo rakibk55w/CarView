@@ -2,7 +2,7 @@ export default function Footer() {
     return (
         <footer className="
             bg-primary-600 
-            py-5 
+            py-2 
             text-center 
             text-white">
             <p>
