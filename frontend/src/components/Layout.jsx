@@ -6,13 +6,19 @@ export default function Layout({
     children,
     loggedIn,
 }) {
-    const {
-        darkMode,
-        toggleTheme,
-    } = useTheme();
+    const {darkMode, toggleTheme} = useTheme();
 
     return (
-        <div className="flex min-h-screen flex-col bg-white text-black transition-colors duration-300 dark:bg-gray-950 dark:text-white">
+        <div className="
+            flex 
+            min-h-screen 
+            flex-col 
+            bg-white 
+            text-black 
+            transition-colors 
+            duration-300 
+            dark:bg-gray-950 
+            dark:text-white">
 
             <Header
                 loggedIn={loggedIn}
@@ -20,12 +26,16 @@ export default function Layout({
                 toggleTheme={toggleTheme}
             />
 
-            <main className="mx-auto w-full max-w-7xl flex-1 p-6">
+            <main className="
+                mx-auto 
+                w-full 
+                max-w-7xl 
+                flex-1 
+                p-6">
                 {children}
             </main>
 
             <Footer />
-
         </div>
     );
 }
