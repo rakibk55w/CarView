@@ -11,7 +11,7 @@ export default function ContactUs() {
             <section className="
                 flex 
                 flex-col 
-                justify-center">
+                justify-start">
                 <h1 className="
                     mb-6 
                     text-4xl 
@@ -63,7 +63,7 @@ export default function ContactUs() {
                         resetForm();
                     }}>
 
-                    {({ isSubmitting }) => (
+                    {({ values, isSubmitting }) => (
                         <Form className="
                             space-y-5 
                             rounded-xl 
@@ -172,22 +172,37 @@ export default function ContactUs() {
                                     Message *
                                 </label>
 
-                                <Field className="
-                                    w-full 
-                                    resize-none 
-                                    rounded-lg 
-                                    border 
-                                    border-gray-300 
-                                    px-4 
-                                    py-2 
-                                    outline-none 
-                                    focus:border-primary-500 
-                                    dark:border-gray-700 
-                                    dark:bg-gray-900"
-                                    as="textarea"
-                                    rows="6"
-                                    name="message"
-                                />
+                                <div className="relative">
+                                    <Field className="
+                                        w-full 
+                                        resize-none 
+                                        rounded-lg 
+                                        border 
+                                        border-gray-300 
+                                        px-4 
+                                        py-2 
+                                        pb-8
+                                        outline-none 
+                                        focus:border-primary-500 
+                                        dark:border-gray-700 
+                                        dark:bg-gray-900"
+                                        as="textarea"
+                                        rows="6"
+                                        name="message"
+                                        maxLength={500}
+                                    />
+                                    <span className="
+                                        pointer-events-none
+                                        absolute
+                                        bottom-2
+                                        right-1
+                                        text-xs
+                                        text-gray-500
+                                        dark:text-gray-400">
+                                        {values.message.length}/500
+                                    </span>
+                                </div>
+
 
                                 <ErrorMessage className="
                                     mt-1 
