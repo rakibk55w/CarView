@@ -1,21 +1,18 @@
 import { Formik, Form } from "formik";
 import FormField from "../components/form/FormField";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
-import loginSchema from "../schemas/login_schema";
+import { FaFacebook} from "react-icons/fa";
+import loginSchema from "../schemas/loginSchema";
+import PrimaryButton from "../components/button/primaryButton";
+import SocialButton from "../components/button/socialButton";
+import { formStyle } from "../utils/formStyle";
 
 export default function Login() {
     return (
         <div className="
             mx-auto 
             max-w-md">
-            <div className="
-                rounded-xl 
-                border 
-                border-gray-200 
-                p-8 
-                shadow-sm 
-                dark:border-gray-800">
+            <div className={formStyle}>
 
                 <h1 className="
                     mb-2 
@@ -58,20 +55,13 @@ export default function Login() {
                                 label="Password"
                                 name="password"
                                 type="password"
+                                passwordToggle
                             />
 
-                            <button className="
-                                w-full 
-                                rounded-lg 
-                                bg-primary-600 
-                                py-3 
-                                font-medium 
-                                text-white 
-                                hover:bg-primary-700"
-                                type="submit"
+                            <PrimaryButton type="submit"
                                 disabled={isSubmitting}>
                                 Login
-                            </button>
+                            </PrimaryButton>
                         </Form>
                     )}
                 </Formik>
@@ -102,54 +92,23 @@ export default function Login() {
                 </div>
 
                 <div className="space-y-3">
-                    <button className="
-                        flex 
-                        w-full 
-                        items-center 
-                        justify-center 
-                        gap-3 
-                        rounded-lg 
-                        border 
-                        border-gray-300 
-                        py-3 
-                        hover:bg-gray-50 
-                        dark:border-gray-700 
-                        dark:hover:bg-gray-900"
-                        type="button"
+                    <SocialButton icon={
+                        <FcGoogle size={22}/>}
                         onClick={() => {
-                            // TODO:
-                            // Google OAuth
+                            // TODO
                         }}>
-
-                        <FcGoogle size={22} />
                         Continue with Google
-                    </button>
-
-                    <button className="
-                        flex 
-                        w-full 
-                        items-center 
-                        justify-center 
-                        gap-3 
-                        rounded-lg 
-                        border 
-                        border-gray-300 
-                        py-3 
-                        hover:bg-gray-50 
-                        dark:border-gray-700 
-                        dark:hover:bg-gray-900"
-                        type="button"
-                        onClick={() => {
-                            // TODO:
-                            // Facebook OAuth
-                        }}>
-
-                        <FaFacebook
+                    </SocialButton>
+                    <SocialButton icon={
+                        <FaFacebook className="
+                            text-blue-600"
                             size={22}
-                            className="text-blue-600"
-                        />
+                        />}
+                        onClick={() => {
+                            // TODO
+                        }}>
                         Continue with Facebook
-                    </button>
+                    </SocialButton>
                 </div>
             </div>
         </div>

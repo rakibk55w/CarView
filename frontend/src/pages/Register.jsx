@@ -1,8 +1,10 @@
 import { Formik, Form } from "formik";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
-import registerSchema from "../schemas/register_schema";
+import registerSchema from "../schemas/registerSchema";
 import FormField from "../components/form/FormField";
+import PrimaryButton from "../components/button/primaryButton";
+import { formStyle } from "../utils/formStyle";
 
 
 export default function Register() {
@@ -10,14 +12,7 @@ export default function Register() {
         <div className="
             mx-auto 
             max-w-md">
-            <div className="
-                rounded-xl 
-                border 
-                border-gray-200 
-                p-8 
-                shadow-sm 
-                dark:bg-gray-800
-                dark:border-gray-700">
+            <div className={formStyle}>
 
                 <h1 className="
                     mb-2 
@@ -65,19 +60,13 @@ export default function Register() {
                                 label="Password"
                                 name="password"
                                 type="password"
+                                passwordToggle
                             />
 
-                            <button className="
-                                w-full 
-                                rounded-lg 
-                                bg-primary-600 
-                                py-3 font-medium 
-                                text-white 
-                                hover:bg-primary-700"
-                                type="submit"
+                            <PrimaryButton type="submit"
                                 disabled={isSubmitting}>
                                 Create Account
-                            </button>
+                            </PrimaryButton>
                         </Form>
                     )}
                 </Formik>

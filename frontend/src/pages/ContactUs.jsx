@@ -1,7 +1,9 @@
 import { Formik, Form} from "formik";
 import FormField from "../components/form/FormField";
 import TextAreaField from "../components/form/TextAreaField";
-import contactUsSchema from "../schemas/contact_us_schema";
+import contactUsSchema from "../schemas/contactUsSchema";
+import PrimaryButton from "../components/button/primaryButton";
+import { formStyle } from "../utils/formStyle";
 
 export default function ContactUs() {
     return (
@@ -47,7 +49,7 @@ export default function ContactUs() {
                 </div>
             </section>
 
-            <section>
+            <section className={formStyle}>
                 <Formik
                     initialValues={{
                         email: "",
@@ -66,14 +68,7 @@ export default function ContactUs() {
                     }}>
 
                     {({ isSubmitting }) => (
-                        <Form className="
-                            space-y-5 
-                            rounded-xl 
-                            border 
-                            border-gray-200 
-                            p-6 shadow-sm 
-                            dark:border-gray-800">
-
+                        <Form className="space-y-5">
                             <FormField
                                 label="Email *"
                                 name="email"
@@ -89,6 +84,7 @@ export default function ContactUs() {
                             <FormField
                                 label="Subject *"
                                 name="subject"
+                                type="text"
                             />
 
                             <TextAreaField
@@ -99,21 +95,10 @@ export default function ContactUs() {
                                 showCharacterCount
                             />
 
-                            <button className="
-                                w-full 
-                                rounded-lg 
-                                bg-primary-600 
-                                px-6
-                                py-3 
-                                font-medium 
-                                text-white 
-                                transition 
-                                hover:bg-primary-700 
-                                disabled:opacity-60"
-                                type="submit"
+                            <PrimaryButton type="submit"
                                 disabled={isSubmitting}>
                                 Send Message
-                            </button>
+                            </PrimaryButton>
                         </Form>
                     )}
                 </Formik>
