@@ -6,7 +6,7 @@ export default function AboutUs() {
             px-6 
             space-y-10">
 
-            <section className="text-center">
+            <section>
                 <h1 className="
                     text-4xl 
                     font-bold 
@@ -14,8 +14,7 @@ export default function AboutUs() {
                     About Carview
                 </h1>
 
-                <p className="
-                    mx-auto 
+                <p className=" 
                     mt-4 
                     max-w-3xl 
                     text-lg 

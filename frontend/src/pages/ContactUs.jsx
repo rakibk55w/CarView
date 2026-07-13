@@ -1,4 +1,6 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form} from "formik";
+import FormField from "../components/form/FormField";
+import TextAreaField from "../components/form/TextAreaField";
 import contactUsSchema from "../schemas/contact_us_schema";
 
 export default function ContactUs() {
@@ -63,7 +65,7 @@ export default function ContactUs() {
                         resetForm();
                     }}>
 
-                    {({ values, isSubmitting }) => (
+                    {({ isSubmitting }) => (
                         <Form className="
                             space-y-5 
                             rounded-xl 
@@ -72,146 +74,30 @@ export default function ContactUs() {
                             p-6 shadow-sm 
                             dark:border-gray-800">
 
-                            <div>
-                                <label className="
-                                    mb-2 
-                                    block 
-                                    font-medium">
-                                    Email *
-                                </label>
+                            <FormField
+                                label="Email *"
+                                name="email"
+                                type="email"
+                            />
 
-                                <Field className="
-                                    w-full 
-                                    rounded-lg 
-                                    border 
-                                    border-gray-300 
-                                    px-4 
-                                    py-2 
-                                    outline-none 
-                                    focus:border-primary-500 
-                                    dark:border-gray-700 
-                                    dark:bg-gray-900"
-                                    name="email"
-                                    type="email"
-                                />
+                            <FormField
+                                label="Contact Number"
+                                name="contact_number"
+                                type="password"
+                            />
 
-                                <ErrorMessage className="
-                                    mt-1 
-                                    text-sm 
-                                    text-red-500"
-                                    name="email"
-                                    component="p"
-                                />
-                            </div>
+                            <FormField
+                                label="Subject *"
+                                name="subject"
+                            />
 
-                            <div>
-                                <label className="
-                                    mb-2 
-                                    block 
-                                    font-medium">
-                                    Contact Number
-                                </label>
-
-                                <Field className="
-                                    w-full 
-                                    rounded-lg 
-                                    border 
-                                    border-gray-300 
-                                    px-4 
-                                    py-2 
-                                    outline-none 
-                                    focus:border-primary-500 
-                                    dark:border-gray-700 
-                                    dark:bg-gray-900"
-                                    name="contact_number"
-                                />
-
-                                <ErrorMessage className="
-                                    mt-1 
-                                    text-sm 
-                                    text-red-500"
-                                    name="contact_number"
-                                    component="p"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="
-                                    mb-2 
-                                    block 
-                                    font-medium">
-                                    Subject *
-                                </label>
-
-                                <Field className="
-                                    w-full 
-                                    rounded-lg 
-                                    border 
-                                    border-gray-300 
-                                    px-4 py-2 outline-none 
-                                    focus:border-primary-500 
-                                    dark:border-gray-700 
-                                    dark:bg-gray-900"
-                                    name="subject"
-                                />
-
-                                <ErrorMessage className="
-                                    mt-1 
-                                    text-sm 
-                                    text-red-500"
-                                    name="subject"
-                                    component="p"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="
-                                    mb-2 
-                                    block 
-                                    font-medium">
-                                    Message *
-                                </label>
-
-                                <div className="relative">
-                                    <Field className="
-                                        w-full 
-                                        resize-none 
-                                        rounded-lg 
-                                        border 
-                                        border-gray-300 
-                                        px-4 
-                                        py-2 
-                                        pb-8
-                                        outline-none 
-                                        focus:border-primary-500 
-                                        dark:border-gray-700 
-                                        dark:bg-gray-900"
-                                        as="textarea"
-                                        rows="6"
-                                        name="message"
-                                        maxLength={500}
-                                    />
-                                    <span className="
-                                        pointer-events-none
-                                        absolute
-                                        bottom-2
-                                        right-1
-                                        text-xs
-                                        text-gray-500
-                                        dark:text-gray-400">
-                                        {values.message.length}/500
-                                    </span>
-                                </div>
-
-
-                                <ErrorMessage className="
-                                    mt-1 
-                                    text-sm 
-                                    text-red-500"
-                                    name="message"
-                                    component="p"
-                                />
-                            </div>
+                            <TextAreaField
+                                label="Message *"
+                                name="message"
+                                rows={6}
+                                maxLength={500}
+                                showCharacterCount
+                            />
 
                             <button className="
                                 w-full 
