@@ -1,11 +1,21 @@
-export default function SocialButton({
+import { primaryButtonStyle, socialButtonStyle, dangerButtonStyle } from "../../utils/buttonStyles";
+
+export default function CustomButton({
     icon,
     children,
     type = "button",
     disabled = false,
+    primaryButton = true,
+    dangerButton = false,
     onClick,
     className = ""
 }) {
+    const buttonClass = dangerButton 
+        ? dangerButtonStyle 
+        : (primaryButton 
+            ? primaryButtonStyle 
+            : socialButtonStyle);
+
     return (
         <button className={`
             cursor-pointer
@@ -15,12 +25,8 @@ export default function SocialButton({
             flex
             items-center
             justify-center
-            gap-3
-            border
-            border-gray-300
-            hover:bg-gray-50
-            dark:border-gray-700
-            dark:hover:bg-gray-900
+            gap-2
+            ${buttonClass}
             ${className}`}
             type={type}
             disabled={disabled}

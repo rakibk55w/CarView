@@ -7,6 +7,7 @@ import {
     FiSearch
 } from "react-icons/fi";
 import { useState } from "react";
+import { dangerButtonStyle } from "../utils/buttonStyles";
 
 export default function Header({
     loggedIn,
@@ -134,18 +135,16 @@ export default function Header({
                                     Profile
                                 </Link>
 
-                                <Link className="
+                                <Link className={`
                                     rounded-lg 
-                                    bg-danger-500 
                                     px-4 
                                     py-2 
-                                    text-white 
                                     shadow-sm 
                                     transition-all 
                                     duration-200 
-                                    hover:bg-danger-600 
                                     active:scale-95 
-                                    active:bg-danger-700"
+                                    ${dangerButtonStyle}`}
+                                    
                                     to="/logout">
                                     Logout
                                 </Link>
@@ -176,7 +175,7 @@ export default function Header({
                             onClick={toggleTheme}>
                             <FiSun className={`
                                 absolute 
-                                left-1.5 
+                                left-1.5
                                 z-10 
                                 transition
                                 ${
@@ -212,7 +211,7 @@ export default function Header({
                                 ${
                                     darkMode
                                     ? "translate-x-10"
-                                    : "translate-x-1"
+                                    : "translate-x-0.5"
                                 }`}
                             />
                         </button>

@@ -3,9 +3,8 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import registerSchema from "../schemas/registerSchema";
 import FormField from "../components/form/FormField";
-import PrimaryButton from "../components/button/primaryButton";
+import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
-
 
 export default function Register() {
     return (
@@ -63,10 +62,11 @@ export default function Register() {
                                 passwordToggle
                             />
 
-                            <PrimaryButton type="submit"
+                            <CustomButton className="w-full"
+                                type="submit"
                                 disabled={isSubmitting}>
                                 Create Account
-                            </PrimaryButton>
+                            </CustomButton>
                         </Form>
                     )}
                 </Formik>
@@ -96,49 +96,29 @@ export default function Register() {
                 </div>
 
                 <div className="space-y-3">
-                    <button className="
-                        flex w-full 
-                        items-center 
-                        justify-center 
-                        gap-3 
-                        rounded-lg border 
-                        border-gray-300 
-                        py-3 
-                        hover:bg-gray-50 
-                        dark:border-gray-700 
-                        dark:hover:bg-gray-900"
-                        type="button"
+                    <CustomButton className="w-full"
+                        primaryButton={false}
+                        icon={
+                            <FcGoogle size={22}/>
+                        }
                         onClick={() => {
-                            // TODO:
-                            // Google OAuth
+                            // TODO
                         }}>
-                        <FcGoogle size={22} />
                         Continue with Google
-                    </button>
-
-                    <button className="
-                        flex 
-                        w-full 
-                        items-center 
-                        justify-center 
-                        gap-3 
-                        rounded-lg border 
-                        border-gray-300 
-                        py-3 
-                        hover:bg-gray-50 
-                        dark:border-gray-700 
-                        dark:hover:bg-gray-900"
-                        type="button"
+                    </CustomButton>
+                    <CustomButton className="w-full" 
+                        primaryButton={false}
+                        icon={
+                            <FaFacebook className="
+                                text-blue-600"
+                                size={22}
+                            />
+                        }
                         onClick={() => {
-                            // TODO:
-                            // Facebook OAuth
+                            // TODO
                         }}>
-                        <FaFacebook
-                            size={22}
-                            className="text-blue-600"
-                        />
                         Continue with Facebook
-                    </button>
+                    </CustomButton>
                 </div>
             </div>
         </div>

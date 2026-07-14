@@ -3,8 +3,7 @@ import FormField from "../components/form/FormField";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook} from "react-icons/fa";
 import loginSchema from "../schemas/loginSchema";
-import PrimaryButton from "../components/button/primaryButton";
-import SocialButton from "../components/button/socialButton";
+import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
 
 export default function Login() {
@@ -58,10 +57,11 @@ export default function Login() {
                                 passwordToggle
                             />
 
-                            <PrimaryButton type="submit"
+                            <CustomButton className="w-full" 
+                                type="submit"
                                 disabled={isSubmitting}>
                                 Login
-                            </PrimaryButton>
+                            </CustomButton>
                         </Form>
                     )}
                 </Formik>
@@ -92,23 +92,29 @@ export default function Login() {
                 </div>
 
                 <div className="space-y-3">
-                    <SocialButton icon={
-                        <FcGoogle size={22}/>}
+                    <CustomButton className="w-full"
+                        primaryButton={false}
+                        icon={
+                            <FcGoogle size={22}/>
+                        }
                         onClick={() => {
                             // TODO
                         }}>
                         Continue with Google
-                    </SocialButton>
-                    <SocialButton icon={
-                        <FaFacebook className="
-                            text-blue-600"
-                            size={22}
-                        />}
+                    </CustomButton>
+                    <CustomButton className="w-full"
+                        primaryButton={false}
+                        icon={
+                            <FaFacebook className="
+                                text-blue-600"
+                                size={22}
+                            />
+                        }
                         onClick={() => {
                             // TODO
                         }}>
                         Continue with Facebook
-                    </SocialButton>
+                    </CustomButton>
                 </div>
             </div>
         </div>

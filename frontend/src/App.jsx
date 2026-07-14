@@ -7,9 +7,10 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 function App() {
-    const loggedIn = false;
+    const loggedIn = true;
 
     return (
         <Layout loggedIn={loggedIn}>
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </Layout>
     );

@@ -2,7 +2,7 @@ import { Formik, Form} from "formik";
 import FormField from "../components/form/FormField";
 import TextAreaField from "../components/form/TextAreaField";
 import contactUsSchema from "../schemas/contactUsSchema";
-import PrimaryButton from "../components/button/primaryButton";
+import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
 
 export default function ContactUs() {
@@ -95,10 +95,11 @@ export default function ContactUs() {
                                 showCharacterCount
                             />
 
-                            <PrimaryButton type="submit"
+                            <CustomButton className="w-full" 
+                                type="submit"
                                 disabled={isSubmitting}>
                                 Send Message
-                            </PrimaryButton>
+                            </CustomButton>
                         </Form>
                     )}
                 </Formik>
