@@ -26,6 +26,8 @@ export default function CustomButton({
             items-center
             justify-center
             gap-2
+            disabled:cursor-not-allowed
+            disabled:opacity-60
             ${buttonClass}
             ${className}`}
             type={type}

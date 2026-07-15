@@ -3,8 +3,7 @@ export const primaryButtonStyle = `
     font-medium
     text-white
     hover:bg-primary-700
-    disabled:cursor-not-allowed
-    disabled:opacity-60
+    disabled:hover:bg-primary-600
 `;
 
 export const socialButtonStyle = `
@@ -13,6 +12,8 @@ export const socialButtonStyle = `
     hover:bg-gray-50
     dark:border-gray-700
     dark:hover:bg-gray-900
+    disabled:hover:bg-white
+    disabled:hover:dark:bg-gray-800
 `;
 
 export const dangerButtonStyle = `
@@ -20,4 +21,5 @@ export const dangerButtonStyle = `
     text-white 
     hover:bg-danger-600 
     active:bg-danger-700
+    disabled:hover:bg-danger-500
 `;
