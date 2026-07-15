@@ -1,6 +1,7 @@
 import ProfilePictureCard from "../components/profile/ProfilePictureCard";
 import ProfileInformationCard from "../components/profile/ProfileInformationCard";
 import mockProfile from "../data/mockProfile";
+import ProfileSecurityCard from "../components/profile/ProfileSecurityCard";
 
 export default function Profile() {
     return (
@@ -18,9 +19,16 @@ export default function Profile() {
                     fullName={mockProfile.name}
                 />
 
-                <ProfileInformationCard
-                    profile={mockProfile}
-                />
+                <div className="space-y-8">
+                    <ProfileInformationCard
+                        profile={mockProfile}
+                    />
+
+                    <ProfileSecurityCard 
+                        profile={mockProfile}
+                    />
+                </div>
+
             </div>
         </div>
     );

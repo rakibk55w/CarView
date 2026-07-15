@@ -30,7 +30,7 @@ export default function CountdownTimer({endTime}) {
                         uppercase
                         tracking-wide
                         text-red-500">
-                        Auction Ended
+                        Remaining
                     </p>
 
                     <p className="
@@ -47,9 +47,7 @@ export default function CountdownTimer({endTime}) {
 
     const formattedTime = timeLeft.days > 0
         ? `${timeLeft.days}d ${timeLeft.hours}h`
-        : `${String(timeLeft.hours).padStart(2, "0")}
-            :${String(timeLeft.minutes).padStart(2, "0")}
-            :${String(timeLeft.seconds).padStart(2, "0")}`;
+        : `${String(timeLeft.hours).padStart(2, "0")}:${String(timeLeft.minutes).padStart(2, "0")}:${String(timeLeft.seconds).padStart(2, "0")}`;
 
     return (
         <div className="

@@ -7,6 +7,7 @@ const mockProfile = {
         city: "Dhaka",
         profile_picture:
             "https://placehold.co/600x600?text=Profile",
+        password_updated_at: "2026-03-15T14:30:00Z"
 };
 
 export default mockProfile;

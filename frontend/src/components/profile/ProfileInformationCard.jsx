@@ -46,10 +46,10 @@ export default function ProfileInformationCard({
                         items-start
                         gap-4">
 
-                        <div className="
-                            hidden 
-                            md:block w-35 
-                            shrink-0" 
+                        <div className={`
+                            ${isEditing ? "hidden" : "hidden md:block"}
+                            w-35
+                            shrink-0`} 
                         />
 
                         <h2 className="
@@ -82,41 +82,41 @@ export default function ProfileInformationCard({
                     </div>
 
                     <div className="space-y-6">
-                        <ProfileInfoRow label={"Full Name"}
-                            fieldName={"name"}
+                        <ProfileInfoRow label="Full Name"
+                            fieldName="name"
                             value={values.name}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label={"Email"}
-                            fieldName={"email"}
-                            fieldType={"email"}
+                        <ProfileInfoRow label="Email"
+                            fieldName="email"
+                            fieldType="email"
                             value={values.email}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label={"Contact Number"}
-                            fieldName={"contact_number"}
+                        <ProfileInfoRow label="Contact Number"
+                            fieldName="contact_number"
                             value={values.contact_number}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label={"Date of Birth"}
-                            fieldName={"date_of_birth"}
-                            fieldType={"date"}
+                        <ProfileInfoRow label="Date of Birth"
+                            fieldName="date_of_birth"
+                            fieldType="date"
                             value={formatDateForDisplay(values.date_of_birth)}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label={"Street Address"}
-                            fieldName={"street_address"}
+                        <ProfileInfoRow label="Street Address"
+                            fieldName="street_address"
                             value={values.street_address}
                             isEditing={isEditing}
                             isMultiLineField={true}
                         />
 
-                        <ProfileInfoRow label={"City"}
-                            fieldName={"city"}
+                        <ProfileInfoRow label="City"
+                            fieldName="city"
                             value={values.city}
                             isEditing={isEditing}
                         />
