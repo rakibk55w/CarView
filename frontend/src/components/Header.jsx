@@ -8,6 +8,7 @@ import {
 } from "react-icons/fi";
 import { useState } from "react";
 import { dangerButtonStyle } from "../utils/buttonStyles";
+import { headerButtonStyle, navLinkStyle, profileDropdownItemStyle, profileDropdownStyle, searchBarStyle } from "../utils/headerStyles";
 
 export default function Header({
     loggedIn,
@@ -15,30 +16,7 @@ export default function Header({
     toggleTheme,
 }) {
     const [menuOpen, setMenuOpen] = useState(false);
-
-    const navLinkStyle = ({ isActive }) =>
-        `border-b-2 
-        pb-1 
-        transition-colors 
-        duration-200
-        ${
-            isActive
-                ? "border-black text-white"
-                : "border-transparent text-white hover:border-white hover:text-black"
-        }`;
-
-    const buttonStyle = `rounded-lg 
-        bg-white 
-        px-4 
-        py-2 
-        text-primary-700 
-        shadow-sm 
-        transition-colors 
-        duration-200 
-        hover:bg-primary-100 
-        hover:text-primary-800 
-        active:bg-primary-200 
-        active:scale-95`;
+    const [profileOpen, setProfileOpen] = useState(false);
 
     return (
         <header className="
@@ -81,21 +59,7 @@ export default function Header({
                             size={18}
                         />
 
-                        <input className="
-                            w-full 
-                            rounded-full 
-                            border 
-                            border-gray-300 
-                            bg-white 
-                            py-2 
-                            pl-11 
-                            pr-4 
-                            text-gray-800 
-                            outline-none 
-                            transition 
-                            focus:border-primary-500 
-                            focus:ring-2 
-                            focus:ring-primary-300"
+                        <input className={searchBarStyle}
                             type="text"
                             placeholder="Search cars..."
                         />
@@ -130,10 +94,56 @@ export default function Header({
                         gap-3">
                         {loggedIn ? (
                             <>
-                                <Link to="/profile"
-                                    className={buttonStyle}>
-                                    Profile
-                                </Link>
+                                <div className="relative"
+                                    onMouseLeave={() => setProfileOpen(false)}>
+                                    <button
+                                        className={headerButtonStyle}
+                                        onClick={() => 
+                                            setProfileOpen((open) => !open)
+                                        }>
+                                        Profile
+                                    </button>
+
+                                    {profileOpen && (
+                                        <div className={profileDropdownStyle}>
+                                            <NavLink
+                                                to="/profile"
+                                                className={profileDropdownItemStyle}
+                                                onClick={() => 
+                                                    setProfileOpen(false)
+                                                }>
+                                                My Profile
+                                            </NavLink>
+
+                                            <NavLink
+                                                to="/my-cars"
+                                                className={profileDropdownItemStyle}
+                                                onClick={() => 
+                                                    setProfileOpen(false)
+                                                }>
+                                                My Cars
+                                            </NavLink>
+
+                                            <NavLink
+                                                to="/my-auctions"
+                                                className={profileDropdownItemStyle}
+                                                onClick={() => 
+                                                    setProfileOpen(false)
+                                                }>
+                                                My Auctions
+                                            </NavLink>
+
+                                            <NavLink
+                                                to="/my-bids"
+                                                className={profileDropdownItemStyle}
+                                                onClick={() => 
+                                                    setProfileOpen(false)
+                                                }>
+                                                My Bids
+                                            </NavLink>
+                                        </div>
+                                    )}
+                                </div>
 
                                 <Link className={`
                                     rounded-lg 
@@ -152,12 +162,12 @@ export default function Header({
                         ) : (
                             <>
                                 <Link to="/login"
-                                    className={buttonStyle}>
+                                    className={headerButtonStyle}>
                                     Login
                                 </Link>
 
                                 <Link to="/register"
-                                    className={buttonStyle}>
+                                    className={headerButtonStyle}>
                                     Register
                                 </Link>
                             </>
@@ -169,6 +179,7 @@ export default function Header({
                             h-7 
                             w-16 
                             items-center 
+                            cursor-pointer
                             rounded-full 
                             bg-primary-700 
                             transition"
