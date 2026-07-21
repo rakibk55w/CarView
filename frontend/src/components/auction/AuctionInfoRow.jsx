@@ -1,4 +1,4 @@
-export default function InfoRow({
+export default function AuctionInfoRow({
     label,
     value,
 }) {

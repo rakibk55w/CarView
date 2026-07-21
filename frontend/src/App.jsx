@@ -12,6 +12,7 @@ import MyCars from "./pages/MyCars";
 import MyAuctions from "./pages/MyAuctions";
 import MyBids from "./pages/MyBids";
 import CarDetails from "./pages/CarDetails";
+import AuctionDetails from "./pages/AuctionDetails";
 
 function App() {
     const loggedIn = true;
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/my-auctions" element={<MyAuctions />} />
                 <Route path="/my-bids" element={<MyBids />} />
                 <Route path="/cars/:carId" element={<CarDetails />} />
+                <Route path="/auctions/:auctionId" element={<AuctionDetails />} />
             </Routes>
         </Layout>
     );

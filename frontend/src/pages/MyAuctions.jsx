@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AuctionCard from "../components/auction/AuctionCard";
 import Pagination from "../components/pagination/Pagination";
@@ -22,6 +23,9 @@ export default function MyAuctions() {
         );
     }, [page]);
 
+    const navigate = useNavigate();
+
+
     return (
         <section className="
             mx-auto
@@ -44,7 +48,7 @@ export default function MyAuctions() {
                     <AuctionCard
                         key={auction.id}
                         auction={auction}
-                        onClick={() => {}}
+                        onClick={() => navigate(`/auctions/${auction.id}`)}
                     />
                 ))}
             </div>

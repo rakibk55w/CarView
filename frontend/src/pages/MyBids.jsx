@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import BidCard from "../components/bids/BidCard";
+import BidCard from "../components/bid/BidCard";
 import Pagination from "../components/pagination/Pagination";
 import mockBids from "../data/mockBids";
 

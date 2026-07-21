@@ -2,7 +2,7 @@ import AuctionCarouselPicture from "./AuctionPictureCarousel";
 import AuctionPriceCard from "./AuctionPriceCard";
 import AuctionStatusBadge from "./AuctionStatusBadge";
 import CountdownTimer from "../common/CountdownTimer";
-import InfoRow from "./InfoRow";
+import AuctionInfoRow from "./AuctionInfoRow";
 
 export default function AuctionCard({
     auction,
@@ -24,6 +24,7 @@ export default function AuctionCard({
 
     return (
         <article className="
+            cursor-pointer
             overflow-hidden
             rounded-xl
             border
@@ -92,17 +93,17 @@ export default function AuctionCard({
                         gap-y-2
                         text-sm
                         sm:grid-cols-2">
-                        <InfoRow
+                        <AuctionInfoRow
                             label="Brand"
                             value={brand}
                         />
 
-                        <InfoRow
+                        <AuctionInfoRow
                             label="Model"
                             value={model}
                         />
 
-                        <InfoRow
+                        <AuctionInfoRow
                             label="Manufacture Year"
                             value={manufactureYear}
                         />

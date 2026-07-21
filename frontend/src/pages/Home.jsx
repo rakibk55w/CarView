@@ -1,7 +1,9 @@
 import AuctionCard from "../components/auction/AuctionCard";
 import mockAuctions from "../data/mockAuctions";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+    const navigate = useNavigate();
     return (
         <div className="
             flex
@@ -11,11 +13,7 @@ export default function Home() {
                 <AuctionCard
                     key={auction.id}
                     auction={auction}
-                    onClick={(id) =>
-                        console.log(
-                            "Auction",
-                            id
-                        )
+                    onClick={() => navigate(`/auctions/${auction.id}`)
                     }
                 />
             ))}

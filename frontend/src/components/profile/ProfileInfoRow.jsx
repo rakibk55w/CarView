@@ -28,7 +28,6 @@ export default function ProfileInfoRow({
 return(
         <div>
             <p className="
-                mb-2 
                 font-medium">
                 {label}
             </p>

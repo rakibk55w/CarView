@@ -53,6 +53,7 @@ export default function CarInformationCard({
                         border-gray-200
                         pb-2
                         text-lg
+                        text-center
                         font-semibold
                         dark:border-gray-700">
                         General
@@ -101,6 +102,7 @@ export default function CarInformationCard({
                         border-gray-200
                         pb-2
                         text-lg
+                        text-center
                         font-semibold
                         dark:border-gray-700">
                         Powertrain
@@ -156,6 +158,7 @@ export default function CarInformationCard({
                         border-gray-200
                         pb-2
                         text-lg
+                        text-center
                         font-semibold
                         dark:border-gray-700">
                         Vehicle
@@ -207,6 +210,7 @@ export default function CarInformationCard({
                         border-gray-200
                         pb-2
                         text-lg
+                        text-center
                         font-semibold
                         dark:border-gray-700">
                         Ownership & Registration
