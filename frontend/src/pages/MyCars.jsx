@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-
-import CarCard from "../components/cars/CarCard";
+import { useNavigate } from "react-router-dom";
+import CarCard from "../components/car/CarCard";
 import Pagination from "../components/pagination/Pagination";
 import mockCars from "../data/mockCars";
 
@@ -19,6 +19,8 @@ export default function MyCars() {
             offset + LIMIT
         );
     }, [page]);
+
+    const navigate = useNavigate();
 
     return (
         <section className="
@@ -43,7 +45,7 @@ export default function MyCars() {
                     <CarCard
                         key={car.id}
                         car={car}
-                        onClick={() => {}}
+                        onClick={() => navigate(`/cars/${car.id}`)}
                     />
                 ))}
             </div>

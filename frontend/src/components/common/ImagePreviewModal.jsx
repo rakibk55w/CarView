@@ -51,12 +51,13 @@ export default function ImagePreviewModal({
             <div className="
                 relative
                 max-h-full
-                max-w-6xl"
+                max-w-6xl
+                pt-12"
                 onClick={(event) => event.stopPropagation()}>
 
                 <button className="
                     absolute
-                    -top-12
+                    top-0
                     right-0
                     cursor-pointer
                     rounded-full

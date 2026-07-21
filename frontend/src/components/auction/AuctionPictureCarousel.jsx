@@ -4,7 +4,7 @@ import { FiChevronLeft, FiChevronRight} from "react-icons/fi";
 
 const PLACEHOLDER_IMAGE = "https://placehold.co/1200x800?text=No+Image";
 
-export default function AuctionCarousel({
+export default function AuctionPictureCarousel({
     title,
     images = []
 }) {

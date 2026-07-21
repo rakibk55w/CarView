@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import MyCars from "./pages/MyCars";
 import MyAuctions from "./pages/MyAuctions";
 import MyBids from "./pages/MyBids";
+import CarDetails from "./pages/CarDetails";
 
 function App() {
     const loggedIn = true;
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/my-cars" element={<MyCars />} />
                 <Route path="/my-auctions" element={<MyAuctions />} />
                 <Route path="/my-bids" element={<MyBids />} />
+                <Route path="/cars/:carId" element={<CarDetails />} />
             </Routes>
         </Layout>
     );

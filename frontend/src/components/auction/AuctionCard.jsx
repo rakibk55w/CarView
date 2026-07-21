@@ -1,4 +1,4 @@
-import AuctionCarousel from "./AuctionCarousel";
+import AuctionCarouselPicture from "./AuctionPictureCarousel";
 import AuctionPriceCard from "./AuctionPriceCard";
 import AuctionStatusBadge from "./AuctionStatusBadge";
 import CountdownTimer from "../common/CountdownTimer";
@@ -43,7 +43,7 @@ export default function AuctionCard({
                 flex-col
                 lg:flex-row
                 items-stretch">
-                <AuctionCarousel
+                <AuctionCarouselPicture
                     title={title}
                     images={images}
                 />
