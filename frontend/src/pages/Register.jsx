@@ -1,12 +1,17 @@
 import { Formik, Form } from "formik";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import registerSchema from "../schemas/registerSchema";
 import FormField from "../components/form/FormField";
 import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
+import axiosInstance from "../api/axiosInstance";
 
 export default function Register() {
+    const navigate = useNavigate();
+
     return (
         <div className="
             mx-auto 
@@ -34,18 +39,51 @@ export default function Register() {
                         name: "",
                         email: "",
                         password: "",
+                        confirm_password: "",
                     }}
                     validationSchema={registerSchema}
-                    onSubmit={(values) => {
-                        console.log(values);
+                    onSubmit={async (
+                        values,
+                        { resetForm }
+                    ) => {
+                        const registerData = {
+                            name: values.name,
+                            email: values.email,
+                            password: values.password
+                        };
 
-                        // TODO:
-                        // axios.post("/api/auth/register", values);
+                        try {
+                            const response = await axiosInstance.post(
+                                "/register",
+                                registerData
+                            );
+
+                            toast.success(
+                                response.data.message ||
+                                "Account created successfully."
+                            );
+
+                            resetForm();
+
+                            toast.info(
+                                "Redirecting to login in 3 seconds"
+                            );
+
+                            setTimeout(() => {
+                                navigate("/login");
+                            }, 3000);
+
+                        } catch (error) {
+                            toast.error(
+                                error.response?.data?.message ||
+                                "Registration failed. Please try again."
+                            );
+                        }
                     }}>
 
                     {({ isSubmitting }) => (
                         <Form className="space-y-5">
-                            <FormField label="Name" 
+                            <FormField label="Full Name" 
                                 name="name"
                             />
 
@@ -62,10 +100,20 @@ export default function Register() {
                                 passwordToggle
                             />
 
+                            <FormField
+                                label="Confirm Password"
+                                name="confirm_password"
+                                type="password"
+                                passwordToggle
+                            />
+
                             <CustomButton className="w-full"
                                 type="submit"
                                 disabled={isSubmitting}>
-                                Create Account
+                                {isSubmitting
+                                    ? "Creating Account..."
+                                    : "Create Account"
+                                }
                             </CustomButton>
                         </Form>
                     )}

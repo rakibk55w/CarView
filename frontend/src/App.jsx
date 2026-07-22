@@ -16,7 +16,7 @@ import AuctionDetails from "./pages/AuctionDetails";
 import NotFound
  from "./components/error/NotFound";
 function App() {
-    const loggedIn = true;
+    const loggedIn = false;
 
     return (
         <Layout loggedIn={loggedIn}>
