@@ -46,7 +46,7 @@ export default function BidHistory({
 
             <div
                 className="
-                    max-h-175
+                    max-h-145
                     space-y-4
                     overflow-y-auto
                     

@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import Layout from "./components/Layout";
+import Layout from "./components/common/Layout";
 
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
@@ -13,6 +13,7 @@ import MyAuctions from "./pages/MyAuctions";
 import MyBids from "./pages/MyBids";
 import CarDetails from "./pages/CarDetails";
 import AuctionDetails from "./pages/AuctionDetails";
+import NotFound from "./components/error/NotFound";
 
 function App() {
     const loggedIn = true;
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/my-bids" element={<MyBids />} />
                 <Route path="/cars/:carId" element={<CarDetails />} />
                 <Route path="/auctions/:auctionId" element={<AuctionDetails />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Layout>
     );
