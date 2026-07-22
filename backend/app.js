@@ -11,6 +11,7 @@ const jwtRouter = require("./routes/jwt_route");
 const profileRouter = require("./routes/profile_route");
 const updateProfileRouter = require("./routes/update_profile_route");
 const updatePasswordRouter = require("./routes/update_password_route");
+const contactUsRouter = require("./routes/contact_us_route");
 
 const notFound = require("./middlewares/not_found")
 const errorHandler = require("./middlewares/error_handler");
@@ -31,6 +32,8 @@ app.use("/api", logoutRouter);
 app.use("/api", profileRouter);
 app.use("/api", updateProfileRouter);
 app.use("/api", updatePasswordRouter);
+
+app.use("/api", contactUsRouter);
 
 app.use("/api", jwtRouter);
 

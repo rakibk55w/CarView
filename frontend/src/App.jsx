@@ -13,8 +13,8 @@ import MyAuctions from "./pages/MyAuctions";
 import MyBids from "./pages/MyBids";
 import CarDetails from "./pages/CarDetails";
 import AuctionDetails from "./pages/AuctionDetails";
-import NotFound from "./components/error/NotFound";
-
+import NotFound
+ from "./components/error/NotFound";
 function App() {
     const loggedIn = true;
 

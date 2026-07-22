@@ -1,9 +1,11 @@
-import { Formik, Form} from "formik";
+import { Formik, Form } from "formik";
 import FormField from "../components/form/FormField";
 import TextAreaField from "../components/form/TextAreaField";
 import contactUsSchema from "../schemas/contactUsSchema";
 import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
+import axiosInstance from "../api/axiosInstance";
+import { toast } from "react-toastify";
 
 export default function ContactUs() {
     return (
@@ -58,13 +60,28 @@ export default function ContactUs() {
                         message: ""
                     }}
                     validationSchema={contactUsSchema}
-                    onSubmit={(values, { resetForm }) => {
-                        console.log(values);
+                    onSubmit={ async (
+                        values,
+                        { resetForm }
+                    ) => {
+                        try {
+                            const response = await axiosInstance.post(
+                                "/contact-us",
+                                values
+                            );
 
-                        // TODO:
-                        // axios.post("/api/contact-us", values);
+                            console.log(response);
 
-                        resetForm();
+                            toast.success(
+                                response.data.message || "Your message has been sent successfully."
+                            );
+
+                            resetForm();
+                        } catch(error) {
+                            toast.error(
+                                error.response?.data?.message || "Failed to send your message. Please try again."
+                            );
+                        }
                     }}>
 
                     {({ isSubmitting }) => (
@@ -78,7 +95,7 @@ export default function ContactUs() {
                             <FormField
                                 label="Contact Number"
                                 name="contact_number"
-                                type="password"
+                                type="tel"
                             />
 
                             <FormField
@@ -98,7 +115,10 @@ export default function ContactUs() {
                             <CustomButton className="w-full" 
                                 type="submit"
                                 disabled={isSubmitting}>
-                                Send Message
+                                { isSubmitting
+                                    ? "Sending..."
+                                    : "Send Message"
+                                }
                             </CustomButton>
                         </Form>
                     )}
