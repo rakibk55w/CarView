@@ -7,7 +7,7 @@ const authChecker = (req, res, next) => {
 
         if (!authHeader) {
             return res.status(401).json({
-                message: "Unauthorized"
+                message: "Unauthorized access"
             });
         }
 

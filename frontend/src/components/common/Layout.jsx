@@ -2,9 +2,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 import useTheme from "../../hooks/useTheme";
 import { ToastContainer } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
 
-export default function Layout({ children, loggedIn }) {
+export default function Layout({ children }) {
   const { darkMode, toggleTheme } = useTheme();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div
@@ -20,7 +22,7 @@ export default function Layout({ children, loggedIn }) {
             dark:text-white"
     >
       <Header
-        loggedIn={loggedIn}
+        loggedIn={isAuthenticated}
         darkMode={darkMode}
         toggleTheme={toggleTheme}
       />

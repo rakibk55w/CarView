@@ -61,7 +61,8 @@ const jwtController = async (req, res, next) => {
         );
 
         return res.status(200).json({
-            access_token: accessToken
+            "message": "Access token refreshed successfully",
+            "access_token": accessToken
         });
     } catch (error) {
         return res.status(401).json({

@@ -2,11 +2,18 @@ import { Formik, Form } from "formik";
 import FormField from "../components/form/FormField";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import loginSchema from "../schemas/loginSchema";
 import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
+import axiosInstance from "../api/axiosInstance";
+import useAuth from "../hooks/useAuth";
 
 export default function Login() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
     return (
         <div className="
             mx-auto 
@@ -35,11 +42,38 @@ export default function Login() {
                         password: "",
                     }}
                     validationSchema={loginSchema}
-                    onSubmit={(values) => {
-                        console.log(values);
+                    onSubmit={async (
+                        values,
+                        { resetForm }
+                    ) => {
+                        try {
+                            const response = await axiosInstance.post(
+                                "/login",
+                                values
+                            );
 
-                        // TODO:
-                        // axios.post("/api/auth/login", values);
+                            login(response.data.access_token);
+
+                            toast.success(
+                                response.data.message || "Login successful"
+                            );
+
+                            toast.info(
+                                "Redirecting to home in 3 seconds..."
+                            );
+
+                            resetForm();
+
+                            setTimeout(() => {
+                                navigate("/");
+                            }, 3000);
+
+                        } catch (error) {
+                            toast.error(
+                                error.response?.data?.message ||
+                                "Login failed. Please try again."
+                            );
+                        }
                     }}>
 
                     {({ isSubmitting }) => (
@@ -60,7 +94,10 @@ export default function Login() {
                             <CustomButton className="w-full" 
                                 type="submit"
                                 disabled={isSubmitting}>
-                                Login
+                                {isSubmitting
+                                    ? "Logging in..."
+                                    : "Login"
+                                }
                             </CustomButton>
                         </Form>
                     )}

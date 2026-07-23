@@ -16,10 +16,8 @@ import AuctionDetails from "./pages/AuctionDetails";
 import NotFound
  from "./components/error/NotFound";
 function App() {
-    const loggedIn = false;
-
     return (
-        <Layout loggedIn={loggedIn}>
+        <Layout>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about-us" element={<AboutUs />} />
