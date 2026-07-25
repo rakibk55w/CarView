@@ -21,8 +21,8 @@ const jwtController = async (req, res, next) => {
         const storedToken = await jwtRepository.findRefreshToken(refreshToken);
 
         if (!storedToken) {
-            return res.status(403).json({
-                message: "Invalid refresh token"
+            return res.status(401).json({
+                message: "Invalid or expired refresh token"
             });
         }
 
@@ -37,6 +37,7 @@ const jwtController = async (req, res, next) => {
 
         const newRefreshToken = jwtHelper.generateRefreshToken({
             id: decodedToken.id,
+            role: decodedToken.role
         });
 
         const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000

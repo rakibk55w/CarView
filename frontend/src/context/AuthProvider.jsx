@@ -1,21 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
+import { authService } from "../service/authService"
+import axiosInstance from "../api/axiosInstance";
 
 export default function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(null);
+    const [isInitializing, setIsInitializing] = useState(true);
 
     const login = (token) => {
         setAccessToken(token);
+        authService.setAccessToken(token);
+    };
+
+    const updateAccessToken = (token) => {
+        setAccessToken(token);
+        authService.setAccessToken(token);
     };
 
     const logout = () => {
         setAccessToken(null);
+        authService.clearAccessToken();
     };
+
+    useEffect(() => {
+        authService.setTokenRefreshHandler(
+            (token) => {
+                setAccessToken(token);
+            }
+        );
+
+        authService.setLogoutHandler(
+            () => {
+                setAccessToken(null);
+            }
+        );
+
+        return () => {
+            authService.setTokenRefreshHandler(null);
+            authService.setLogoutHandler(null);
+        };
+    }, []);
+
+    useEffect(() => {
+        const restoreSession = async () => {
+            try {
+                const response = await axiosInstance.post(
+                    "/auth/refresh-token"
+                );
+
+                updateAccessToken(
+                    response.data.access_token
+                );
+            } catch {
+                logout();
+            } finally {
+                setIsInitializing(false);
+            }
+        };
+
+        restoreSession();
+    }, []);
 
     const value = {
         accessToken,
         isAuthenticated: Boolean(accessToken),
+        isInitializing,
         login,
+        updateAccessToken,
         logout,
     };
 
