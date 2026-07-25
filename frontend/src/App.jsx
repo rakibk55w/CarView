@@ -15,6 +15,8 @@ import CarDetails from "./pages/CarDetails";
 import AuctionDetails from "./pages/AuctionDetails";
 import NotFound
  from "./components/error/NotFound";
+import ProtectedRoute from "./components/common/ProtectedRoute";
+import Unauthorized from "./components/error/Unauthorized";
 function App() {
     return (
         <Layout>
@@ -24,12 +26,41 @@ function App() {
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/my-cars" element={<MyCars />} />
-                <Route path="/my-auctions" element={<MyAuctions />} />
-                <Route path="/my-bids" element={<MyBids />} />
+                <Route 
+                    path="/profile" 
+                    element={
+                        <ProtectedRoute>
+                            <Profile />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/my-cars" 
+                    element={
+                        <ProtectedRoute>
+                            <MyCars />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/my-auctions" 
+                    element={
+                        <ProtectedRoute>
+                            <MyAuctions />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/my-bids" 
+                    element={
+                        <ProtectedRoute>
+                            <MyBids />
+                        </ProtectedRoute>
+                    } 
+                />
                 <Route path="/cars/:carId" element={<CarDetails />} />
                 <Route path="/auctions/:auctionId" element={<AuctionDetails />} />
+                <Route path="/unauthorized" element={<Unauthorized />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Layout>

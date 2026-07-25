@@ -30,7 +30,7 @@ export default function Header({ loggedIn, darkMode, toggleTheme }) {
     } catch (error) {
         toast.error(
           error.response?.data?.message ||
-          "Login failed. Please try again."
+          "Logout failed. Please try again."
         );
     }
   };

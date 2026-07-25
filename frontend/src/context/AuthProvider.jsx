@@ -6,10 +6,12 @@ import axiosInstance from "../api/axiosInstance";
 export default function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(null);
     const [isInitializing, setIsInitializing] = useState(true);
+    const [hasLoggedOut, setHasLoggedOut] = useState(false);
 
     const login = (token) => {
         setAccessToken(token);
         authService.setAccessToken(token);
+        setHasLoggedOut(false);
     };
 
     const updateAccessToken = (token) => {
@@ -20,6 +22,7 @@ export default function AuthProvider({ children }) {
     const logout = () => {
         setAccessToken(null);
         authService.clearAccessToken();
+        setHasLoggedOut(true);
     };
 
     useEffect(() => {
@@ -52,7 +55,8 @@ export default function AuthProvider({ children }) {
                     response.data.access_token
                 );
             } catch {
-                logout();
+                setAccessToken(null);
+                authService.clearAccessToken();
             } finally {
                 setIsInitializing(false);
             }
@@ -65,6 +69,7 @@ export default function AuthProvider({ children }) {
         accessToken,
         isAuthenticated: Boolean(accessToken),
         isInitializing,
+        hasLoggedOut,
         login,
         updateAccessToken,
         logout,
