@@ -59,14 +59,14 @@ export default function Login() {
                             );
 
                             showInfoToast(
-                                "Redirecting to home in 2 seconds..."
+                                "Redirecting to home."
                             );
 
                             resetForm();
 
                             setTimeout(() => {
                                 navigate("/");
-                            }, 2000);
+                            }, 1000);
 
                         } catch (error) {
                             showErrorToast(

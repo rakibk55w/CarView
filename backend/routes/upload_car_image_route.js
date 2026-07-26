@@ -1,6 +1,6 @@
 const express = require("express");
 const authChecker = require("../middlewares/auth_checker");
-const uploadImage = require("../middleware/image_uploader");
+const uploadImage = require("../middlewares/image_uploader");
 const uploadCarImageController = require("../controllers/upload_car_image_controller");
 
 const uploadCarImageRouter = express.Router();

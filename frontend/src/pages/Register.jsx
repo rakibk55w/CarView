@@ -66,12 +66,12 @@ export default function Register() {
                             resetForm();
 
                             showInfoToast(
-                                "Redirecting to login in 2 seconds"
+                                "Redirecting to login."
                             );
 
                             setTimeout(() => {
                                 navigate("/login");
-                            }, 2000);
+                            }, 1000);
 
                         } catch (error) {
                             showErrorToast(

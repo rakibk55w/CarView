@@ -9,32 +9,28 @@ export default function Layout({ children }) {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div
-      className="
-            flex 
-            min-h-screen 
-            flex-col 
-            bg-white 
-            text-black 
-            transition-colors 
-            duration-300 
-            dark:bg-gray-950 
-            dark:text-white"
-    >
+    <div className="
+      flex 
+      min-h-screen 
+      flex-col 
+      bg-white 
+      text-black 
+      transition-colors 
+      duration-300 
+      dark:bg-gray-950 
+      dark:text-white">
       <Header
         loggedIn={isAuthenticated}
         darkMode={darkMode}
         toggleTheme={toggleTheme}
       />
 
-      <main
-        className="
-                mx-auto 
-                w-full 
-                max-w-7xl 
-                flex-1 
-                p-6"
-      >
+      <main className="
+        mx-auto 
+        w-full 
+        max-w-7xl 
+        flex-1 
+        p-6">
         {children}
       </main>
 

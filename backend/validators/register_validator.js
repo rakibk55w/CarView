@@ -1,5 +1,5 @@
 const runValidator = require("./run_validator");
-const registerSchema = require("./schemas/register_schema");
+const registerSchema = require("../schemas/register_schema");
 
 const registerValidator = runValidator(registerSchema);
 
