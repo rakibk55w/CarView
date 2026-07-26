@@ -12,7 +12,7 @@ const loginController = async (req, res, next) => {
     const existingUser = await authRepository.findUserByEmail(loginDto.email);
     if (!existingUser) {
       return res.status(401).json({
-        message: "Invalid email",
+        message: "Invalid credentials",
       });
     }
 
@@ -23,7 +23,7 @@ const loginController = async (req, res, next) => {
 
     if (!isPasswordCorrect) {
       return res.status(401).json({
-        message: "Incorrect password",
+        message: "Invalid credentials",
       });
     }
 
