@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosInstance from "./axiosInstance";
+// import axiosInstance from "./axiosInstance";
 import { authService } from "../service/authService";
 
 const axiosAuthInstance = axios.create({
@@ -7,21 +7,21 @@ const axiosAuthInstance = axios.create({
     withCredentials: true,
 });
 
-let isRefreshing = false;
+// let isRefreshing = false;
 
-let failedQueue = [];
+// let failedQueue = [];
 
-const processQueue = (error, token = null) => {
-    failedQueue.forEach((promise) => {
-        if (error) {
-            promise.reject(error);
-        } else {
-            promise.resolve(token);
-        }
-    });
+// const processQueue = (error, token = null) => {
+//     failedQueue.forEach((promise) => {
+//         if (error) {
+//             promise.reject(error);
+//         } else {
+//             promise.resolve(token);
+//         }
+//     });
 
-    failedQueue = [];
-};
+//     failedQueue = [];
+// };
 
 axiosAuthInstance.interceptors.request.use(
     (config) => {
@@ -57,37 +57,49 @@ axiosAuthInstance.interceptors.response.use(
 
         originalRequest._retry = true;
 
-        if (isRefreshing) {
-            return new Promise((resolve, reject) => {
-                failedQueue.push({
-                    resolve,
-                    reject,
-                });
-            }).then((token) => {
-                originalRequest.headers.Authorization =
-                    `Bearer ${token}`;
+    //     if (isRefreshing) {
+    //         return new Promise((resolve, reject) => {
+    //             failedQueue.push({
+    //                 resolve,
+    //                 reject,
+    //             });
+    //         }).then((token) => {
+    //             originalRequest.headers.Authorization =
+    //                 `Bearer ${token}`;
 
-                return axiosAuthInstance(originalRequest);
-            });
-        }
+    //             return axiosAuthInstance(originalRequest);
+    //         });
+    //     }
 
-        isRefreshing = true;
+    //     isRefreshing = true;
 
+    //     try {
+    //         const newAccessToken = await authService.refreshAccessToken();
+
+    //         processQueue(
+    //             null,
+    //             newAccessToken
+    //         );
+
+    //         originalRequest.headers.Authorization =
+    //             `Bearer ${newAccessToken}`;
+
+    //         return axiosAuthInstance(
+    //             originalRequest
+    //         );
+
+    //     } catch (refreshError) {
+    //         processQueue(refreshError);
+
+    //         authService.clearAccessToken();
+
+    //         return Promise.reject(refreshError);
+
+    //     } finally {
+    //         isRefreshing = false;
+    //     }
         try {
-            const response = await axiosInstance.post(
-                "/auth/refresh-token"
-            );
-
-            const newAccessToken = response.data.access_token;
-
-            authService.setAccessToken(
-                newAccessToken
-            );
-
-            processQueue(
-                null,
-                newAccessToken
-            );
+            const newAccessToken = await authService.refreshAccessToken();
 
             originalRequest.headers.Authorization =
                 `Bearer ${newAccessToken}`;
@@ -97,14 +109,11 @@ axiosAuthInstance.interceptors.response.use(
             );
 
         } catch (refreshError) {
-            processQueue(refreshError);
-
             authService.clearAccessToken();
 
-            return Promise.reject(refreshError);
-
-        } finally {
-            isRefreshing = false;
+            return Promise.reject(
+                refreshError
+            );
         }
     }
 );

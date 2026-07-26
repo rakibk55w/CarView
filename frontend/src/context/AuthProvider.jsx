@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import { authService } from "../service/authService"
-import axiosInstance from "../api/axiosInstance";
 
 export default function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(null);
@@ -47,15 +46,8 @@ export default function AuthProvider({ children }) {
     useEffect(() => {
         const restoreSession = async () => {
             try {
-                const response = await axiosInstance.post(
-                    "/auth/refresh-token"
-                );
-
-                updateAccessToken(
-                    response.data.access_token
-                );
+                await authService.refreshAccessToken();
             } catch {
-                setAccessToken(null);
                 authService.clearAccessToken();
             } finally {
                 setIsInitializing(false);
