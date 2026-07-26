@@ -5,7 +5,7 @@ import contactUsSchema from "../schemas/contactUsSchema";
 import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
 import axiosInstance from "../api/axiosInstance";
-import { toast } from "react-toastify";
+import { showErrorToast, showSuccessToast } from "../utils/toast";
 
 export default function ContactUs() {
     return (
@@ -70,15 +70,13 @@ export default function ContactUs() {
                                 values
                             );
 
-                            console.log(response);
-
-                            toast.success(
+                            showSuccessToast(
                                 response.data.message || "Your message has been sent successfully."
                             );
 
                             resetForm();
                         } catch(error) {
-                            toast.error(
+                            showErrorToast(
                                 error.response?.data?.message || "Failed to send your message. Please try again."
                             );
                         }

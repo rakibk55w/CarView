@@ -1,7 +1,7 @@
 import { Formik, Form } from "formik";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { showErrorToast, showSuccessToast, showInfoToast } from "../utils/toast";
 import { useNavigate } from "react-router-dom";
 import registerSchema from "../schemas/registerSchema";
 import FormField from "../components/form/FormField";
@@ -58,23 +58,23 @@ export default function Register() {
                                 registerData
                             );
 
-                            toast.success(
+                            showSuccessToast(
                                 response.data.message ||
                                 "Account created successfully."
                             );
 
                             resetForm();
 
-                            toast.info(
-                                "Redirecting to login in 3 seconds"
+                            showInfoToast(
+                                "Redirecting to login in 2 seconds"
                             );
 
                             setTimeout(() => {
                                 navigate("/login");
-                            }, 3000);
+                            }, 2000);
 
                         } catch (error) {
-                            toast.error(
+                            showErrorToast(
                                 error.response?.data?.message ||
                                 "Registration failed. Please try again."
                             );

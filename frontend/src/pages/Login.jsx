@@ -3,7 +3,7 @@ import FormField from "../components/form/FormField";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { showErrorToast, showInfoToast, showSuccessToast } from "../utils/toast";
 import loginSchema from "../schemas/loginSchema";
 import CustomButton from "../components/button/CustomButton";
 import { formStyle } from "../utils/formStyle";
@@ -54,22 +54,22 @@ export default function Login() {
 
                             login(response.data.access_token);
 
-                            toast.success(
+                            showSuccessToast(
                                 response.data.message || "Login successful"
                             );
 
-                            toast.info(
-                                "Redirecting to home in 3 seconds..."
+                            showInfoToast(
+                                "Redirecting to home in 2 seconds..."
                             );
 
                             resetForm();
 
                             setTimeout(() => {
                                 navigate("/");
-                            }, 3000);
+                            }, 2000);
 
                         } catch (error) {
-                            toast.error(
+                            showErrorToast(
                                 error.response?.data?.message ||
                                 "Login failed. Please try again."
                             );

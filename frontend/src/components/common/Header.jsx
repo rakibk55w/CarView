@@ -11,7 +11,7 @@ import {
 } from "../../utils/headerStyles";
 import useAuth from "../../hooks/useAuth";
 import axiosAuthInstance from "../../api/axiosAuthInstance";
-import { toast } from "react-toastify";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 export default function Header({ loggedIn, darkMode, toggleTheme }) {
   const { logout } = useAuth();
@@ -24,11 +24,11 @@ export default function Header({ loggedIn, darkMode, toggleTheme }) {
 
       logout();
 
-      toast.success(
+      showSuccessToast(
         response.data.message || "Logout successful"
       );
     } catch (error) {
-        toast.error(
+        showErrorToast(
           error.response?.data?.message ||
           "Logout failed. Please try again."
         );
