@@ -1,11 +1,27 @@
 import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
-import { authService } from "../service/authService"
+import { authService } from "../service/authService";
+import decodeAccessToken from "../utils/decodeAccessToken";
 
 export default function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(null);
     const [isInitializing, setIsInitializing] = useState(true);
     const [hasLoggedOut, setHasLoggedOut] = useState(false);
+
+    const getUserFromToken = (token) => {
+        const decodedToken = decodeAccessToken(token);
+
+        if (!decodedToken) {
+            return null;
+        }
+
+        return {
+            id: decodedToken.id,
+            role: decodedToken.role,
+        };
+    };
+
+    const user = getUserFromToken(accessToken);
 
     const login = (token) => {
         setAccessToken(token);
@@ -59,6 +75,7 @@ export default function AuthProvider({ children }) {
 
     const value = {
         accessToken,
+        user,
         isAuthenticated: Boolean(accessToken),
         isInitializing,
         hasLoggedOut,

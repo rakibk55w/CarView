@@ -14,7 +14,7 @@ import axiosAuthInstance from "../../api/axiosAuthInstance";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 export default function Header({ loggedIn, darkMode, toggleTheme }) {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -117,7 +117,7 @@ export default function Header({ loggedIn, darkMode, toggleTheme }) {
                   {profileOpen && (
                     <div className={profileDropdownStyle}>
                       <NavLink
-                        to="/profile"
+                        to={`/profile/${user.id}`}
                         className={profileDropdownItemStyle}
                         onClick={() => setProfileOpen(false)}>
                         My Profile
@@ -249,7 +249,7 @@ export default function Header({ loggedIn, darkMode, toggleTheme }) {
 
           {loggedIn ? (
             <>
-              <Link className="block" to="/profile">
+              <Link className="block" to={`/profile/${user.id}`}>
                 Profile
               </Link>
 

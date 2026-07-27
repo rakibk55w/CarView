@@ -10,30 +10,131 @@ import updateProfileSchema from "../../schemas/updateProfileSchema";
 import formatDateForDisplay from "../../utils/formatDateForDisplay";
 import ProfileInfoRow from "./ProfileInfoRow";
 
+import axiosAuthInstance from "../../api/axiosAuthInstance";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import formatDateForInput from "../../utils/formatDateForInput";
+
 export default function ProfileInformationCard({
-    profile}) {
+    profile,
+    setProfile,
+    isOwnProfile,
+    isLoading}) {
 
     const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+
+    if (isLoading) {
+        return (
+            <section className={formStyle}>
+                <div className="
+                    mb-8
+                    flex
+                    items-start
+                    gap-4">
+
+                    <div className="
+                        hidden
+                        h-10
+                        w-35
+                        animate-pulse
+                        rounded-lg
+                        bg-gray-200
+                        dark:bg-gray-700
+                        md:block"
+                    />
+
+                    <div className="
+                        h-8
+                        flex-1
+                        animate-pulse
+                        rounded-lg
+                        bg-gray-200
+                        dark:bg-gray-700"
+                    />
+
+                    <div className="
+                        h-10
+                        w-35
+                        animate-pulse
+                        rounded-lg
+                        bg-gray-200
+                        dark:bg-gray-700"
+                    />
+                </div>
+
+                <div className="space-y-6">
+
+                    {[...Array(6)].map((_, index) => (
+                        <div className="
+                            grid
+                            gap-2
+                            md:grid-cols-[180px_1fr]"
+                            key={index}>
+
+                            <div className="
+                                h-6
+                                w-32
+                                animate-pulse
+                                rounded
+                                bg-gray-200
+                                dark:bg-gray-700"
+                            />
+
+                            <div className="
+                                h-6
+                                w-full
+                                animate-pulse
+                                rounded
+                                bg-gray-200
+                                dark:bg-gray-700"
+                            />
+
+                        </div>
+                    ))}
+
+                </div>
+            </section>
+        );
+    }
 
     return (
         <Formik enableReinitialize
             initialValues={{
-                name: profile.name || "",
-                email: profile.email || "",
-                contact_number: profile.contact_number || "",
-                date_of_birth: profile.date_of_birth || "",
-                street_address: profile.street_address || "",
-                city: profile.city || "",
+                name: profile?.name || "",
+                email: profile?.email || "",
+                contact_number: profile?.contact_number || "",
+                date_of_birth: formatDateForInput(profile?.date_of_birth),
+                street_address: profile?.street_address || "",
+                city: profile?.city || "",
             }}
             validationSchema={updateProfileSchema}
-            onSubmit={(values) => {
+            onSubmit={async (values) => {
+                try {
+                    setIsSaving(true);
 
-                console.log(values);
+                    const response = await axiosAuthInstance.put(
+                            "/update-profile",
+                            values
+                        );
 
-                // TODO:
-                // axios.patch(...)
+                    setProfile(
+                        response.data.data
+                    );
 
-                setIsEditing(false);
+                    setIsEditing(false);
+
+                    showSuccessToast(
+                        response.data.message ||
+                        "Profile updated successfully"
+                    );
+                } catch (error) {
+                    showErrorToast(
+                        error.response?.data?.message ||
+                        "Failed to update profile"
+                    );
+                } finally {
+                    setIsSaving(false);
+                }
             }}>
             {({
                 values,
@@ -67,7 +168,7 @@ export default function ProfileInformationCard({
                         </h2>
 
 
-                        {!isEditing && (
+                        {!isEditing && isOwnProfile && (
                             <div className="
                                 justify-self-end 
                                 md:col-start-3">
@@ -143,8 +244,12 @@ export default function ProfileInformationCard({
                                 <CustomButton className="
                                     w-35"
                                     type="submit"
+                                    disabled={isSaving}
                                     icon={<FiSave />}>
-                                    Save Profile
+                                    {isSaving
+                                        ? "Saving..."
+                                        : "Save Profile"
+                                    }
                                 </CustomButton>
                             </div>
                         )}

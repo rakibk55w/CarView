@@ -27,7 +27,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route 
-                    path="/profile" 
+                    path="/profile/:userId" 
                     element={
                         <ProtectedRoute>
                             <Profile />

@@ -1,6 +1,6 @@
 function formatDateForDisplay(date) {
     if (!date)
-        return "-";
+        return "";
 
     return new Date(date)
         .toLocaleDateString(

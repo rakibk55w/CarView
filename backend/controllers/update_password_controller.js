@@ -21,13 +21,14 @@ const updatePasswordController = async (req, res, next) => {
         }
         const hashedPassword = await bcrypt.hash(updatePasswordDto.newPassword, 10);
 
-        await profileRepository.updatePassword(
+        const currentPasswordTime = await profileRepository.updatePassword(
             req.user.id,
             hashedPassword
         );
 
         return res.status(200).json({
-            message: "Password changed successfully"
+            message: "Password changed successfully",
+            data: { password_updated_at: currentPasswordTime }
         });
 
     } catch (error) {

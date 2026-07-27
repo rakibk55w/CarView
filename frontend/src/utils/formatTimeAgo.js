@@ -6,6 +6,10 @@ export default function formatTimeAgo(date) {
     const now = new Date();
     const then = new Date(date);
 
+    if (Number.isNaN(then.getTime())) {
+        return "unknown time ago";
+    }
+
     const seconds = Math.floor((now - then) / 1000);
 
     if (seconds < 60) {

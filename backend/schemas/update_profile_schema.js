@@ -5,13 +5,12 @@ const updateProfileSchema = Joi.object({
     .trim()
     .min(3)
     .max(100)
-    .allow("", null)
-    .optional(),
+    .required(),
 
   email: Joi.string()
     .trim()
     .email()
-    .max(100)
+    .max(255)
     .allow("", null)
     .optional(),
 
@@ -25,7 +24,7 @@ const updateProfileSchema = Joi.object({
 
   date_of_birth: Joi.date()
     .max("now")
-    .allow(null)
+    .allow(null, "")
     .optional(),
 
   street_address: Joi.string()

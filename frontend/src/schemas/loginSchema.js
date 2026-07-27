@@ -9,7 +9,6 @@ const loginSchema = Yup.object({
 
     password: Yup.string()
         .trim()
-        .min(8, "Password must be at least 8 characters.")
         .max(255, "Password can have at most 255 characters.")
         .required("Password is required."),
 });

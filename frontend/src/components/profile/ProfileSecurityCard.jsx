@@ -10,12 +10,17 @@ import { formStyle } from "../../utils/formStyle";
 import updatePasswordSchema from "../../schemas/updatePasswordSchema";
 import formatTimeAgo from "../../utils/formatTimeAgo";
 
+import axiosAuthInstance from "../../api/axiosAuthInstance";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
+
 export default function ProfileSecurityCard({
-    profile
+    profile,
+    setProfile
 }) {
 
     const [isEditing, setIsEditing] = useState(false);
-
+    const [isSaving, setIsSaving] = useState(false);
+    
     return (
         <Formik
             initialValues={{
@@ -24,14 +29,44 @@ export default function ProfileSecurityCard({
                 confirm_new_password: ""
             }}
             validationSchema={updatePasswordSchema}
-            onSubmit={(values) => {
+            onSubmit={async (
+                values,
+                { resetForm }
+            ) => {
+                try {
+                    setIsSaving(true);
 
-                console.log(values);
+                    const response = await axiosAuthInstance.patch(
+                        "/update-password",
+                        {
+                            current_password: values.current_password,
+                            new_password: values.new_password
+                        }
+                    );
 
-                // TODO:
-                // axios.patch(...)
+                    setProfile((currentProfile) => ({
+                        ...currentProfile,
+                        password_updated_at:
+                            response.data.data.password_updated_at,
+                    }));
 
-                setIsEditing(false);
+                    resetForm();
+
+                    setIsEditing(false);
+
+                    showSuccessToast(
+                        response.data.message ||
+                        "Password changed successfully"
+                    );
+
+                } catch (error) {
+                    showErrorToast(
+                        error.response?.data?.message ||
+                        "Failed to change password"
+                    );
+                } finally {
+                    setIsSaving(false);
+                }
 
             }}>
             {({
@@ -101,7 +136,7 @@ export default function ProfileSecurityCard({
                                 text-gray-500
                                 dark:text-gray-400">
                                 Password last changed{" "}
-                                {formatTimeAgo(profile.password_updated_at)}
+                                {formatTimeAgo(profile?.password_updated_at)}
                             </p>
 
                         </>
@@ -152,8 +187,12 @@ export default function ProfileSecurityCard({
                                 <CustomButton
                                     className="w-40"
                                     type="submit"
+                                    disabled={isSaving}
                                     icon={<FiSave />}>
-                                    Save Password
+                                    {isSaving
+                                        ? "Saving..."
+                                        : "Save Password"
+                                    }
                                 </CustomButton>
 
                             </div>

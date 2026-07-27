@@ -7,7 +7,8 @@ class UpdateProfileResponseDto {
             contact_number: profile.contact_number,
             date_of_birth: profile.date_of_birth,
             street_address: profile.street_address,
-            city: profile.city
+            city: profile.city,
+            password_updated_at: profile.password_updated_at
         };
     }
 }

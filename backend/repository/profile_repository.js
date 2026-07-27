@@ -39,7 +39,8 @@ const updateProfile = async (userId, {name, email, contact_number, date_of_birth
             contact_number, 
             date_of_birth, 
             street_address, 
-            city
+            city, 
+            password_updated_at
         `,
         [
             name, 
@@ -56,7 +57,7 @@ const updateProfile = async (userId, {name, email, contact_number, date_of_birth
 }
 
 const updatePassword = async (userId, newPassword) => {
-    await pool.query(
+    const result = await pool.query(
         `
         UPDATE users
         SET 
@@ -64,9 +65,13 @@ const updatePassword = async (userId, newPassword) => {
             updated_at = NOW(),
             password_updated_at = NOW()
         WHERE id = $2
+        RETURNING 
+            password_updated_at
         `,
         [newPassword, userId]
     );
+
+    return result.rows[0]?.password_updated_at;
 }
 
 const getPassword = async (userId) => {

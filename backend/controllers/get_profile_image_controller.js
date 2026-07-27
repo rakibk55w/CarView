@@ -2,7 +2,9 @@ const profileImageRepository = require("../repository/profile_image_repository")
 
 const getProfileImageController = async (req, res, next) => {
   try {
-    const image = await profileImageRepository.getImageByUserId(req.params.userId);
+    const image = await profileImageRepository.getImageByUserId(
+      req.params.userId
+    );
 
     if (!image) {
       return res.status(404).json({

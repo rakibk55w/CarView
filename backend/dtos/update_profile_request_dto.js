@@ -1,4 +1,4 @@
-const normalizer = require("../utils/empty_string_normalizer");
+const normalize = require("../utils/empty_string_normalizer");
 
 class UpdateProfileRequestDto {
     constructor(profile) {
