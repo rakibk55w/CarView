@@ -43,8 +43,10 @@ const createCar = async (userId, carData) => {
 const findCarsByUserID = async (userId, limit, offset) => {
     const queryResult = await pool.query(
         `
-        SELECT * 
-
+        SELECT 
+            id,
+            title,
+            description
         FROM cars 
 
         WHERE owner_id = $1 
@@ -67,6 +69,21 @@ const getCarDetailsByCarID = async (carId) => {
     );
 
     return queryResult.rows[0];
+};
+
+const getCarCountByUserID = async (userId) => {
+    const queryResult = await pool.query(
+        `
+        SELECT COUNT(*) AS total
+
+        FROM cars
+
+        WHERE owner_id = $1
+        `,
+        [userId]
+    );
+
+    return Number(queryResult.rows[0].total);
 };
 
 const getCarDetailsWithProfileVerification = async (carId) => {
@@ -185,6 +202,7 @@ module.exports = {
     createCar,
     findCarsByUserID,
     getCarDetailsByCarID,
+    getCarCountByUserID,
     getCarDetailsWithProfileVerification,
     updateCarById,
     deleteCarByCarId
