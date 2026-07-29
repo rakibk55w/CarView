@@ -1,3 +1,4 @@
+const UploadProfileImageResponseDto = require("../dtos/upload_profile_image_response_dto");
 const profileImageRepository = require("../repository/profile_image_repository");
 const cloudinaryService = require("../services/cloudinary_service");
 
@@ -34,7 +35,9 @@ const uploadProfileImageController = async (req, res, next) => {
             imagesFile
         );
 
-        return res.status(201).json(image);
+        return res.status(201).json(
+            new UploadProfileImageResponseDto(image)
+        );
     } catch (error) {
         next(error);
     }

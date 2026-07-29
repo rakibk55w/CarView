@@ -84,6 +84,7 @@ export default function Profile() {
                     fullName={profile?.name}
                     isOwnProfile={isOwnProfile}
                     isLoading={isProfileImageLoading}
+                    setProfileImage={setProfileImage}
                 />
 
                 <div className="space-y-8">

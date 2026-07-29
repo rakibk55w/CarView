@@ -17,7 +17,9 @@ const createImage = async (userId, image) => {
             image_url = EXCLUDED.image_url,
             cloudinary_public_id = EXCLUDED.cloudinary_public_id,
             updated_at = NOW()
-        RETURNING *
+        RETURNING
+            image_url,
+            cloudinary_public_id
         `,
         [userId, image.imageUrl, image.publicId]
     );

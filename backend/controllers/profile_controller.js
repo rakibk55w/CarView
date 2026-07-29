@@ -10,6 +10,10 @@ const profileController = async (req, res, next) => {
       });
     }
 
+    if (req.user.id !== req.params.userId) {
+      delete profile.password_updated_at;
+    }
+
     return res.status(200).json({
       message: "Profile fetched successfully",
       data: profile,

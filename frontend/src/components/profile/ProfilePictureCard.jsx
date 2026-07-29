@@ -6,6 +6,8 @@ import ConfirmationDialog from "../common/ConfirmationDialog";
 import ImagePreviewModal from "../common/ImagePreviewModal"
 
 import useImageUpload from "../../hooks/useImageUpload";
+import axiosAuthInstance from "../../api/axiosAuthInstance";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const PLACEHOLDER_IMAGE = "https://placehold.co/600x600?text=Profile";
 
@@ -13,7 +15,8 @@ export default function ProfilePictureCard({
     profilePicture, 
     fullName,
     isOwnProfile,
-    isLoading}) {
+    isLoading,
+    setProfileImage}) {
 
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -28,26 +31,56 @@ export default function ProfilePictureCard({
 
         initialImage: profilePicture || PLACEHOLDER_IMAGE,
 
-        onImageSelected: async () => {
+        onImageSelected: async (file) => {
+            const formData = new FormData();
 
-            // TODO:
-            // await uploadProfilePicture(file);
+            formData.append("image", file);
 
+            const response = await axiosAuthInstance.post(
+                "/profile/upload-image",
+                formData
+            );
+
+            setProfileImage(
+                response.data.data.image_url
+            );
+
+            showSuccessToast(
+                response.data.message || "Image uploaded successfully"
+            );
         },
-
     });
 
-    const hasProfilePicture = previewImage !== PLACEHOLDER_IMAGE;
+    const displayedImage =
+    previewImage ||
+    profilePicture ||
+    PLACEHOLDER_IMAGE;
+
+    const hasProfilePicture = Boolean(profilePicture) || Boolean(previewImage);
+
 
     async function handleDeletePicture() {
-
-        // TODO:
-        // await deleteProfilePicture();
-
-        resetPreview(PLACEHOLDER_IMAGE);
-
+        const previousImage = profilePicture;
+        
         setShowDeleteDialog(false);
+        setProfileImage(null);
+        resetPreview(null);
 
+        try {
+            const response = await axiosAuthInstance.delete(
+                "/profile/delete-image"
+            );
+
+            showSuccessToast(
+                response.data.message || "Profile picture deleted successfully"
+            );
+        } catch (error) {
+            setProfileImage(previousImage);
+            showErrorToast(
+                error.response?.data?.message ||
+                "Failed to delete profile picture"
+            );
+        }
     }
 
     if (isLoading) {
@@ -122,7 +155,7 @@ export default function ProfilePictureCard({
                         w-full
                         cursor-pointer
                         object-cover"
-                        src={previewImage || PLACEHOLDER_IMAGE}
+                        src={displayedImage}
                         alt={fullName || "Profile picture"}
                         onClick={() => setIsPreviewOpen(true)}
                     />
@@ -160,7 +193,7 @@ export default function ProfilePictureCard({
             </section>
             <ImagePreviewModal
                 isOpen={isPreviewOpen}
-                image={previewImage || PLACEHOLDER_IMAGE}
+                image={displayedImage}
                 alt={fullName || "Profile picture"}
                 onClose={() => setIsPreviewOpen(false)}
             />

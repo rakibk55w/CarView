@@ -10,7 +10,7 @@ export default function useImageUpload({
     initialImage,
     onImageSelected}) {
 
-    const [previewImage, setPreviewImage] = useState(initialImage);
+    const [previewImage, setPreviewImage] = useState(null);
 
     const fileInputRef = useRef(null);
 

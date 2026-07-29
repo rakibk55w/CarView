@@ -180,6 +180,14 @@ export default function ProfileInformationCard({
                                 </CustomButton>
                             </div>
                         )}
+
+                        {!isOwnProfile && (
+                            <div className="
+                                justify-self-end 
+                                md:col-start-3
+                                w-35"
+                            />
+                        )}
                     </div>
 
                     <div className="space-y-6">
