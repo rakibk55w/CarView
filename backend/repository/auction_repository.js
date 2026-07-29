@@ -172,18 +172,51 @@ const getMyAuctions = async ({
         `
         SELECT
             a.id,
-            a.car_id,
             a.base_price,
             a.current_highest_bid,
             a.end_time,
             a.status,
-            a.created_at,
-            c.title AS car_title
+
+            c.title,
+            c.description,
+            c.brand,
+            c.model,
+            c.manufacture_year,
+            COALESCE(
+                ARRAY_AGG(
+                    ci.image_url
+                    ORDER BY ci.created_at ASC
+                ) FILTER (
+                    WHERE ci.image_url IS NOT NULL
+                ),
+                '{}'
+            ) AS images
+
         FROM auctions a
+
         INNER JOIN cars c
-        ON c.id = a.car_id
+            ON c.id = a.car_id
+
+        LEFT JOIN car_images ci
+            ON ci.car_id = c.id
+
         WHERE a.owner_id = $1
+
+        GROUP BY
+            a.id,
+            a.base_price,
+            a.current_highest_bid,
+            a.end_time,
+            a.status,
+            c.id,
+            c.title,
+            c.description,
+            c.brand,
+            c.model,
+            c.manufacture_year
+
         ORDER BY a.created_at DESC
+
         LIMIT $2
         OFFSET $3
         `,
@@ -193,10 +226,24 @@ const getMyAuctions = async ({
     return result.rows;
 };
 
+const getMyAuctionCount = async (ownerId) => {
+    const result = await pool.query(
+        `
+        SELECT COUNT(*) AS total
+        FROM auctions
+        WHERE owner_id = $1
+        `,
+        [ownerId]
+    );
+
+    return Number(result.rows[0].total);
+};
+
 module.exports = {
     createAuction,
     findActiveAuctionByCarId,
     getAuctionById,
     getAuctions,
-    getMyAuctions
+    getMyAuctions,
+    getMyAuctionCount
 };

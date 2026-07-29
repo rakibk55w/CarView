@@ -44,14 +44,22 @@ const findCarsByUserID = async (userId, limit, offset) => {
     const queryResult = await pool.query(
         `
         SELECT 
-            id,
-            title,
-            description
-        FROM cars 
+            c.id,
+            c.title,
+            c.description,
+            ci.image_url AS image
+        FROM cars c
+        LEFT JOIN LATERAL (
+            SELECT image_url
+            FROM car_images
+            WHERE car_id = c.id
+            ORDER BY created_at ASC
+            LIMIT 1
+        ) ci ON true
 
-        WHERE owner_id = $1 
+        WHERE c.owner_id = $1 
 
-        ORDER BY created_at DESC
+        ORDER BY c.created_at DESC
         
         LIMIT $2
         OFFSET $3

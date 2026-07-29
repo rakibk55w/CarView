@@ -14,11 +14,11 @@ export default function AuctionCard({
         description,
         brand,
         model,
-        manufactureYear,
+        manufacture_year,
         status,
-        basePrice,
-        currentHighestBid,
-        endTime,
+        base_price,
+        current_highest_bid,
+        end_time,
         images
     } = auction;
 
@@ -105,7 +105,7 @@ export default function AuctionCard({
 
                         <AuctionInfoRow
                             label="Manufacture Year"
-                            value={manufactureYear}
+                            value={manufacture_year}
                         />
                     </div>
 
@@ -126,13 +126,13 @@ export default function AuctionCard({
                             sm:grid-cols-2">
                             <AuctionPriceCard
                                 title="Base Price"
-                                value={basePrice}
+                                value={base_price}
                                 color="base"
                             />
 
                             <AuctionPriceCard
                                 title="Highest Bid"
-                                value={currentHighestBid}
+                                value={current_highest_bid}
                                 color="bid"
                             />
                         </div>
@@ -141,7 +141,7 @@ export default function AuctionCard({
                             lg:w-45
                             lg:shrink-0">
                             <CountdownTimer
-                                endTime={endTime}
+                                endTime={end_time}
                             />
                         </div>
                     </div>
