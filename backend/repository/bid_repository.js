@@ -153,14 +153,13 @@ const getMyBids = async ({
             b.id,
             b.bid_amount,
             b.created_at AS bid_created_at,
+            b.bidder_id,
 
             a.id AS auction_id,
-            a.base_price,
-            a.current_highest_bid,
-            a.end_time,
-            a.status,
 
-            c.title AS car_title
+            c.title AS car_title,
+
+            u.name AS "user_name"
 
         FROM bids b
 
@@ -169,6 +168,9 @@ const getMyBids = async ({
 
         INNER JOIN cars c
             ON c.id = a.car_id
+
+        INNER JOIN users u
+            ON u.id = b.bidder_id
 
         WHERE b.bidder_id = $1
 
@@ -183,8 +185,22 @@ const getMyBids = async ({
     return result.rows;
 };
 
+const getMyBidCount = async (bidderId) => {
+    const result = await pool.query(
+        `
+        SELECT COUNT(*) AS total
+        FROM bids
+        WHERE bidder_id = $1
+        `,
+        [bidderId]
+    );
+
+    return Number(result.rows[0].total);
+};
+
 module.exports = {
     createBid,
     getBidHistoryByAuctionId,
-    getMyBids
+    getMyBids,
+    getMyBidCount
 };

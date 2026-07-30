@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 export default function BidCard({
-    bidder = "You",
+    bidderName,
+    isOwnBid,
     bidAmount,
     auctionTitle = "",
     timestamp,
@@ -27,9 +28,9 @@ export default function BidCard({
                 leading-7
                 text-gray-700
                 dark:text-gray-200">
-                {bidder === "You" ? (
+                {isOwnBid ? (
                     <span className="font-semibold">
-                        {bidder}
+                        You
                     </span>
                 ) : (
                     <Link className="
@@ -44,10 +45,12 @@ export default function BidCard({
                             event.preventDefault();
                             onBidderClick?.();
                         }}>
-                        {bidder}
+                        {bidderName}
                     </Link>
                 )}{" "}
+
                 bid{" "}
+
                 <span className="font-semibold">
                     {formatCurrency(bidAmount)}
                 </span>

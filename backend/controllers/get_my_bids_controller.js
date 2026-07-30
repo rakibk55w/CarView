@@ -8,20 +8,25 @@ const getMyBidsController = async (req, res, next) => {
 
         const offset = (page - 1) * limit;
 
-        const bidsList = await bidRepository.getMyBids({
-            bidderId: req.user.id,
-            limit,
-            offset,
-        });
+        const [bidsList, totalItems] = await Promise.all([ 
+            bidRepository.getMyBids({
+                bidderId: req.user.id,
+                limit,
+                offset,
+            }),
+            bidRepository.getMyBidCount(
+                req.user.id
+            )
+        ]);
 
         return res.status(200).json({
             message: "Bid list fetched successfully",
             items: bidsList,
             page: page,
             limit: limit,
-            totalItems: bidsList.length,
+            totalItems: totalItems,
             totalPages: Math.ceil(
-                bidsList.length / limit
+                totalItems / limit
             ),
         });
     } catch (error) {
