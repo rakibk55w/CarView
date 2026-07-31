@@ -5,6 +5,8 @@ import CarCardSkeleton from "../components/car/CarCardSkeleton";
 import Pagination from "../components/pagination/Pagination";
 import axiosAuthInstance from "../api/axiosAuthInstance";
 import { showErrorToast } from "../utils/toast";
+import CreateButton from "../components/button/CreateButton";
+import CreateCarSheet from "../components/car/CreateCarSheet";
 
 const LIMIT = 5;
 
@@ -14,6 +16,11 @@ export default function MyCars() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [isCreateCarSheetOpen, setIsCreateCarSheetOpen] = useState(false);
+
+    const handleCreateCar = () => {
+        setIsCreateCarSheetOpen(true);
+    };
 
     useEffect(() => {
         const fetchMyCars = async () => {
@@ -60,6 +67,13 @@ export default function MyCars() {
                 text-primary-600">
                 My Cars
             </h1>
+
+            <CreateButton className="
+                mb-6
+                w-38"
+                title="Add New Car"
+                onClick={handleCreateCar}
+            />
 
             <div className="
                 flex
@@ -109,6 +123,13 @@ export default function MyCars() {
                     />
                 </div>
             )}
+
+            <CreateCarSheet
+                isOpen={isCreateCarSheetOpen}
+                onClose={() =>
+                    setIsCreateCarSheetOpen(false)
+                }
+            />
         </section>
     );
 }

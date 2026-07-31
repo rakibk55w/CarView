@@ -1,22 +1,27 @@
 const Joi = require("joi");
 
 const createCarSchema = Joi.object({
-    title: Joi.string().trim()
+    title: Joi.string()
+        .trim()
         .max(200)
         .required(),
 
-    description: Joi.string().trim()
+    description: Joi.string()
+        .trim()
         .allow("", null),
 
-    brand: Joi.string().trim()
+    brand: Joi.string()
+        .trim()
         .max(50)
         .required(),
 
-    model: Joi.string().trim()
+    model: Joi.string()
+        .trim()
         .max(50)
         .required(),
 
-    trim: Joi.string().trim()
+    trim: Joi.string()
+        .trim()
         .max(20)
         .allow("", null),
 
@@ -32,7 +37,8 @@ const createCarSchema = Joi.object({
         .max(20)
         .required(),
 
-    drive_type: Joi.string().trim()
+    drive_type: Joi.string()
+        .trim()
         .max(10)
         .allow("", null),
 
@@ -55,15 +61,18 @@ const createCarSchema = Joi.object({
         .min(0)
         .required(),
 
-    color: Joi.string().trim()
+    color: Joi.string()
+        .trim()
         .max(25)
         .allow("", null),
 
-    driving_position: Joi.string().trim()
+    driving_position: Joi.string()
+        .trim()
         .max(10)
         .required(),
 
-    body_type: Joi.string().trim()
+    body_type: Joi.string()
+        .trim()
         .max(20)
         .required(),
 
@@ -77,7 +86,8 @@ const createCarSchema = Joi.object({
         .min(1)
         .required(),
 
-    registration_number: Joi.string().trim()
+    registration_number: Joi.string()
+        .trim()
         .max(50)
         .allow("", null),
 
@@ -92,7 +102,8 @@ const createCarSchema = Joi.object({
         .min(0)
         .required(),
 
-    city: Joi.string().trim()
+    city: Joi.string()
+        .trim()
         .max(50)
         .allow("", null)
 });
