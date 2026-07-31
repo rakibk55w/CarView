@@ -24,7 +24,9 @@ const createImages = async (carId, images) => {
         )
         VALUES
         ${placeholders.join(",")}
-        RETURNING *
+        RETURNING
+            image_url,
+            cloudinary_public_id
         `,
         values
     );

@@ -5,10 +5,11 @@ const createCarController = async (req, res, next) => {
     try {
         const createCarDto = CreateCarRequestDto.fromRequest(req.body);
 
-        await carRepository.createCar(req.user.id, createCarDto);
+        const car = await carRepository.createCar(req.user.id, createCarDto);
 
         return res.status(201).json({
-            message: "Car registered successfully"
+            message: "Car registered successfully",
+            data: car
         });
 
     } catch (error) {

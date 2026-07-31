@@ -21,7 +21,8 @@ export default function CheckboxField({
             <Field className="
                 h-5
                 w-5
-                cursor-pointer"
+                cursor-pointer
+                accent-primary-600"
                 type="checkbox"
                 {...props}
             />

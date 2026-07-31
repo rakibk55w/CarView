@@ -1,7 +1,7 @@
 const pool = require("../config/db");
 
 const createCar = async (userId, carData) => {
-    await pool.query(
+    const queryResult = await pool.query(
         `INSERT INTO cars(
             owner_id,
             title, 
@@ -30,7 +30,10 @@ const createCar = async (userId, carData) => {
             updated_at
         ) 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,
-            $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, NOW())`,
+            $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, NOW())
+        RETURNING 
+            id
+        `,
         [
             userId, carData.title, carData.description, carData.brand, carData.model, carData.trim, carData.manufacture_year, carData.fuel_type,
             carData.transmission_type, carData.drive_type, carData.engine_capacity_cc, carData.cylinder_count, carData.battery_capacity_kwh,
@@ -38,6 +41,8 @@ const createCar = async (userId, carData) => {
             carData.registration_number, carData.accident_history, carData.service_warranty, carData.ownership_count, carData.city
         ]
     );
+    
+    return queryResult.rows[0];
 };
 
 const findCarsByUserID = async (userId, limit, offset) => {

@@ -12,7 +12,7 @@ export default function FormSection({
                 border-gray-200
                 pb-2
                 text-center
-                text-lg
+                text-2xl
                 font-semibold
                 dark:border-gray-700">
 

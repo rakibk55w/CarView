@@ -1,5 +1,8 @@
 import { Formik, Form } from "formik";
-import { FiSave, FiX } from "react-icons/fi";
+import {
+    FiSave,
+    FiX,
+} from "react-icons/fi";
 
 import PopupSheet from "../common/PopupSheet";
 import CustomButton from "../button/CustomButton";
@@ -11,190 +14,305 @@ import SelectField from "../form/SelectField";
 import CarImagePicker from "./CarImagePicker";
 
 import {
-  createCarSchema,
-  initialCreateCarValues,
+    createCarSchema,
+    initialCreateCarValues,
 } from "../../schemas/createCarSchema";
 
 import {
-  FUEL_TYPES,
-  TRANSMISSION_TYPES,
-  DRIVE_TYPES,
-  DRIVING_POSITIONS,
-  BODY_TYPES,
+    FUEL_TYPES,
+    TRANSMISSION_TYPES,
+    DRIVE_TYPES,
+    DRIVING_POSITIONS,
+    BODY_TYPES,
 } from "../../constants/carOptions";
+import axiosAuthInstance from "../../api/axiosAuthInstance";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
-export default function CreateCarSheet({ isOpen, onClose }) {
-  return (
-    <PopupSheet isOpen={isOpen}>
-      <Formik
-        initialValues={initialCreateCarValues}
-        validationSchema={createCarSchema}
-        onSubmit={(values) => {
-          console.log(values);
-        }}
-      >
-        {({ values }) => {
-          const isElectric = values.fuelType === "Electric";
+export default function CreateCarSheet({
+    isOpen,
+    onClose,
+}) {
 
-          const showBattery =
-            values.fuelType === "Electric" || values.fuelType === "Hybrid";
+    return (
+        <PopupSheet isOpen={isOpen}>
+            <Formik
+                initialValues={initialCreateCarValues}
+                validationSchema={createCarSchema}
+                onSubmit={async (values, {resetForm}) => {
+                    const { images, ...carData } = values;
+                    let carId;
 
-          return (
-            <Form className="space-y-5">
-              <div>
-                <h2
-                  className="
+                    try {
+                        const response = await axiosAuthInstance.post(
+                            "/create-car", 
+                            {
+                                title: carData.title, 
+                                description: carData.description, 
+                                brand: carData.brand, 
+                                model: carData.model, 
+                                trim: carData.trim, 
+                                manufacture_year: carData.manufactureYear, 
+                                fuel_type: carData.fuelType, 
+                                transmission_type: carData.transmissionType, 
+                                drive_type: carData.driveType, 
+                                engine_capacity_cc: carData.engineCapacityCc, 
+                                cylinder_count: carData.cylinderCount, 
+                                battery_capacity_kwh: carData.batteryCapacityKwh, 
+                                mileage_km: carData.mileageKm, 
+                                color: carData.color, 
+                                driving_position: carData.drivingPosition, 
+                                body_type: carData.bodyType, 
+                                door_count: carData.doorCount, 
+                                seat_count: carData.seatCount, 
+                                registration_number: carData.registrationNumber, 
+                                accident_history: carData.accidentHistory, 
+                                service_warranty: carData.serviceWarranty, 
+                                ownership_count: carData.ownershipCount, 
+                                city: carData.city
+                            }
+                        );
+
+                        showSuccessToast(
+                            response.data.message || "Car has been saved successfully."
+                        )
+
+                        carId = response.data.data.id;
+                        
+                    } catch (error) {
+                        showErrorToast(
+                            error.response?.data?.message || "Failed to save car. Please try again."
+                        )
+
+                        return;
+                    }
+
+                    try {
+                        const formData = new FormData();
+
+                        images.forEach((image) =>
+                            formData.append("images", image.file)
+                        );
+
+                        const response = await axiosAuthInstance.post(
+                            `/cars/${carId}/images`,
+                            formData
+                        );
+
+                        showSuccessToast(
+                            response.data.message || "Car image uploaded successfully."
+                        );
+                    }
+                    catch (error) {
+                        showErrorToast(
+                            error.response?.data?.message ??
+                            "Could not upload images."
+                        );
+                    }
+
+                    resetForm();
+                    onClose();
+                }}>
+
+                {({
+                    values,
+                    isSubmitting,
+                }) => {
+
+                    const isElectric =
+                        values.fuelType ===
+                        "Electric";
+
+                    const showBattery =
+                        values.fuelType ===
+                            "Electric" ||
+                        values.fuelType ===
+                            "Hybrid";
+
+                    return (
+                        <Form className="space-y-5">
+                            <div>
+                                <h2 className="
                                     text-center
                                     text-3xl
                                     font-bold
                                     text-primary-600
-                                    pt-6"
-                >
-                  Add New Car
-                </h2>
-              </div>
+                                    pt-6">
 
-              <FormSection title="General">
-                <div className="md:col-span-2">
-                  <FormField
-                    label="Title"
-                    name="title"
-                    type="text"
-                    placeholder="Enter title"
-                  />
-                </div>
+                                    Add New Car
+                                </h2>
+                            </div>
 
-                <div className="md:col-span-2">
-                  <TextAreaField
-                    label="Description"
-                    name="description"
-                    placeholder="Describe your vehicle"
-                    rows={5}
-                    maxLength={2000}
-                    showCharacterCount
-                  />
-                </div>
+                            <FormSection title="General">
+                                <div className="md:col-span-2">
+                                    <FormField
+                                        label="Title"
+                                        name="title"
+                                        type="text"
+                                        placeholder="Enter title"
+                                    />
+                                </div>
 
-                <FormField label="Brand" name="brand" type="text" />
+                                <div className="md:col-span-2">
+                                    <TextAreaField
+                                        label="Description"
+                                        name="description"
+                                        placeholder="Describe your vehicle"
+                                        rows={5}
+                                        maxLength={2000}
+                                        showCharacterCount
+                                    />
+                                </div>
 
-                <FormField label="Model" name="model" type="text" />
+                                <FormField
+                                    label="Brand"
+                                    name="brand"
+                                    type="text"
+                                />
 
-                <FormField label="Trim" name="trim" type="text" />
+                                <FormField
+                                    label="Model"
+                                    name="model"
+                                    type="text"
+                                />
 
-                <FormField
-                  label="Manufacture Year"
-                  name="manufactureYear"
-                  type="number"
-                />
-              </FormSection>
+                                <FormField
+                                    label="Trim"
+                                    name="trim"
+                                    type="text"
+                                />
 
-              <FormSection title="Powertrain">
-                <SelectField
-                  label="Fuel Type"
-                  name="fuelType"
-                  options={FUEL_TYPES}
-                />
+                                <FormField
+                                    label="Manufacture Year"
+                                    name="manufactureYear"
+                                    type="number"
+                                />
+                            </FormSection>
 
-                <SelectField
-                  label="Transmission"
-                  name="transmissionType"
-                  options={TRANSMISSION_TYPES}
-                />
+                            <FormSection title="Powertrain">
+                                <SelectField
+                                    label="Fuel Type"
+                                    name="fuelType"
+                                    options={FUEL_TYPES}
+                                />
 
-                <SelectField
-                  label="Drive Type"
-                  name="driveType"
-                  options={DRIVE_TYPES}
-                />
+                                <SelectField
+                                    label="Transmission"
+                                    name="transmissionType"
+                                    options={TRANSMISSION_TYPES}
+                                />
 
-                {!isElectric && (
-                  <FormField
-                    label="Engine Capacity (cc)"
-                    name="engineCapacityCc"
-                    type="number"
-                  />
-                )}
+                                <SelectField
+                                    label="Drive Type"
+                                    name="driveType"
+                                    options={DRIVE_TYPES}
+                                />
 
-                {!isElectric && (
-                  <FormField
-                    label="Cylinder Count"
-                    name="cylinderCount"
-                    type="number"
-                  />
-                )}
+                                {!isElectric && (
+                                    <FormField
+                                        label="Engine Capacity (cc)"
+                                        name="engineCapacityCc"
+                                        type="number"
+                                    />
+                                )}
 
-                {showBattery && (
-                  <FormField
-                    label="Battery Capacity (kWh)"
-                    name="batteryCapacityKwh"
-                    type="number"
-                    step="0.01"
-                  />
-                )}
-              </FormSection>
+                                {!isElectric && (
+                                    <FormField
+                                        label="Cylinder Count"
+                                        name="cylinderCount"
+                                        type="number"
+                                    />
+                                )}
 
-              <FormSection title="Vehicle">
-                <FormField
-                  label="Mileage (km)"
-                  name="mileageKm"
-                  type="number"
-                />
+                                {showBattery && (
+                                    <FormField
+                                        label="Battery Capacity (kWh)"
+                                        name="batteryCapacityKwh"
+                                        type="number"
+                                        step="0.01"
+                                    />
+                                )}
+                            </FormSection>
 
-                <FormField label="Color" name="color" type="text" />
+                            <FormSection title="Vehicle">
+                                <FormField
+                                    label="Mileage (km)"
+                                    name="mileageKm"
+                                    type="number"
+                                />
 
-                <SelectField
-                  label="Driving Position"
-                  name="drivingPosition"
-                  options={DRIVING_POSITIONS}
-                />
+                                <FormField
+                                    label="Color"
+                                    name="color"
+                                    type="text"
+                                />
 
-                <SelectField
-                  label="Body Type"
-                  name="bodyType"
-                  options={BODY_TYPES}
-                />
+                                <SelectField
+                                    label="Driving Position"
+                                    name="drivingPosition"
+                                    options={DRIVING_POSITIONS}
+                                />
 
-                <FormField label="Door Count" name="doorCount" type="number" />
+                                <SelectField
+                                    label="Body Type"
+                                    name="bodyType"
+                                    options={BODY_TYPES}
+                                />
 
-                <FormField label="Seat Count" name="seatCount" type="number" />
-              </FormSection>
+                                <FormField
+                                    label="Door Count"
+                                    name="doorCount"
+                                    type="number"
+                                />
 
-              <FormSection title="Ownership & Registration">
-                <div className="md:col-span-2">
-                  <FormField
-                    label="Registration Number"
-                    name="registrationNumber"
-                    type="text"
-                  />
-                </div>
+                                <FormField
+                                    label="Seat Count"
+                                    name="seatCount"
+                                    type="number"
+                                />
+                            </FormSection>
 
-                <FormField
-                  label="Previous Owners"
-                  name="ownershipCount"
-                  type="number"
-                />
+                            <FormSection title="Ownership & Registration">
+                                <div className="md:col-span-2">
 
-                <FormField label="City" name="city" type="text" />
+                                    <FormField
+                                        label="Registration Number"
+                                        name="registrationNumber"
+                                        type="text"
+                                    />
+                                </div>
 
-                <CheckboxField
-                  label="Accident History"
-                  name="accidentHistory"
-                />
+                                <FormField
+                                    label="Previous Owners"
+                                    name="ownershipCount"
+                                    type="number"
+                                />
 
-                <CheckboxField
-                  label="Service Warranty"
-                  name="serviceWarranty"
-                />
-              </FormSection>
+                                <FormField
+                                    label="City"
+                                    name="city"
+                                    type="text"
+                                />
 
-              <FormSection title="Images">
-                <div className="md:col-span-2">
-                  <CarImagePicker name="images" />
-                </div>
-              </FormSection>
+                                <CheckboxField
+                                    label="Accident History"
+                                    name="accidentHistory"
+                                />
 
-              <div
-                className="
+                                <CheckboxField
+                                    label="Service Warranty"
+                                    name="serviceWarranty"
+                                />
+                            </FormSection>
+
+                            <FormSection title="Images">
+                                <div className="md:col-span-2">
+                                    <CarImagePicker
+                                        name="images"
+                                    />
+                                </div>
+                            </FormSection>
+
+                            <div className="
                                 sticky
                                 bottom-0
                                 -mx-5
@@ -208,45 +326,45 @@ export default function CreateCarSheet({ isOpen, onClose }) {
                                 dark:bg-gray-800
                                 sm:-mx-8
                                 sm:px-8
-                                shadow-2xl"
-              >
-                <div
-                  className="
+                                shadow-2xl">
+                                <div className="
                                     flex
                                     flex-col-reverse
                                     gap-3
                                     sm:flex-row
-                                    sm:justify-end"
-                >
-                  <CustomButton
-                    className="
+                                    sm:justify-end">
+                                    <CustomButton className="
                                         w-full
                                         sm:w-auto
                                         px-4"
-                    type="button"
-                    dangerButton={true}
-                    icon={<FiX />}
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </CustomButton>
+                                        type="button"
+                                        dangerButton={true}
+                                        icon={ <FiX /> }
+                                        disabled={isSubmitting}
+                                        onClick={onClose}>
 
-                  <CustomButton
-                    className="
+                                        Cancel
+                                    </CustomButton>
+
+                                    <CustomButton className="
                                         w-full
                                         sm:w-auto
                                         px-4"
-                    type="submit"
-                    icon={<FiSave />}
-                  >
-                    Save Car
-                  </CustomButton>
-                </div>
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
-    </PopupSheet>
-  );
+                                        type="submit"
+                                        icon={ <FiSave /> }
+                                        disabled={isSubmitting}>
+
+                                        {isSubmitting
+                                            ? "Saving Car..."
+                                            : "Save Car"
+                                        }
+                                    </CustomButton>
+                                </div>
+                            </div>                        
+                        </Form>
+                    );
+                }}
+            </Formik>
+        </PopupSheet>
+    );
 }

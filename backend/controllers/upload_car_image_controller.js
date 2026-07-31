@@ -1,3 +1,4 @@
+const UploadCarImageResponseDto = require("../dtos/upload_car_image_response_dto");
 const carImageRepository = require("../repository/car_image_repository");
 const cloudinaryService = require("../services/cloudinary_service");
 
@@ -38,7 +39,9 @@ const uploadCarImageController = async (req, res, next) => {
             imagesFiles
         );
 
-        return res.status(201).json(images);
+        return res.status(201).json(
+            new UploadCarImageResponseDto(images)
+        );
     } catch (error) {
         next(error);
     }
