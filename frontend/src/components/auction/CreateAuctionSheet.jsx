@@ -82,7 +82,7 @@ export default function CreateAuctionSheet({
                                         <FormField
                                             label="Base Price"
                                             name="basePrice"
-                                            type="number"
+                                            numberFormat
                                             placeholder="Enter base price"
                                         />
                                     </div>

@@ -20,6 +20,8 @@ export default function MyAuctions() {
     const [isLoading, setIsLoading] = useState(true);
     const [isCreateAuctionSheetOpen, setIsCreateAuctionSheetOpen] = useState(false);
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
     const [now, setNow] = useState(Date.now);
 
     useEffect(() => {
@@ -36,6 +38,7 @@ export default function MyAuctions() {
 
     const handleAuctionCreated = () => {
         setPage(1);
+        setRefreshKey((prev) => prev + 1);
     };
 
     useEffect(() => {
@@ -71,7 +74,7 @@ export default function MyAuctions() {
         };
 
         fetchMyAuctions();
-    }, [page]);
+    }, [page, refreshKey]);
     
     return (
         <section className="

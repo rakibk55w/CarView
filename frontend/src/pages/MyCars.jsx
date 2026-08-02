@@ -18,12 +18,15 @@ export default function MyCars() {
     const [isLoading, setIsLoading] = useState(true);
     const [isCreateCarSheetOpen, setIsCreateCarSheetOpen] = useState(false);
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
     const handleCreateCar = () => {
         setIsCreateCarSheetOpen(true);
     };
 
     const handleCarCreated = () => {
         setPage(1);
+        setRefreshKey((prev) => prev + 1);
     };
 
     useEffect(() => {
@@ -56,7 +59,7 @@ export default function MyCars() {
         };
 
         fetchMyCars();
-    }, [page]);
+    }, [page, refreshKey]);
 
     return (
         <section className="

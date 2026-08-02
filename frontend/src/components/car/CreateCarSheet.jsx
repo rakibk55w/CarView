@@ -118,6 +118,7 @@ export default function CreateCarSheet({
                 {({
                     values,
                     isSubmitting,
+                    resetForm
                 }) => {
 
                     const isElectric =
@@ -239,7 +240,7 @@ export default function CreateCarSheet({
                                 <FormField
                                     label="Mileage (km)"
                                     name="mileageKm"
-                                    type="number"
+                                    numberFormat
                                 />
 
                                 <FormField
@@ -343,7 +344,10 @@ export default function CreateCarSheet({
                                         dangerButton={true}
                                         icon={ <FiX /> }
                                         disabled={isSubmitting}
-                                        onClick={onClose}>
+                                        onClick={() => {
+                                            resetForm();
+                                            onClose();
+                                        }}>
 
                                         Cancel
                                     </CustomButton>

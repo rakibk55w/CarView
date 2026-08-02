@@ -6,16 +6,34 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 function FormField({
     label,
     passwordToggle = false,
+    numberFormat = false,
     ...props
 }) {
-    const [field, meta] = useField(props);
+    const [field, meta, helpers] = useField(props);
     const [showPassword, setShowPassword] = useState(false);
 
 
     const hasError = meta.touched && meta.error;
     const inputType = passwordToggle
             ? (showPassword ? "text" : "password")
-            : props.type;
+            : numberFormat 
+                ? "text" 
+                : props.type;
+
+    const displayValue = numberFormat 
+        ? field.value 
+            ? Number(field.value).toLocaleString("en-US") 
+            : "" 
+        : field.value; 
+            
+    const handleNumberChange = (event) => { 
+        const rawValue = event.target.value.replace( /,/g, "" ); 
+        
+        if (!/^\d*$/.test(rawValue)) { 
+            return; 
+        } 
+        helpers.setValue(rawValue); 
+    };
 
     return (
         <div>
@@ -39,18 +57,24 @@ function FormField({
                     dark:[&::-webkit-calendar-picker-indicator]:invert
 
                     ${
-                        hasError ? 
-                            errorFieldStyle
+                        hasError 
+                            ? errorFieldStyle
                             : normalFieldStyle
                     }
                     ${
-                            passwordToggle
-                                ? "pr-11"
-                                : ""
+                        passwordToggle
+                            ? "pr-11"
+                            : ""
                     }`}
                     {...field}
                     {...props}
                     type={inputType}
+                    value={displayValue}
+                    onChange={ 
+                        numberFormat 
+                        ? handleNumberChange 
+                        : field.onChange 
+                    }
                 />
 
                 { passwordToggle && (
