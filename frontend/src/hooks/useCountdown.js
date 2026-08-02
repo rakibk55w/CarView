@@ -1,40 +1,51 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 
-function calculateRemainingTime(endTime) {
-  const difference = new Date(endTime).getTime() - Date.now();
+export default function useCountdown(startTime, endTime) {
+  	const calculateTimeLeft = useCallback(() => {
+        const now = Date.now();
 
-  if (difference <= 0) {
-    return {
-      expired: true,
-      days: 0,
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    };
-  }
+        const start = new Date(startTime).getTime();
+        const end = new Date(endTime).getTime();
 
-  return {
-    expired: false,
-    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((difference / (1000 * 60)) % 60),
-    seconds: Math.floor((difference / 1000) % 60),
-  };
-}
+        let difference;
+        let status;
 
-export default function useCountdown(endTime) {
-  const [timeLeft, setTimeLeft] = useState(() =>
-    calculateRemainingTime(endTime),
-  );
+        if (now < start) {
+            difference = start - now;
+            status = "starting";
+        } else if (now < end) {
+            difference = end - now;
+            status = "running";
+        } else {
+            difference = 0;
+            status = "expired";
+        }
 
-  useEffect(() => {
+        return {
+			status,
+            expired: status === "expired",
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor(
+                (difference / (1000 * 60 * 60)) % 24
+            ),
+            minutes: Math.floor(
+                (difference / (1000 * 60)) % 60
+            ),
+            seconds: Math.floor(
+                (difference / 1000) % 60
+            ),
+        };
+	}, [startTime, endTime]);
+  	
+	const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
 
-    const interval = setInterval(() => {
-      setTimeLeft(calculateRemainingTime(endTime));
-    }, 1000);
+  	useEffect(() => {
+    	const interval = setInterval(() => {
+      		setTimeLeft(calculateTimeLeft());
+    	}, 1000);
 
-    return () => clearInterval(interval);
-  }, [endTime]);
+    	return () => clearInterval(interval);
+  	}, [calculateTimeLeft]);
 
-  return timeLeft;
+  	return timeLeft;
 }

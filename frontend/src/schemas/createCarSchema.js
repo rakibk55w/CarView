@@ -84,7 +84,7 @@ export const createCarSchema = Yup.object({
         .nullable(),
 
     manufactureYear: Yup.number()
-        .typeError("Manufacture year is required.")
+        .typeError("Manufacture year should be a number.")
         .integer("Manufacture year must be valid.")
         .min(
             1886,

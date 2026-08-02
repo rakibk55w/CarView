@@ -20,6 +20,16 @@ export default function MyAuctions() {
     const [isLoading, setIsLoading] = useState(true);
     const [isCreateAuctionSheetOpen, setIsCreateAuctionSheetOpen] = useState(false);
 
+    const [now, setNow] = useState(Date.now);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setNow(Date.now());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const handleCreateAuction = () => {
         setIsCreateAuctionSheetOpen(true);
     };
@@ -110,6 +120,7 @@ export default function MyAuctions() {
                         <AuctionCard
                             key={auction.id}
                             auction={auction}
+                            now={now}
                             onClick={() =>
                                 navigate(
                                     `/auctions/${auction.id}`

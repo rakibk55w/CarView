@@ -6,6 +6,7 @@ import AuctionInfoRow from "./AuctionInfoRow";
 
 export default function AuctionCard({
     auction,
+    now,
     onClick,
 }) {
     const {
@@ -14,10 +15,12 @@ export default function AuctionCard({
         description,
         brand,
         model,
+        fuel_type,
         manufacture_year,
         status,
         base_price,
         current_highest_bid,
+        start_time,
         end_time,
         images
     } = auction;
@@ -107,6 +110,11 @@ export default function AuctionCard({
                             label="Manufacture Year"
                             value={manufacture_year}
                         />
+
+                        <AuctionInfoRow
+                            label="Fuel Type"
+                            value={fuel_type}
+                        />
                     </div>
 
                     <div className="
@@ -141,7 +149,9 @@ export default function AuctionCard({
                             lg:w-45
                             lg:shrink-0">
                             <CountdownTimer
+                                startTime={start_time}
                                 endTime={end_time}
+                                now={now}
                             />
                         </div>
                     </div>

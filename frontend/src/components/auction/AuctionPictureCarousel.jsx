@@ -67,13 +67,20 @@ export default function AuctionPictureCarousel({
         };
     }, [emblaApi]);
 
+    const stopPropagation = (event) => { 
+        event.stopPropagation(); 
+    };
+
     return (
         <div className="
             relative
             flex
             w-full
             lg:basis-[30%]
-            lg:shrink-0">
+            lg:shrink-0
+            cursor-default"
+            onClick={stopPropagation}
+            onPointerDown={stopPropagation}>
             <div className="
                 overflow-hidden
                 aspect-4/3
@@ -127,6 +134,7 @@ export default function AuctionPictureCarousel({
                 onClick={scrollPrev}
                 aria-label="Previous image">
                 <FiChevronLeft
+                    className="cursor-pointer"
                     size={20}
                 />
             </button>
@@ -155,6 +163,7 @@ export default function AuctionPictureCarousel({
                 onClick={scrollNext}
                 aria-label="Next image">
                 <FiChevronRight
+                    className="cursor-pointer"
                     size={20}
                 />
             </button>

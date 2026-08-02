@@ -1,10 +1,38 @@
 import { FiClock } from "react-icons/fi";
-import useCountdown from "../../hooks/useCountdown";
 
-export default function CountdownTimer({endTime}) {
-    const timeLeft = useCountdown(endTime);
+export default function CountdownTimer({startTime, endTime, now}) {
+    const start = new Date(startTime).getTime();
+    const end = new Date(endTime).getTime();
 
-    if (timeLeft.expired) {
+    let difference;
+    let status;
+
+    if (now < start) {
+        difference = start - now;
+        status = "starting";
+    } else if (now < end) {
+        difference = end - now;
+        status = "running";
+    } else {
+        difference = 0;
+        status = "expired";
+    }
+
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    
+    const hours = Math.floor(
+        (difference / (1000 * 60 * 60)) % 24
+    );
+    
+    const minutes = Math.floor(
+        (difference / (1000 * 60)) % 60
+    );
+    
+    const seconds = Math.floor(
+        (difference / 1000) % 60
+    );
+    
+    if (status === "expired") {
         return (
             <div className="
                 flex
@@ -45,9 +73,9 @@ export default function CountdownTimer({endTime}) {
         );
     }
 
-    const formattedTime = timeLeft.days > 0
-        ? `${timeLeft.days}d ${timeLeft.hours}h`
-        : `${String(timeLeft.hours).padStart(2, "0")}:${String(timeLeft.minutes).padStart(2, "0")}:${String(timeLeft.seconds).padStart(2, "0")}`;
+    const formattedTime = days > 0
+        ? `${days}d ${hours}h`
+        : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
     return (
         <div className="
@@ -76,7 +104,10 @@ export default function CountdownTimer({endTime}) {
                     tracking-wide
                     text-gray-500
                     dark:text-gray-400">
-                    Remaining
+                    
+                    {status === "starting"
+                        ? "Starting In"
+                        : "Remaining"}
                 </p>
 
                 <p className="

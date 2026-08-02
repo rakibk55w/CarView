@@ -179,6 +179,7 @@ const getMyAuctions = async ({
             a.id,
             a.base_price,
             a.current_highest_bid,
+            a.start_time,
             a.end_time,
             a.status,
 
@@ -187,6 +188,7 @@ const getMyAuctions = async ({
             c.brand,
             c.model,
             c.manufacture_year,
+            c.fuel_type,
             COALESCE(
                 ARRAY_AGG(
                     ci.image_url
