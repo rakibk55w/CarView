@@ -103,12 +103,9 @@ const getCarDetailsWithProfileVerification = async (carId) => {
     const queryResult = await pool.query(
         `
         SELECT
-            c.*,
+            c.owner_id,
             (
-                u.name IS NOT NULL
-                AND u.email IS NOT NULL
-                AND u.last_name IS NOT NULL
-                AND u.contact_number IS NOT NULL
+                u.contact_number IS NOT NULL
                 AND u.date_of_birth IS NOT NULL
                 AND u.street_address IS NOT NULL
                 AND u.city IS NOT NULL

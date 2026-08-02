@@ -5,6 +5,7 @@ const createAuction = async (auctionData) => {
         `
         INSERT INTO auctions (
             car_id,
+            owner_id,
             base_price,
             current_highest_bid,
             bid_count,
@@ -15,16 +16,18 @@ const createAuction = async (auctionData) => {
             updated_at
         )
         VALUES (
-            $1, $2, $2, 0, $3, $4, 
-            0, 'ACTIVE', NOW()
+            $1, $2, $3, 0, 0, $4, 
+            $5, 0, 'ACTIVE', NOW()
         )
-        RETURNING *
+        RETURNING 
+            id
         `,
         [
-            auctionData.car_id,
-            auctionData.base_price,
-            auctionData.start_time,
-            auctionData.end_time
+            auctionData.carId,
+            auctionData.userId,
+            auctionData.basePrice,
+            auctionData.startTime,
+            auctionData.endTime
         ]
     );
 
@@ -34,15 +37,17 @@ const createAuction = async (auctionData) => {
 const findActiveAuctionByCarId = async (carId) => {
     const queryResult = await pool.query(
         `
-        SELECT *
-        FROM auctions
-        WHERE car_id = $1
-        AND status = 'ACTIVE'
+        SELECT EXISTS (
+            SELECT 1
+            FROM auctions
+            WHERE car_id = $1
+            AND status = 'ACTIVE'
+        ) AS auction_exists;
         `,
         [carId]
     );
 
-    return queryResult.rows[0];
+    return queryResult.rows[0].auction_exists;
 };
 
 const getAuctionById = async (auctionId) => {

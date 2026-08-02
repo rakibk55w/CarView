@@ -1,12 +1,12 @@
 const normalize = require("../utils/empty_string_normalizer");
 
 class CreateAuctionRequestDto {
-    constructor(auction, ownerId) {
-        this.car_id = normalize(auction.car_id);
-        this.owner_id = normalize(ownerId);
-        this.base_price = normalize(auction.base_price);
-        this.start_time = normalize(auction.start_time);
-        this.end_time = normalize(auction.end_time);
+    constructor(auction, userId) {
+        this.carId = normalize(auction.car_id);
+        this.basePrice = normalize(auction.base_price);
+        this.startTime = normalize(auction.start_time);
+        this.endTime = normalize(auction.end_time);
+        this.userId = normalize(userId);
     }
 
     static fromRequest(reqBody, ownerId) {

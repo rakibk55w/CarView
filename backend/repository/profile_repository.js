@@ -20,6 +20,21 @@ const getProfile = async (userId) => {
     return result.rows[0];
 };
 
+const auctionExistCheck = async (userId) => {
+    const queryResult = await pool.query(
+        `
+        SELECT EXISTS (
+            SELECT 1
+            FROM auctions
+            WHERE owner_id = $1
+        ) AS auction_exists;
+        `,
+        [userId]
+    );
+
+    return queryResult.rows[0].auction_exists;
+};
+
 const updateProfile = async (userId, {name, email, contact_number, date_of_birth, street_address, city}) => {
     const result = await pool.query(
         `
@@ -89,6 +104,7 @@ const getPassword = async (userId) => {
 
 module.exports = { 
     getProfile, 
+    auctionExistCheck,
     updateProfile, 
     updatePassword, 
     getPassword 

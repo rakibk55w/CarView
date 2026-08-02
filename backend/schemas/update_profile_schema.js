@@ -11,8 +11,7 @@ const updateProfileSchema = Joi.object({
     .trim()
     .email()
     .max(255)
-    .allow("", null)
-    .optional(),
+    .required(),
 
   contact_number: Joi.string()
     .trim()

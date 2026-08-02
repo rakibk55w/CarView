@@ -3,9 +3,10 @@ const PLACEHOLDER_IMAGE = "https://placehold.co/600x600?text=No+Image";
 export default function CarCard({
     car,
     onClick = () => {},
+    showHover=true
 }) {
     return (
-        <button className="
+        <button className={`
             flex
             w-full
             max-w-4xl
@@ -19,10 +20,15 @@ export default function CarCard({
             shadow-sm
             transition-all
             duration-200
-            hover:-translate-y-0.5
-            hover:shadow-md
+            ${
+                showHover 
+                ?   `hover:-translate-y-0.5
+                    hover:shadow-md`
+                : ""
+            }
+            
             dark:border-gray-700
-            dark:bg-gray-800"
+            dark:bg-gray-800`}
             type="button"
             onClick={onClick}>
             <img className="

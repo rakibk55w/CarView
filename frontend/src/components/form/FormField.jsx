@@ -36,6 +36,7 @@ function FormField({
                     outline-none
                     transition-colors
                     dark:bg-gray-900
+                    dark:[&::-webkit-calendar-picker-indicator]:invert
 
                     ${
                         hasError ? 

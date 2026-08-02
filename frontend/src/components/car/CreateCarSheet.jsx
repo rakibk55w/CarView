@@ -31,6 +31,7 @@ import { showErrorToast, showSuccessToast } from "../../utils/toast";
 export default function CreateCarSheet({
     isOpen,
     onClose,
+    onSuccess
 }) {
 
     return (
@@ -110,6 +111,7 @@ export default function CreateCarSheet({
                     }
 
                     resetForm();
+                    onSuccess?.();
                     onClose();
                 }}>
 

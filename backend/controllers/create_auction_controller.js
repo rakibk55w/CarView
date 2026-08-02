@@ -8,7 +8,7 @@ const createAuctionController = async (req, res, next) => {
         const createAuctionDto = CreateAuctionRequestDto.fromRequest(req.body, req.user.id);
 
         const car = await carRepository.getCarDetailsWithProfileVerification(
-            createAuctionDto.car_id
+            createAuctionDto.carId
         );
 
         if (!car) {
@@ -17,7 +17,7 @@ const createAuctionController = async (req, res, next) => {
             });
         }
 
-        if (car.owner_id !== createAuctionDto.owner_id) {
+        if (car.owner_id !== createAuctionDto.userId) {
             return res.status(403).json({
                 message: "Car ownership conflict"
             });
@@ -26,11 +26,11 @@ const createAuctionController = async (req, res, next) => {
         if (!car.owner_profile_complete) {
             return res.status(403).json({
                 message: "Complete your profile before creating an auction"
-        });
-}
+            });
+        }
 
-        const hasImagesForCar  = await carImageRepository.carHasImage(
-            createAuctionDto.car_id
+        const hasImagesForCar = await carImageRepository.carHasImage(
+            createAuctionDto.carId
         );
 
         if (!hasImagesForCar) {
@@ -40,7 +40,7 @@ const createAuctionController = async (req, res, next) => {
         }
 
         const activeAuction = await auctionRepository.findActiveAuctionByCarId(
-            createAuctionDto.car_id
+            createAuctionDto.carId
         );
 
         if (activeAuction) {
@@ -49,7 +49,9 @@ const createAuctionController = async (req, res, next) => {
             });
         }
 
-        const auction = await auctionRepository.createAuction(createAuctionDto);
+        const auction = await auctionRepository.createAuction(
+            createAuctionDto
+        );
 
         return res.status(201).json({
             message: "Auction created successfully",

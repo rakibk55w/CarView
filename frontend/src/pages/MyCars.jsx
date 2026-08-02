@@ -22,6 +22,10 @@ export default function MyCars() {
         setIsCreateCarSheetOpen(true);
     };
 
+    const handleCarCreated = () => {
+        setPage(1);
+    };
+
     useEffect(() => {
         const fetchMyCars = async () => {
             try {
@@ -129,6 +133,7 @@ export default function MyCars() {
                 onClose={() =>
                     setIsCreateCarSheetOpen(false)
                 }
+                onSuccess={handleCarCreated}
             />
         </section>
     );

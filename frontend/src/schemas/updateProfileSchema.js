@@ -10,7 +10,8 @@ const updateProfileSchema = Yup.object({
     email: Yup.string()
         .trim()
         .email("Please enter a valid email.")
-        .max(255, "Email can have at most 255 characters."),
+        .max(255, "Email can have at most 255 characters.")
+        .required("Email is required."),
 
     contact_number: Yup.string()
         .trim()

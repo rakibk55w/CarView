@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import AuctionCard from "../components/auction/AuctionCard";
 import AuctionCardSkeleton from "../components/auction/AuctionCardSkeleton";
+import CreateAuctionSheet from "../components/auction/CreateAuctionSheet";
 import Pagination from "../components/pagination/Pagination";
+import CreateButton from "../components/button/CreateButton";
 
 import axiosAuthInstance from "../api/axiosAuthInstance";
 import { showErrorToast } from "../utils/toast";
@@ -16,6 +18,15 @@ export default function MyAuctions() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [isCreateAuctionSheetOpen, setIsCreateAuctionSheetOpen] = useState(false);
+
+    const handleCreateAuction = () => {
+        setIsCreateAuctionSheetOpen(true);
+    };
+
+    const handleAuctionCreated = () => {
+        setPage(1);
+    };
 
     useEffect(() => {
         const fetchMyAuctions = async () => {
@@ -66,6 +77,14 @@ export default function MyAuctions() {
                 My Auctions
             </h1>
 
+            <CreateButton className="
+                mb-6
+                px-4
+                w-auto"
+                title="Create New Auction"
+                onClick={handleCreateAuction}
+            />
+
             <div className="
                 flex
                 flex-col
@@ -113,6 +132,14 @@ export default function MyAuctions() {
                     />
                 </div>
             )}
+
+            <CreateAuctionSheet
+                isOpen={isCreateAuctionSheetOpen}
+                onClose={() =>
+                    setIsCreateAuctionSheetOpen(false)
+                }
+                onSuccess={handleAuctionCreated}
+            />
         </section>
     );
 }
