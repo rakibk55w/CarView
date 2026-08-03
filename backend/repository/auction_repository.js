@@ -131,26 +131,66 @@ const getAuctions = async ({
             a.car_id,
             a.base_price,
             a.current_highest_bid,
-            a.bid_count,
             a.start_time,
             a.end_time,
             a.status,
             a.created_at,
+            a.owner_id,
+
+            u.name,
 
             c.title,
+            c.description,
             c.brand,
             c.model,
-            c.trim
+            c.fuel_type,
+            c.manufacture_year,
+
+            COALESCE(
+                ARRAY_AGG(
+                    ci.image_url
+                    ORDER BY ci.created_at ASC
+                ) FILTER (
+                    WHERE ci.image_url IS NOT NULL
+                ),
+                '{}'
+            ) AS images
 
         FROM auctions a
 
         INNER JOIN cars c
             ON a.car_id = c.id
 
+        INNER JOIN users u
+            ON u.id = a.owner_id
+
+        LEFT JOIN car_images ci
+            ON ci.car_id = c.id
+
         WHERE 1 = 1
 
         ${cursorCondition}
         ${searchCondition}
+
+        GROUP BY
+            a.id,
+            a.car_id,
+            a.base_price,
+            a.current_highest_bid,
+            a.start_time,
+            a.end_time,
+            a.status,
+            a.created_at,
+            a.owner_id,
+
+            u.name,
+
+            c.id,
+            c.title,
+            c.brand,
+            c.model,
+            c.fuel_type,
+            c.manufacture_year
 
         ORDER BY
             a.created_at DESC,
