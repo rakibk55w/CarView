@@ -8,6 +8,10 @@ import AuctionCardSkeleton from "../components/auction/AuctionCardSkeleton";
 
 import { showErrorToast } from "../utils/toast";
 
+import { Link } from "react-router-dom";
+import formatDateForDisplay from "../utils/formatDateForDisplay";
+import formatTimeForDisplay from "../utils/formatTimeForDisplay";
+
 const LIMIT = 3;
 
 export default function Home() {
@@ -80,7 +84,6 @@ export default function Home() {
         } catch (error) {
             setHasError(true);
             
-
             showErrorToast(
                 error.response?.data?.message || 
                 "Could not load auctions."
@@ -130,11 +133,11 @@ export default function Home() {
 
     if (isLoading) {
         return (
-            <div
-                className="
-                    flex
-                    flex-col
-                    gap-6">
+            <div className="
+                flex
+                flex-col
+                gap-6">
+
                 {Array.from({ length: LIMIT }).map((_, index) => (
                     <AuctionCardSkeleton key={index} />
                 ))}
@@ -144,31 +147,62 @@ export default function Home() {
 
     if (hasError) {
         return (
-            <div
-                className="
-                    py-8
-                    text-center
-                    text-red-500">
+            <div className="
+                py-8
+                text-center
+                text-red-500">
+
                 Could not load auctions.
             </div>
         );
     }
 
     return (
-        <div
-            className="
-                flex
-                flex-col
-                gap-6">
+        <div className="
+            flex
+            flex-col
+            gap-6">
 
             {auctions.map((auction, index) => (
-                <div
+                <div className="
+                    flex
+                    flex-col
+                    gap-2"
                     key={auction.id}
-                    ref={
-                        index === auctions.length - 1
-                            ? lastAuctionRef
-                            : null
+                    ref={index === auctions.length - 1
+                        ? lastAuctionRef
+                        : null
                     }>
+
+                    <div className="
+                        flex
+                        items-center
+                        justify-between
+                        px-4
+                        text-sm">
+
+                        <Link className="
+                            font-medium
+                            text-gray-900
+                            transition-colors
+                            hover:text-primary-600
+                            dark:text-gray-100
+                            dark:hover:text-primary-400"
+                            to={`/profile/${auction.owner_id}`}>
+
+                            u/{auction.name}
+                        </Link>
+
+                        <span className="
+                            text-gray-500
+                            dark:text-gray-400">
+
+                            {formatDateForDisplay(auction.created_at)}
+                            {" • "}
+                            {formatTimeForDisplay(auction.created_at)}
+                        </span>
+
+                    </div>
 
                     <AuctionCard
                         auction={auction}
@@ -190,12 +224,12 @@ export default function Home() {
             )}
 
             {!pagination.hasMore && auctions.length > 0 && (
-                <div
-                    className="
-                        py-6
-                        text-center
-                        text-sm
-                        text-gray-500">
+                <div className="
+                    py-6
+                    text-center
+                    text-sm
+                    text-gray-500">
+
                     No more auctions.
                 </div>
             )}
