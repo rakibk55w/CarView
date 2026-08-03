@@ -182,6 +182,7 @@ const getMyAuctions = async ({
             a.start_time,
             a.end_time,
             a.status,
+            a.owner_id,
 
             c.title,
             c.description,

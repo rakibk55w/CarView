@@ -16,9 +16,7 @@ const createBid = async (auctionId, bidderId, bidAmount) => {
                 owner_id, 
                 (
                     SELECT
-                        name IS NOT NULL
-                        AND email IS NOT NULL
-                        AND contact_number IS NOT NULL
+                        contact_number IS NOT NULL
                         AND date_of_birth IS NOT NULL
                         AND street_address IS NOT NULL
                         AND city IS NOT NULL

@@ -3,6 +3,8 @@ import AuctionPriceCard from "./AuctionPriceCard";
 import AuctionStatusBadge from "./AuctionStatusBadge";
 import CountdownTimer from "../common/CountdownTimer";
 import AuctionInfoRow from "./AuctionInfoRow";
+import PlaceBidForm from "../bid/PlaceBidForm";
+import { useState } from "react";
 
 export default function AuctionCard({
     auction,
@@ -18,12 +20,15 @@ export default function AuctionCard({
         fuel_type,
         manufacture_year,
         status,
+        owner_id,
         base_price,
         current_highest_bid,
         start_time,
         end_time,
         images
     } = auction;
+
+    const [highestBid, setHighestBid] = useState(current_highest_bid);
 
     return (
         <article className="
@@ -140,7 +145,7 @@ export default function AuctionCard({
 
                             <AuctionPriceCard
                                 title="Highest Bid"
-                                value={current_highest_bid}
+                                value={highestBid}
                                 color="bid"
                             />
                         </div>
@@ -154,7 +159,21 @@ export default function AuctionCard({
                                 now={now}
                             />
                         </div>
+
+
                     </div>
+                        
+
+                    <PlaceBidForm
+                        auctionId={id}
+                        ownerId={owner_id}
+                        basePrice={base_price}
+                        currentHighestBid={highestBid}
+                        onBidSuccess={(newBid) => 
+                            setHighestBid(newBid)
+                        }
+                    />
+                        
                 </section>
             </div>
         </article>
