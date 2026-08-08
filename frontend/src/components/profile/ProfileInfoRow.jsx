@@ -5,7 +5,8 @@ export default function ProfileInfoRow({
     label, 
     isEditing, 
     isMultiLineField=false, 
-    value, fieldName, 
+    value, 
+    fieldName, 
     fieldType="text"}) {
         
     const displayFormElement = isMultiLineField 

@@ -10,7 +10,10 @@ const getCarDetailsController = async (req, res, next) => {
             });
         }
 
-        return res.status(200).json(car);
+        return res.status(200).json({
+            message: "Car details fetched successfully.",
+            data: car
+        });
     } catch (error) {
         next(error);
     }

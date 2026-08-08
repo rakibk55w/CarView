@@ -3,8 +3,7 @@ const carRepository = require("../repository/car_repository");
 
 const updateCarController = async (req, res, next) => {
     try {
-        const updateCarDto =
-            CreateCarRequestDto.fromRequest(req.body);
+        const updateCarDto = CreateCarRequestDto.fromRequest(req.body);
 
         const updatedCar = await carRepository.updateCarById(
             req.params.carId,

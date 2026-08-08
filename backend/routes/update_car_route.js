@@ -6,7 +6,7 @@ const updateCarController = require("../controllers/update_car_controller");
 const updateCarRouter = express.Router();
 
 updateCarRouter.put(
-    "/:carId",
+    "/cars/:carId",
     authChecker,
     createCarValidator,
     updateCarController

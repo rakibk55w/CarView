@@ -160,22 +160,27 @@ export default function ProfileInformationCard({
                             font-semibold
                             leading-tight
                             md:text-center">
+
                             Profile
-                            <span className="block 
+                            <span className="
+                                block 
                                 sm:inline">
+
                                 {" "}Information
                             </span>
                         </h2>
-
 
                         {!isEditing && isOwnProfile && (
                             <div className="
                                 justify-self-end 
                                 md:col-start-3">
-                                <CustomButton className="w-35"
+                                <CustomButton className="
+                                    w-auto
+                                    px-4"
                                     primaryButton={false}
                                     icon={<FiEdit2 />}
                                     onClick={() => setIsEditing(true)}>
+
                                     Edit Profile
                                 </CustomButton>
                             </div>
@@ -191,40 +196,46 @@ export default function ProfileInformationCard({
                     </div>
 
                     <div className="space-y-6">
-                        <ProfileInfoRow label="Full Name"
+                        <ProfileInfoRow 
+                            label="Full Name"
                             fieldName="name"
                             value={values.name}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label="Email"
+                        <ProfileInfoRow 
+                            label="Email"
                             fieldName="email"
                             fieldType="email"
                             value={values.email}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label="Contact Number"
+                        <ProfileInfoRow 
+                            label="Contact Number"
                             fieldName="contact_number"
                             value={values.contact_number}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label="Date of Birth"
+                        <ProfileInfoRow 
+                            label="Date of Birth"
                             fieldName="date_of_birth"
                             fieldType="date"
                             value={formatDateForDisplay(values.date_of_birth)}
                             isEditing={isEditing}
                         />
 
-                        <ProfileInfoRow label="Street Address"
+                        <ProfileInfoRow 
+                            label="Street Address"
                             fieldName="street_address"
                             value={values.street_address}
                             isEditing={isEditing}
                             isMultiLineField={true}
                         />
 
-                        <ProfileInfoRow label="City"
+                        <ProfileInfoRow 
+                            label="City"
                             fieldName="city"
                             value={values.city}
                             isEditing={isEditing}
@@ -236,24 +247,26 @@ export default function ProfileInformationCard({
                                 justify-end
                                 gap-3
                                 pt-4">
-                                <CustomButton className="w-25"
+                                <CustomButton className="
+                                    w-auto
+                                    px-4"
                                     dangerButton={true}
                                     icon={<FiX />}
                                     onClick={() => {
-
                                         resetForm();
-
                                         setIsEditing(false);
-
                                     }}>
+
                                     Cancel
                                 </CustomButton>
 
                                 <CustomButton className="
-                                    w-35"
+                                    w-auto
+                                    px-4"
                                     type="submit"
                                     disabled={isSaving}
                                     icon={<FiSave />}>
+                                        
                                     {isSaving
                                         ? "Saving..."
                                         : "Save Profile"

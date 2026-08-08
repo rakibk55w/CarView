@@ -191,12 +191,14 @@ export default function ProfilePictureCard({
                     </>
                 )}
             </section>
+            
             <ImagePreviewModal
                 isOpen={isPreviewOpen}
                 image={displayedImage}
                 alt={fullName || "Profile picture"}
                 onClose={() => setIsPreviewOpen(false)}
             />
+
             {isOwnProfile && (
                 <ConfirmationDialog
                     isOpen={showDeleteDialog}

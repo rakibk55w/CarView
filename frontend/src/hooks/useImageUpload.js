@@ -38,7 +38,6 @@ export default function useImageUpload({
 
         if (!validation.isValid) {
             showErrorToast(validation.error);
-            console.log(validation.error);
             event.target.value = "";
             return;
 

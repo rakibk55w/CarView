@@ -5,7 +5,6 @@ export default function FormSection({
 }) {
     return (
         <section>
-
             <h3 className="
                 mb-6
                 border-b
@@ -17,7 +16,6 @@ export default function FormSection({
                 dark:border-gray-700">
 
                 {title}
-
             </h3>
 
             <div className={`
@@ -27,9 +25,7 @@ export default function FormSection({
                 ${className}`}>
 
                 {children}
-
             </div>
-
         </section>
     );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import {
     FiChevronLeft,
@@ -10,13 +10,15 @@ const PLACEHOLDER_IMAGE = "https://placehold.co/1200x800?text=No+Image";
 export default function CarPictureCarousel({
     title,
     images = [],
+    selectedIndex,
+    onSelectedIndexChange,
     onImageClick,
 }) {
     const imageList = images.length > 0
         ? images
-        : [PLACEHOLDER_IMAGE];
-
-    const [selectedIndex, setSelectedIndex] = useState(0);
+        : [{
+            image_url: PLACEHOLDER_IMAGE,
+        }];
 
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: false,
@@ -41,7 +43,7 @@ export default function CarPictureCarousel({
         }
 
         const updateSelectedIndex = () => {
-            setSelectedIndex(
+            onSelectedIndexChange?.(
                 emblaApi.selectedScrollSnap()
             );
         };
@@ -71,10 +73,32 @@ export default function CarPictureCarousel({
                 updateSelectedIndex
             );
         };
-    }, [emblaApi]);
+    }, [emblaApi, onSelectedIndexChange]);
 
-    function handleImageClick(image) {
-        onImageClick?.(image);
+    useEffect(() => {
+        if (!emblaApi) {
+            return;
+        }
+
+        if (
+            emblaApi.selectedScrollSnap() !==
+            selectedIndex
+        ) {
+            emblaApi.scrollTo(selectedIndex);
+        }
+    }, [
+        emblaApi,
+        selectedIndex,
+    ]);
+
+    function handleImageClick(
+        image,
+        index
+    ) {
+        onImageClick?.(
+            image,
+            index
+        );
     }
 
     return (
@@ -89,8 +113,7 @@ export default function CarPictureCarousel({
             dark:border-gray-700
             dark:bg-gray-900">
 
-            <div
-                className="overflow-hidden"
+            <div className="overflow-hidden"
                 ref={emblaRef}>
 
                 <div className="flex">
@@ -98,7 +121,9 @@ export default function CarPictureCarousel({
                         <div className="
                             min-w-0
                             flex-[0_0_100%]"
-                            key={`${image}-${index}`}>
+                            key={image.id 
+                                ?? image.image_url
+                            }>
 
                             <img className="
                                 aspect-4/3
@@ -107,12 +132,15 @@ export default function CarPictureCarousel({
                                 cursor-pointer
                                 object-cover
                                 select-none"
-                                src={image}
+                                src={image.image_url}
                                 alt={`${title} - Image ${index + 1}`}
                                 loading="lazy"
                                 draggable={false}
                                 onClick={() =>
-                                    handleImageClick(image)
+                                    handleImageClick(
+                                        image, 
+                                        index
+                                    )
                                 }
                             />
                         </div>
@@ -196,7 +224,9 @@ export default function CarPictureCarousel({
                                         ? "scale-110 bg-white"
                                         : "bg-white/40 hover:bg-white/70"
                                 }`}
-                            key={`${image}-indicator-${index}`}
+                            key={image.id 
+                                ?? image.image_url
+                            }
                             type="button"
                             aria-label={`Go to image ${index + 1}`}
                             aria-current={

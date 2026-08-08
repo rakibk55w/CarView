@@ -84,7 +84,10 @@ const getImageForDeletion = async (imageId) => {
 const getImagesByCarId = async (carId) => {
     const queryResult = await pool.query(
         `
-        SELECT image_url
+        SELECT 
+            id,
+            cloudinary_public_id,
+            image_url
         FROM car_images
         WHERE car_id = $1
         ORDER BY created_at ASC
@@ -92,7 +95,7 @@ const getImagesByCarId = async (carId) => {
         [carId]
     );
 
-    return queryResult.rows.map(row => row.image_url);
+    return queryResult.rows;
 };
 
 const deleteImageByImageId = async (imageId) => {
@@ -100,7 +103,10 @@ const deleteImageByImageId = async (imageId) => {
         `
         DELETE FROM car_images 
         WHERE id = $1
-        RETURNING *
+        RETURNING 
+            id,
+            image_url,
+            cloudinary_public_id
         `,
         [imageId]
     );
