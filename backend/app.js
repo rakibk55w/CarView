@@ -32,6 +32,7 @@ const getProfileImageRouter = require("./routes/get_profile_image_route");
 const updateCarRouter = require("./routes/update_car_route");
 const uploadCarImageRouter = require("./routes/upload_car_image_route");
 const uploadProfileImageRouter = require("./routes/upload_profile_image_route");
+const deleteAuctionRouter = require("./routes/delete_auction_route");
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use("/api", deleteProfileImageRouter);
 app.use("/api", createAuctionRouter);
 app.use("/api", getAuctionDetailsRouter);
 app.use("/api", getMyAuctionsRouter);
+app.use("/api", deleteAuctionRouter);
 
 app.use("/api", createBidRouter);
 app.use("/api", getBidHistoryRouter);

@@ -54,7 +54,11 @@ const getAuctionById = async (auctionId) => {
     const queryResult = await pool.query(
         `
         SELECT 
+            a.id,
             a.car_id,
+            c.title AS car_title,
+            a.owner_id,
+            u.name AS owner_name,
             a.base_price,
             a.current_highest_bid,
             a.highest_bidder_id, 
@@ -64,16 +68,15 @@ const getAuctionById = async (auctionId) => {
             a.end_time,
             a.extension_count,
             a.status, 
-            a.winner_id,
-            w.name AS winner_name,
-            a.winning_bid,
             a.created_at 
         FROM auctions a
+        LEFT JOIN cars c
+            ON a.car_id = c.id
+        LEFT JOIN users u
+            ON a.owner_id = u.id
         LEFT JOIN users hb
             ON a.highest_bidder_id = hb.id
-        LEFT JOIN users w
-            ON a.winner_id = w.id
-        WHERE id = $1 
+        WHERE a.id = $1 
         `,
         [auctionId]
     );
@@ -287,11 +290,27 @@ const getMyAuctionCount = async (ownerId) => {
     return Number(result.rows[0].total);
 };
 
+const deleteAuctionByAuctionId = async (auctionId, userId) => {
+    const queryResult = await pool.query(
+        `
+        DELETE FROM auctions 
+        WHERE id = $1 
+            AND owner_id = $2 
+            AND start_time > NOW()
+        RETURNING *
+        `,
+        [auctionId, userId]
+    );
+
+    return queryResult.rows[0];
+};
+
 module.exports = {
     createAuction,
     findActiveAuctionByCarId,
     getAuctionById,
     getAuctions,
     getMyAuctions,
-    getMyAuctionCount
+    getMyAuctionCount,
+    deleteAuctionByAuctionId
 };

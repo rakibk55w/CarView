@@ -94,7 +94,6 @@ export default function ConfirmationDialog({
                     gap-3">
 
                     <CustomButton className="w-24"
-                        dangerButton={true}
                         icon={<FiX />}
                         onClick={onCancel}>
 
@@ -102,6 +101,7 @@ export default function ConfirmationDialog({
                     </CustomButton>
 
                     <CustomButton className="w-28"
+                        dangerButton={true}
                         icon={<FiTrash2 />}
                         onClick={onConfirm}>
 

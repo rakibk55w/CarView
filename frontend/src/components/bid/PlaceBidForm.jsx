@@ -14,18 +14,23 @@ export default function PlaceBidForm({
     currentHighestBid,
     onBidSuccess
 }) {
-    const { user } = useAuth(); 
+    const { user, isAuthenticated } = useAuth(); 
     const [isSubmitting, setIsSubmitting] = useState(false); 
     
     if (user?.id === ownerId) { 
         return null; 
     }
 
-    const minimumBid = currentHighestBid !== null && currentHighestBid !== 0 
+    const minimumBid = currentHighestBid !== null && Number(currentHighestBid) !== 0 
         ? Number(currentHighestBid) + 1 
         : Number(basePrice);
 
     const handleSubmit = async (values, { resetForm }) => { 
+        if (!isAuthenticated) {
+            showErrorToast("You must be logged in to place bids.");
+            return;
+        }
+        
         try { 
             setIsSubmitting(true); 
             

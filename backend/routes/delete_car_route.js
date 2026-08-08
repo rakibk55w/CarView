@@ -5,7 +5,7 @@ const deleteCarController = require("../controllers/delete_car_controller");
 const deleteCarRouter = express.Router();
 
 deleteCarRouter.delete(
-    "/:carId",
+    "/cars/:carId",
     authChecker,
     deleteCarController
 );
