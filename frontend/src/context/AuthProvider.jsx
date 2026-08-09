@@ -6,7 +6,7 @@ import decodeAccessToken from "../utils/decodeAccessToken";
 export default function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(null);
     const [isInitializing, setIsInitializing] = useState(true);
-    const [hasLoggedOut, setHasLoggedOut] = useState(false);
+
 
     const getUserFromToken = (token) => {
         const decodedToken = decodeAccessToken(token);
@@ -26,7 +26,6 @@ export default function AuthProvider({ children }) {
     const login = (token) => {
         setAccessToken(token);
         authService.setAccessToken(token);
-        setHasLoggedOut(false);
     };
 
     const updateAccessToken = (token) => {
@@ -37,7 +36,6 @@ export default function AuthProvider({ children }) {
     const logout = () => {
         setAccessToken(null);
         authService.clearAccessToken();
-        setHasLoggedOut(true);
     };
 
     useEffect(() => {
@@ -78,7 +76,6 @@ export default function AuthProvider({ children }) {
         user,
         isAuthenticated: Boolean(accessToken),
         isInitializing,
-        hasLoggedOut,
         login,
         updateAccessToken,
         logout,

@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FiSun, FiMoon, FiMenu, FiX, FiSearch } from "react-icons/fi";
 import { useState } from "react";
 import { dangerButtonStyle } from "../../utils/buttonStyles";
@@ -14,283 +14,296 @@ import axiosAuthInstance from "../../api/axiosAuthInstance";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 export default function Header({ loggedIn, darkMode, toggleTheme }) {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      const response = await axiosAuthInstance.post("/auth/logout");
+	const handleLogout = async () => {
+		try {
+			const response = await axiosAuthInstance.post("/auth/logout");
 
-      logout();
+			showSuccessToast(
+				response.data.message 
+				|| "Logout successful"
+			);
 
-      showSuccessToast(
-        response.data.message || "Logout successful"
-      );
-    } catch (error) {
-        showErrorToast(
-          error.response?.data?.message ||
-          "Logout failed. Please try again."
-        );
-    }
-  };
+			navigate("/logout", {
+				replace: true,
+			});
 
-  return (
-    <header className="
-      bg-primary-600 
-      text-white 
-      shadow-md">
-      <div className="
-        mx-auto 
-        flex 
-        max-w-7xl 
-        items-center 
-        gap-8 
-        px-6 
-        py-4">
-        <Link className="
-          text-2xl 
-          font-bold 
-          tracking-wide 
-          whitespace-nowrap"
-          to="/">
-          CarView
-        </Link>
+		} catch (error) {
+			showErrorToast(
+				error.response?.data?.message ||
+				"Logout failed. Please try again."
+			);
+		}
+	};
 
-        <div className="
-          hidden 
-          flex-1 
-          md:flex 
-          justify-center">
-          <div className="
-            relative 
-            w-full 
-            max-w-lg">
-            <FiSearch className="
-              absolute 
-              left-4 
-              top-1/2 
-              -translate-y-1/2 
-              text-gray-500"
-              size={18}
-            />
+	return (
+		<header className="
+			bg-primary-600 
+			text-white 
+			shadow-md">
+			<div className="
+				mx-auto 
+				flex 
+				max-w-7xl 
+				items-center 
+				gap-8 
+				px-6 
+				py-4">
+				<Link className="
+					text-2xl 
+					font-bold 
+					tracking-wide 
+					whitespace-nowrap"
+					to="/">
 
-            <input
-              className={searchBarStyle}
-              type="text"
-              placeholder="Search cars..."
-            />
-          </div>
-        </div>
+					CarView
+				</Link>
 
-        <nav className="
-          ml-auto 
-          hidden 
-          items-center 
-          gap-5 
-          md:flex">
-          <NavLink to="/" className={navLinkStyle}>
-            Home
-          </NavLink>
+				<div className="
+					hidden 
+					flex-1 
+					md:flex 
+					justify-center">
+					<div className="
+					relative 
+					w-full 
+					max-w-lg">
+					<FiSearch className="
+						absolute 
+						left-4 
+						top-1/2 
+						-translate-y-1/2 
+						text-gray-500"
+						size={18}
+					/>
 
-          <NavLink to="/about-us" className={navLinkStyle}>
-            About Us
-          </NavLink>
+					<input
+						className={searchBarStyle}
+						type="text"
+						placeholder="Search cars..."
+					/>
+					</div>
+				</div>
 
-          <NavLink to="/contact-us" className={navLinkStyle}>
-            Contact Us
-          </NavLink>
+				<nav className="
+					ml-auto 
+					hidden 
+					items-center 
+					gap-5 
+					md:flex">
+					<NavLink to="/" className={navLinkStyle}>
+						Home
+					</NavLink>
 
-          <div className="
-            flex 
-            items-center 
-            gap-3">
-            {loggedIn ? (
-              <>
-                <div className="relative"
-                  onMouseLeave={() => setProfileOpen(false)}>
-                  <button className={headerButtonStyle}
-                    onClick={() => setProfileOpen((open) => !open)}>
-                    Profile
-                  </button>
+					<NavLink to="/about-us" className={navLinkStyle}>
+						About Us
+					</NavLink>
 
-                  {profileOpen && (
-                    <div className={profileDropdownStyle}>
-                      <NavLink
-                        to={`/profile/${user.id}`}
-                        className={profileDropdownItemStyle}
-                        onClick={() => setProfileOpen(false)}>
-                        My Profile
-                      </NavLink>
+					<NavLink to="/contact-us" className={navLinkStyle}>
+						Contact Us
+					</NavLink>
 
-                      <NavLink
-                        to="/my-cars"
-                        className={profileDropdownItemStyle}
-                        onClick={() => setProfileOpen(false)}>
-                        My Cars
-                      </NavLink>
+					<div className="
+						flex 
+						items-center 
+						gap-3">
+						{loggedIn ? (
+							<>
+								<div className="relative"
+									onMouseLeave={() => setProfileOpen(false)}>
+									<button className={headerButtonStyle}
+										onClick={() => setProfileOpen((open) => !open)}>
 
-                      <NavLink
-                        to="/my-auctions"
-                        className={profileDropdownItemStyle}
-                        onClick={() => setProfileOpen(false)}>
-                        My Auctions
-                      </NavLink>
+										Profile
+									</button>
 
-                      <NavLink
-                        to="/my-bids"
-                        className={profileDropdownItemStyle}
-                        onClick={() => setProfileOpen(false)}>
-                        My Bids
-                      </NavLink>
-                    </div>
-                  )}
-                </div>
+									{profileOpen && (
+										<div className={profileDropdownStyle}>
+											<NavLink
+												to={`/profile/${user.id}`}
+												className={profileDropdownItemStyle}
+												onClick={() => setProfileOpen(false)}>
 
-                <button className={`
-                  rounded-lg 
-                  px-4 
-                  py-2 
-                  shadow-sm 
-                  transition-all 
-                  duration-200 
-                  active:scale-95 
-                  cursor-pointer
-                  ${dangerButtonStyle}`}
-                  type="button"
-                  onClick={handleLogout}>
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className={headerButtonStyle}>
-                  Login
-                </Link>
+												My Profile
+											</NavLink>
 
-                <Link to="/register" className={headerButtonStyle}>
-                  Register
-                </Link>
-              </>
-            )}
+											<NavLink
+												to="/my-cars"
+												className={profileDropdownItemStyle}
+												onClick={() => setProfileOpen(false)}>
 
-            <button className="
-              relative 
-              flex 
-              h-7 
-              w-16 
-              items-center 
-              cursor-pointer
-              rounded-full 
-              bg-primary-700 
-              transition"
-              onClick={toggleTheme}>
-              <FiSun className={`
-                absolute 
-                left-1.5
-                z-10 
-                transition
-                ${!darkMode ? "text-black" : "text-white"}`}
-                size={13}
-              />
+												My Cars
+											</NavLink>
 
-              <FiMoon className={`
-                absolute 
-                right-1.5 
-                z-10 
-                transition
-                ${darkMode ? "text-black" : "text-white"}`}
-                size={13}
-              />
-              <div className={`
-                absolute 
-                z-0 
-                h-5 
-                w-5 
-                rounded-full 
-                bg-white 
-                shadow 
-                transition-transform 
-                duration-300 
-                ${
-                  darkMode
-                    ? "translate-x-10"
-                    : "translate-x-0.5"
-                }`}
-              />
-            </button>
-          </div>
-        </nav>
+											<NavLink
+												to="/my-auctions"
+												className={profileDropdownItemStyle}
+												onClick={() => setProfileOpen(false)}>
 
-        <button className="md:hidden" 
-          onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
-        </button>
-      </div>
+												My Auctions
+											</NavLink>
 
-      {menuOpen && (
-        <div className="
-          space-y-3 
-          bg-primary-600 
-          px-6 
-          py-4 
-          md:hidden">
-          <Link className="block" to="/">
-            Home
-          </Link>
+											<NavLink
+												to="/my-bids"
+												className={profileDropdownItemStyle}
+												onClick={() => setProfileOpen(false)}>
 
-          <Link className="block" to="/about-us">
-            About Us
-          </Link>
+												My Bids
+											</NavLink>
+										</div>
+									)}
+								</div>
 
-          <Link className="block" to="/contact-us">
-            Contact Us
-          </Link>
+								<button className={`
+									rounded-lg 
+									px-4 
+									py-2 
+									shadow-sm 
+									transition-all 
+									duration-200 
+									active:scale-95 
+									cursor-pointer
+									${dangerButtonStyle}`}
+									type="button"
+									onClick={handleLogout}>
 
-          {loggedIn ? (
-            <>
-              <Link className="block" to={`/profile/${user.id}`}>
-                Profile
-              </Link>
+									Logout
+								</button>
+							</>
+						) : (
+							<>
+								<Link to="/login" className={headerButtonStyle}>
+									Login
+								</Link>
 
-              <button className="block" 
-                type="button"
-                cursor-pointer
-                onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link className="block" to="/login">
-                Login
-              </Link>
+								<Link to="/register" className={headerButtonStyle}>
+									Register
+								</Link>
+							</>
+						)}
 
-              <Link className="block" to="/register">
-                Register
-              </Link>
-            </>
-          )}
+						<button className="
+							relative 
+							flex 
+							h-7 
+							w-16 
+							items-center 
+							cursor-pointer
+							rounded-full 
+							bg-primary-700 
+							transition"
+							onClick={toggleTheme}>
+							<FiSun className={`
+								absolute 
+								left-1.5
+								z-10 
+								transition
+								${!darkMode ? "text-black" : "text-white"}`}
+								size={13}
+							/>
 
-          <button className="
-            flex 
-            items-center 
-            gap-2"
-            onClick={toggleTheme}>
-            {darkMode ? (
-              <>
-                <FiSun />
-                Light Mode
-              </>
-            ) : (
-              <>
-                <FiMoon />
-                Dark Mode
-              </>
-            )}
-          </button>
-        </div>
-      )}
-    </header>
-  );
+							<FiMoon className={`
+								absolute 
+								right-1.5 
+								z-10 
+								transition
+								${darkMode ? "text-black" : "text-white"}`}
+								size={13}
+							/>
+							<div className={`
+								absolute 
+								z-0 
+								h-5 
+								w-5 
+								rounded-full 
+								bg-white 
+								shadow 
+								transition-transform 
+								duration-300 
+								${
+									darkMode
+									? "translate-x-10"
+									: "translate-x-0.5"
+								}`}
+							/>
+						</button>
+					</div>
+				</nav>
+
+				<button className="md:hidden" 
+					onClick={() => setMenuOpen(!menuOpen)}>
+					{menuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+				</button>
+			</div>
+
+			{menuOpen && (
+				<div className="
+					space-y-3 
+					bg-primary-600 
+					px-6 
+					py-4 
+					md:hidden">
+					<Link className="block" to="/">
+						Home
+					</Link>
+
+					<Link className="block" to="/about-us">
+						About Us
+					</Link>
+
+					<Link className="block" to="/contact-us">
+						Contact Us
+					</Link>
+
+					{loggedIn ? (
+					<>
+						<Link className="block" to={`/profile/${user.id}`}>
+							Profile
+						</Link>
+
+						<button className="block" 
+							type="button"
+							cursor-pointer
+							onClick={handleLogout}>
+							Logout
+						</button>
+					</>
+					) : (
+					<>
+						<Link className="block" to="/login">
+							Login
+						</Link>
+
+						<Link className="block" to="/register">
+							Register
+						</Link>
+					</>
+					)}
+
+					<button className="
+						flex 
+						items-center 
+						gap-2"
+						onClick={toggleTheme}>
+
+						{darkMode ? (
+							<>
+								<FiSun />
+								Light Mode
+							</>
+						) : (
+							<>
+								<FiMoon />
+								Dark Mode
+							</>
+						)}
+					</button>
+				</div>
+			)}
+		</header>
+	);
 }
