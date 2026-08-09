@@ -30,6 +30,8 @@ export default function AuctionCard({
 
     const [highestBid, setHighestBid] = useState(current_highest_bid);
 
+    const auctionHasNotStarted = new Date(auction.start_time).getTime() > now;
+
     return (
         <article className="
             cursor-pointer
@@ -163,16 +165,17 @@ export default function AuctionCard({
 
                     </div>
                         
-
-                    <PlaceBidForm
-                        auctionId={id}
-                        ownerId={owner_id}
-                        basePrice={base_price}
-                        currentHighestBid={highestBid}
-                        onBidSuccess={(newBid) => 
-                            setHighestBid(newBid)
-                        }
-                    />
+                    { !auctionHasNotStarted && 
+                        <PlaceBidForm
+                            auctionId={id}
+                            ownerId={owner_id}
+                            basePrice={base_price}
+                            currentHighestBid={highestBid}
+                            onBidSuccess={(newBid) => 
+                                setHighestBid(newBid)
+                            }
+                        />
+                    }
                         
                 </section>
             </div>

@@ -1,17 +1,14 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import BidCard from "./BidCard";
 
 export default function BidHistory({
-    auction,
+    bids,
+    isLoading,
+    hasMore,
+    onLoadMore
 }) {
-    // eslint-disable-next-line no-unused-vars
-    const [bids, setBids] = useState(
-        auction.bids || []
-    );
-
-    // eslint-disable-next-line no-unused-vars
-    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     function handleScroll(event) {
         const element = event.currentTarget;
@@ -24,12 +21,10 @@ export default function BidHistory({
 
         if (
             isNearBottom &&
-            !isLoading
+            !isLoading &&
+            hasMore
         ) {
-            // TODO:
-            // Load more bids from API
-
-            console.log("Load more bids");
+            onLoadMore();
         }
     }
 
@@ -41,7 +36,7 @@ export default function BidHistory({
                 font-semibold
                 text-gray-900
                 dark:text-white">
-                Bid History ({auction.bid_count})
+                Bid History
             </h2>
 
             <div
@@ -58,16 +53,25 @@ export default function BidHistory({
                     dark:bg-gray-900"
                 onScroll={handleScroll}>
 
+                {!isLoading && bids.length === 0 && (
+                    <p className="
+                        py-6
+                        text-center
+                        text-gray-500
+                        dark:text-gray-400">
+                        No bids placed yet.
+                    </p>
+                )}
+
                 {bids.map((bid) => (
                     <BidCard
                         key={bid.id}
-                        bidder={bid.bidder.name}
+                        bidder={bid.bidder_name}
                         bidAmount={bid.bid_amount}
                         timestamp={bid.created_at}
                         onBidderClick={() => {
-                            console.log(
-                                "Go to bidder profile:",
-                                bid.bidder.id
+                            navigate(
+                                `/profile/${bid.bidder_id}`
                             );
                         }}
                     />

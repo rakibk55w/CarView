@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../utils/formatCurrency";
 
+import formatDateForDisplay from "../../utils/formatDateForDisplay";
+import formatTimeForDisplay from "../../utils/formatTimeForDisplay";
+
 export default function BidCard({
     bidderName,
     isOwnBid,
@@ -85,7 +88,9 @@ export default function BidCard({
                     text-sm
                     text-gray-500
                     dark:text-gray-400">
-                    {timestamp}
+                    {formatDateForDisplay(timestamp)}
+                    {" • "}
+                    {formatTimeForDisplay(timestamp)}
                 </span>
             </div>
         </article>

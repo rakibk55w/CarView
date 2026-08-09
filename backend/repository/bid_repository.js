@@ -116,10 +116,14 @@ const createBid = async (auctionId, bidderId, bidAmount) => {
     }
 };
 
-const getBidHistoryByAuctionId = async (auctionId) => {
+const getBidHistoryByAuctionId = async (
+    auctionId,
+    limit,
+    offset) => {
     const queryResult = await pool.query(
         `
         SELECT
+            b.id,
             b.bidder_id,
             u.name AS bidder_name,
             b.bid_amount,
@@ -133,11 +137,27 @@ const getBidHistoryByAuctionId = async (auctionId) => {
         WHERE b.auction_id = $1
 
         ORDER BY b.created_at ASC
+
+        LIMIT $2
+        OFFSET $3
+        `,
+        [auctionId, limit, offset]
+    );
+
+    return queryResult.rows;
+};
+
+const getBidCountByAuctionId = async (auctionId) => {
+    const queryResult = await pool.query(
+        `
+        SELECT COUNT(*) AS count
+        FROM bids
+        WHERE auction_id = $1
         `,
         [auctionId]
     );
 
-    return queryResult.rows;
+    return Number(queryResult.rows[0].count);
 };
 
 const getMyBids = async ({
@@ -199,6 +219,7 @@ const getMyBidCount = async (bidderId) => {
 module.exports = {
     createBid,
     getBidHistoryByAuctionId,
+    getBidCountByAuctionId,
     getMyBids,
     getMyBidCount
 };

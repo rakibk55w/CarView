@@ -8,17 +8,18 @@ import axiosAuthInstance from "../api/axiosAuthInstance";
 import { showErrorToast } from "../utils/toast";
 import useAuth from "../hooks/useAuth";
 
-import mockAuctionDetails from "../data/mockAuctionDetails";
-
 export default function AuctionDetails() {
     const { auctionId } = useParams();
     const { user } = useAuth();
 
     const [auction, setAuction] = useState(null);
-    // const [bids, setBids] = useState([]);
+    const [bids, setBids] = useState([]);
 
     const [isAuctionLoading, setIsAuctionLoading] = useState(true);
-    // const [isBidsLoading, setIsBidsLoading] = useState(true);
+    const [isBidsLoading, setIsBidsLoading] = useState(true);
+
+    const [bidPage, setBidPage] = useState(1);
+    const [hasMoreBids, setHasMoreBids] = useState(true);
 
     const isAuctionOwner = auction?.owner_id === user?.id;
     
@@ -45,28 +46,74 @@ export default function AuctionDetails() {
         fetchAuction();
     }, [auctionId]);
 
-    // useEffect(() => {
-    //     const fetchBids = async () => {
-    //         setIsBidsLoading(true);
+    useEffect(() => {
+        const fetchBids = async () => {
+            setIsBidsLoading(true);
 
-    //         try {
-    //             const response = await axiosAuthInstance.get(
-    //                 `/auctions/${auctionId}/bids`
-    //             );
+            try {
+                const response = await axiosAuthInstance.get(
+                    `/auctions/${auctionId}/bids`,
+                    {
+                        params: {
+                            page: 1,
+                            limit: 10,
+                        }
+                    }
+                );
 
-    //             setBids(response.data.data);
-    //         } catch (error) {
-    //             showErrorToast(
-    //                 error.response?.data?.message ||
-    //                 "Failed to fetch bid history."
-    //             );
-    //         } finally {
-    //             setIsBidsLoading(false);
-    //         }
-    //     };
+                setBids(response.data.data);
+                setBidPage(response.data.page);
+                setHasMoreBids(response.data.hasMore);
+            } catch (error) {
+                showErrorToast(
+                    error.response?.data?.message ||
+                    "Failed to fetch bid history."
+                );
+            } finally {
+                setIsBidsLoading(false);
+            }
+        };
 
-    //     fetchBids();
-    // }, [auctionId]);
+        fetchBids();
+    }, [auctionId]);
+
+    const loadMoreBids = async () => {
+        if (isBidsLoading || !hasMoreBids) {
+            return;
+        }
+
+        setIsBidsLoading(true);
+
+        try {
+            const nextPage = bidPage + 1;
+
+            const response =
+                await axiosAuthInstance.get(
+                    `/auctions/${auctionId}/bids`,
+                    {
+                        params: {
+                            page: nextPage,
+                            limit: 10,
+                        },
+                    }
+                );
+
+            setBids((previousBids) => [
+                ...previousBids,
+                ...response.data.data,
+            ]);
+
+            setBidPage(response.data.page);
+            setHasMoreBids(response.data.hasMore);
+        } catch (error) {
+            showErrorToast(
+                error.response?.data?.message ||
+                "Failed to load more bids."
+            );
+        } finally {
+            setIsBidsLoading(false);
+        }
+    };
 
     return (
         <div className="
@@ -86,16 +133,12 @@ export default function AuctionDetails() {
                     isAuctionOwner={isAuctionOwner}
                 />
 
-                {/* <BidHistory
-                    bids={bids}
-                    setBids={setBids}
-                    isLoading={isBidsLoading}
-                /> */}
-
                 <BidHistory
-                    auction={mockAuctionDetails}
+                    bids={bids}
+                    isLoading={isBidsLoading}
+                    hasMore={hasMoreBids}
+                    onLoadMore={loadMoreBids}
                 />
-
             </div>
         </div>
     );
