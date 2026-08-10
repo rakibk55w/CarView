@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FiSun, FiMoon, FiMenu, FiX, FiSearch } from "react-icons/fi";
+import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
 import { useState } from "react";
 import { dangerButtonStyle } from "../../utils/buttonStyles";
 import {
@@ -7,11 +7,11 @@ import {
   navLinkStyle,
   profileDropdownItemStyle,
   profileDropdownStyle,
-  searchBarStyle,
 } from "../../utils/headerStyles";
 import useAuth from "../../hooks/useAuth";
 import axiosAuthInstance from "../../api/axiosAuthInstance";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import AuctionSearch from "../auction/AuctionSearch";
 
 export default function Header({ loggedIn, darkMode, toggleTheme }) {
   const { user } = useAuth();
@@ -68,25 +68,8 @@ export default function Header({ loggedIn, darkMode, toggleTheme }) {
 					flex-1 
 					md:flex 
 					justify-center">
-					<div className="
-					relative 
-					w-full 
-					max-w-lg">
-					<FiSearch className="
-						absolute 
-						left-4 
-						top-1/2 
-						-translate-y-1/2 
-						text-gray-500"
-						size={18}
-					/>
-
-					<input
-						className={searchBarStyle}
-						type="text"
-						placeholder="Search cars..."
-					/>
-					</div>
+					
+					<AuctionSearch />
 				</div>
 
 				<nav className="
