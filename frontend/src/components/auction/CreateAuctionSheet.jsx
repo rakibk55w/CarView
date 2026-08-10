@@ -32,7 +32,7 @@ export default function CreateAuctionSheet({
 
                     try {
                         const response = await axiosAuthInstance.post(
-                            "create-auction",
+                            "/create-auction",
                             requestPayload
                         );
 

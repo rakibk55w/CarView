@@ -39,23 +39,21 @@ const createAuctionController = async (req, res, next) => {
             });
         }
 
-        const activeAuction = await auctionRepository.findActiveAuctionByCarId(
-            createAuctionDto.carId
-        );
-
-        if (activeAuction) {
-            return res.status(409).json({
-                message: "Car is already in an active auction"
-            });
-        }
-
-        const auction = await auctionRepository.createAuction(
+        const result = await auctionRepository.createAuction(
             createAuctionDto
         );
 
+        if (!result.created) {
+            if (result.reason === "ACTIVE_AUCTION") {
+                return res.status(409).json({
+                    message: "Car is already in an active auction"
+                });
+            }
+        }
+
         return res.status(201).json({
             message: "Auction created successfully",
-            auction_id: auction.id
+            data: { auction_id: result.auction.id }
         });
     } catch (error) {
         next(error);

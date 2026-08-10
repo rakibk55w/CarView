@@ -1,37 +1,83 @@
 const pool = require("../config/db");
 
 const createAuction = async (auctionData) => {
-    const queryResult = await pool.query(
-        `
-        INSERT INTO auctions (
-            car_id,
-            owner_id,
-            base_price,
-            current_highest_bid,
-            bid_count,
-            start_time,
-            end_time,
-            extension_count,
-            status,
-            updated_at
-        )
-        VALUES (
-            $1, $2, $3, 0, 0, $4, 
-            $5, 0, 'ACTIVE', NOW()
-        )
-        RETURNING 
-            id
-        `,
-        [
-            auctionData.carId,
-            auctionData.userId,
-            auctionData.basePrice,
-            auctionData.startTime,
-            auctionData.endTime
-        ]
-    );
+    const client = await pool.connect();
 
-    return queryResult.rows[0];
+    try {
+        await client.query("BEGIN");
+
+        await client.query(
+            `
+            SELECT id
+            FROM cars
+            WHERE id = $1
+            FOR UPDATE
+            `,
+            [auctionData.carId]
+        );
+
+        const activeAuctionResult = await client.query(
+            `
+            SELECT id
+            FROM auctions
+            WHERE car_id = $1
+                AND status = 'ACTIVE'
+            LIMIT 1
+            `,
+            [auctionData.carId]
+        );
+
+        if (activeAuctionResult.rows.length > 0) {
+            await client.query("ROLLBACK");
+
+            return {
+                created: false,
+                reason: "ACTIVE_AUCTION"
+            };
+        }
+
+        const queryResult = await client.query(
+            `
+            INSERT INTO auctions (
+                car_id,
+                owner_id,
+                base_price,
+                current_highest_bid,
+                bid_count,
+                start_time,
+                end_time,
+                extension_count,
+                status,
+                updated_at
+            )
+            VALUES (
+                $1, $2, $3, 0, 0, $4, 
+                $5, 0, 'ACTIVE', NOW()
+            )
+            RETURNING 
+                id
+            `,
+            [
+                auctionData.carId,
+                auctionData.userId,
+                auctionData.basePrice,
+                auctionData.startTime,
+                auctionData.endTime
+            ]
+        );
+
+        await client.query("COMMIT");
+
+        return {
+            created: true,
+            auction: queryResult.rows[0]
+        };
+    } catch (error) {
+        await client.query("ROLLBACK");
+        throw error;
+    } finally {
+        client.release();
+    }
 };
 
 const findActiveAuctionByCarId = async (carId) => {

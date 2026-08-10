@@ -189,22 +189,72 @@ const updateCarById = async (carId, userId, updatedCar) => {
 };
 
 const deleteCarByCarId = async (carId, userId) => {
-    const queryResult = await pool.query(
-        `
-        DELETE FROM cars 
-        WHERE id = $1 
-            AND owner_id = $2 
-            AND NOT EXISTS (
-              SELECT 1
-              FROM auctions
-              WHERE car_id = $1
-            )
-        RETURNING *
-        `,
-        [carId, userId]
-    );
+    const client = await pool.connect();
 
-    return queryResult.rows[0];
+    try {
+        await client.query("BEGIN");
+
+        const carResult = await client.query(
+            `
+            SELECT id
+            FROM cars
+            WHERE id = $1
+                AND owner_id = $2
+            FOR UPDATE
+            `,
+            [carId, userId]
+        );
+
+        if (carResult.rows.length === 0) {
+            await client.query("ROLLBACK");
+
+            return {
+                deleted: false,
+                reason: "NOT_FOUND"
+            };
+        }
+
+        const auctionResult = await client.query(
+            `
+            SELECT 1
+            FROM auctions
+            WHERE car_id = $1
+            LIMIT 1
+            `,
+            [carId]
+        );
+
+        if (auctionResult.rows.length > 0) {
+            await client.query("ROLLBACK");
+
+            return {
+                deleted: false,
+                reason: "HAS_AUCTION"
+            };
+        }
+
+        const deleteResult = await client.query(
+            `
+            DELETE FROM cars
+            WHERE id = $1
+                AND owner_id = $2
+            RETURNING *
+            `,
+            [carId, userId]
+        );
+
+        await client.query("COMMIT");
+
+        return {
+            deleted: true,
+            car: deleteResult.rows[0]
+        };
+    } catch (error) {
+        await client.query("ROLLBACK");
+        throw error;
+    } finally {
+        client.release();
+    }
 };
 
 

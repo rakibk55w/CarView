@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
     FiEdit2,
     FiSave,
+    FiTrash2,
     FiX,
 } from "react-icons/fi";
 
@@ -35,7 +36,8 @@ export default function CarInformationCard({
     car,
     setCar,
     isOwnCar,
-    isLoading
+    isLoading,
+    onCarDelete,
 }) {
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -560,35 +562,49 @@ export default function CarInformationCard({
                             {isEditing && (
                                 <div className="
                                     flex
-                                    justify-end
+                                    justify-between
+                                    items-center
                                     gap-3
                                     pt-8">
-                                    <CustomButton
-                                        className="
-                                        w-auto
-                                        px-4"
-                                        dangerButton={true}
-                                        icon={<FiX />}
-                                        onClick={() => {
-                                            resetForm();
-                                            setIsEditing(false);
-                                        }}>
-
-                                        Cancel
-                                    </CustomButton>
 
                                     <CustomButton className="
                                         w-auto
                                         px-4"
-                                        type="submit"
-                                        disabled={isSaving}
-                                        icon={<FiSave />}>
+                                        dangerButton={true}
+                                        icon={<FiTrash2 />}
+                                        onClick={onCarDelete}>
 
-                                        {isSaving
-                                            ? "Saving..."
-                                            : "Save Car"
-                                        }
+                                        Delete Car
                                     </CustomButton>
+
+                                    <div className="
+                                        flex
+                                        justify-end
+                                        gap-3">
+
+                                        <CustomButton className="
+                                            w-auto
+                                            px-4"
+                                            dangerButton={true}
+                                            icon={<FiX />}
+                                            onClick={() => {
+                                                resetForm();
+                                                setIsEditing(false);
+                                            }}>
+
+                                            Cancel
+                                        </CustomButton>
+
+                                        <CustomButton className="
+                                            w-auto
+                                            px-4"
+                                            type="submit"
+                                            disabled={isSaving}
+                                            icon={<FiSave />}>
+
+                                            {isSaving ? "Saving..." : "Save Car"}
+                                        </CustomButton>
+                                    </div>
                                 </div>
                             )}
                         </div>
