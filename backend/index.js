@@ -5,15 +5,11 @@ const pool = require("./config/db");
 const port = process.env.PORT;
 
 pool
-  .connect()
-  .then(() => {
-    console.log("Database connected");
-
-    app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}/api/`);
+    .query("SELECT 1")
+    .then(() => {
+        app.listen(port);
+    })
+    .catch((err) => {
+        console.error(err);
+        process.exit(1);
     });
-  })
-  .catch((err) => {
-    console.log("Database connection failed");
-    console.log(err);
-  });

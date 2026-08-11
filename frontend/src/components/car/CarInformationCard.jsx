@@ -165,8 +165,6 @@ export default function CarInformationCard({
                 try {
                     setIsSaving(true);
 
-                    console.log("Accident history: ", values.accidentHistory);
-
                     const response = await axiosAuthInstance.put(
                         `/cars/${car.id}`,
                         {
