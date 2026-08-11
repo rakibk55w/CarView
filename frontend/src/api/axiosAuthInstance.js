@@ -2,7 +2,7 @@ import axios from "axios";
 import { authService } from "../service/authService";
 
 const axiosAuthInstance = axios.create({
-    baseURL: import.meta.env.BACKEND_API_URL,
+    baseURL: import.meta.env.VITE_BACKEND_API_URL,
     withCredentials: true,
 });
 
