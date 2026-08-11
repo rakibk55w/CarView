@@ -1,27 +1,10 @@
 import axios from "axios";
-// import axiosInstance from "./axiosInstance";
 import { authService } from "../service/authService";
 
 const axiosAuthInstance = axios.create({
-    baseURL: "http://localhost:5431/api",
+    baseURL: import.meta.env.BACKEND_API_URL,
     withCredentials: true,
 });
-
-// let isRefreshing = false;
-
-// let failedQueue = [];
-
-// const processQueue = (error, token = null) => {
-//     failedQueue.forEach((promise) => {
-//         if (error) {
-//             promise.reject(error);
-//         } else {
-//             promise.resolve(token);
-//         }
-//     });
-
-//     failedQueue = [];
-// };
 
 axiosAuthInstance.interceptors.request.use(
     (config) => {
