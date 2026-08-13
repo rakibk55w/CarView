@@ -11,6 +11,7 @@ import CarSelectorField from "../car/CarSelectorField";
 import axiosAuthInstance from "../../api/axiosAuthInstance";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import { createAuctionSchema, initialCreateAuctionValues } from "../../schemas/createAuctionSchema";
+import formatTimeForInput from "../../utils/formatTimeForInput";
 
 export default function CreateAuctionSheet({
     isOpen,
@@ -26,8 +27,8 @@ export default function CreateAuctionSheet({
                     const requestPayload = { 
                         car_id: values.carId, 
                         base_price: values.basePrice, 
-                        start_time: values.startTime, 
-                        end_time: values.endTime
+                        start_time: formatTimeForInput(values.startTime), 
+                        end_time: formatTimeForInput(values.endTime)
                     };
 
                     try {
