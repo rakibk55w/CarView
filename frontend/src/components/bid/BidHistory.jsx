@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 import BidCard from "./BidCard";
 
@@ -9,6 +10,7 @@ export default function BidHistory({
     onLoadMore
 }) {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     function handleScroll(event) {
         const element = event.currentTarget;
@@ -66,7 +68,8 @@ export default function BidHistory({
                 {bids.map((bid) => (
                     <BidCard
                         key={bid.id}
-                        bidder={bid.bidder_name}
+                        isOwnBid={bid.bidder_id === user.id}
+                        bidderName={bid.bidder_name}
                         bidAmount={bid.bid_amount}
                         timestamp={bid.created_at}
                         onBidderClick={() => {
