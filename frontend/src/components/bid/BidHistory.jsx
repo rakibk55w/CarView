@@ -68,7 +68,7 @@ export default function BidHistory({
                 {bids.map((bid) => (
                     <BidCard
                         key={bid.id}
-                        isOwnBid={bid.bidder_id === user.id}
+                        isOwnBid={bid.bidder_id === user?.id}
                         bidderName={bid.bidder_name}
                         bidAmount={bid.bid_amount}
                         timestamp={bid.created_at}
